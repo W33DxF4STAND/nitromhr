@@ -2132,6 +2132,12 @@ void looped_functions(void){
 			GET_CAR_SPEED(pveh,&speed);
 			SET_CAR_FORWARD_SPEED(pveh,(speed * 1.05));
 		}
+		else if(IS_CHAR_ON_ANY_BIKE(pPlayer) && IS_BUTTON_PRESSED(0,BUTTON_L)){
+			float speed;
+			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
+			GET_CAR_SPEED(pveh,&speed);
+			SET_CAR_FORWARD_SPEED(pveh,(speed / 1.05));
+		}
 	}
 	
 	if(nfs){
@@ -2146,19 +2152,6 @@ void looped_functions(void){
 			else{
 				GET_CAR_SPEED(pveh,&speed);
 				SET_CAR_FORWARD_SPEED(pveh,(speed * 1.02));
-			}
-		}
-		else if(IS_CHAR_IN_ANY_CAR(pPlayer) && IS_BUTTON_PRESSED(0,BUTTON_L)){
-			float speed;
-			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
-			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))){
-				SET_CAR_ON_GROUND_PROPERLY(pveh);
-				GET_CAR_SPEED(pveh,&speed);
-				SET_CAR_FORWARD_SPEED(pveh,(speed / 1.02));
-			}
-			else{
-				GET_CAR_SPEED(pveh,&speed);
-				SET_CAR_FORWARD_SPEED(pveh,(speed / 1.02));
 			}
 		}
 	}
