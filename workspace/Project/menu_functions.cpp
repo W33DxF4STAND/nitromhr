@@ -318,25 +318,20 @@ void spawn_car(uint model){
 	return;
 }
 
-void xmc_teleportinfront(void)
-{
-    if ( IS_PLAYER_PLAYING(GetPlayerIndex()) )
-    {
+void xmc_teleportinfront(void){
         float ch;
         GET_CHAR_HEADING(GetPlayerPed(), &ch);
         GET_CHAR_COORDINATES(GetPlayerPed(), &x, &y, &z);
         teleport_char(pPlayer, x+(10*SIN((-1*ch))), y+(10*COS((-1*ch))), z);
-    }
 }
 
-void xmc_airstrike(void)
-{
+void xmc_airstrike(void){
 	if(DOES_BLIP_EXIST(GET_FIRST_BLIP_INFO_ID(BLIP_WAYPOINT))){
-	Vector3 pos;
-	GET_BLIP_COORDS(GET_FIRST_BLIP_INFO_ID(BLIP_WAYPOINT),&pos);
-	GET_GROUND_Z_FOR_3D_COORD(pos.x,pos.y,pos.z,&z);
-	create_big_explosion(pos.x,pos.y,z+10.0f);//adding 10.0f isn't tested
-	print("Launching Airstrike!");
+		Vector3 pos;
+		GET_BLIP_COORDS(GET_FIRST_BLIP_INFO_ID(BLIP_WAYPOINT),&pos);
+		GET_GROUND_Z_FOR_3D_COORD(pos.x,pos.y,pos.z,&z);
+		create_big_explosion(pos.x,pos.y,z+10.0f);//adding 10.0f isn't tested
+		print("Launching Airstrike!");
 	}
 	else print("You need to set a waypoint!");
 }
