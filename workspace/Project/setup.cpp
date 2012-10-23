@@ -311,7 +311,7 @@ void menu_setup(void){
 				}
 				if(last_selected[2] == 2){
 					footer = "Speech";
-					add_item("Plaveholder",true);
+					add_item("Placeholder",true);
 				}
 			}
 		}

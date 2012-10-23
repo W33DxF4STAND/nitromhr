@@ -173,44 +173,30 @@ void teleport_char(Ped pPed, float x,float y,float z){
 void delete_spawnguards(void){
 	GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
 	if(DOES_GROUP_EXIST(Bgroup)){
-		for(i = 0;i <= 7; i++){
-				
-			if(DOES_CHAR_EXIST(gameped[i])){
-				DELETE_CHAR(&gameped[i]);
-			}
-			if(i >= 7){
-				print("Guards Deleted");	
-				return;
-			}
-			/**
-			if(DOES_CHAR_EXIST(gameped[0])){
-				DELETE_CHAR(&gameped[0]);
-			}
-			if(DOES_CHAR_EXIST(gameped[1])){
-				DELETE_CHAR(&gameped[1]);
-			}
-			if(DOES_CHAR_EXIST(gameped[2])){
-				DELETE_CHAR(&gameped[2]);
-			}
-			if(DOES_CHAR_EXIST(gameped[3])){
-				DELETE_CHAR(&gameped[3]);
-			}
-			if(DOES_CHAR_EXIST(gameped[4])){
-				DELETE_CHAR(&gameped[4]);
-			}
-			if(DOES_CHAR_EXIST(gameped[5])){
-				DELETE_CHAR(&gameped[5]);
-			}
-			if(DOES_CHAR_EXIST(gameped[6])){
-				DELETE_CHAR(&gameped[6]);
-			}
-			**/
-			/**
-			if(i = 0){
-				print("Guards Deleted");
-				return;
-			}
-			**/
+
+		if(DOES_CHAR_EXIST(gameped[0])){
+			DELETE_CHAR(&gameped[0]);
+		}
+		if(DOES_CHAR_EXIST(gameped[1])){
+			DELETE_CHAR(&gameped[1]);
+		}
+		if(DOES_CHAR_EXIST(gameped[2])){
+			DELETE_CHAR(&gameped[2]);
+		}
+		if(DOES_CHAR_EXIST(gameped[3])){
+			DELETE_CHAR(&gameped[3]);
+		}
+		if(DOES_CHAR_EXIST(gameped[4])){
+			DELETE_CHAR(&gameped[4]);
+		}
+		if(DOES_CHAR_EXIST(gameped[5])){
+			DELETE_CHAR(&gameped[5]);
+		}
+		if(DOES_CHAR_EXIST(gameped[6])){
+			DELETE_CHAR(&gameped[6]);
+		}
+		if(DOES_CHAR_EXIST(gameped[7])){
+			DELETE_CHAR(&gameped[7]);
 		}
 		print("Guards Deleted");					
 		return;					
