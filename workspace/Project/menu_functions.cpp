@@ -169,17 +169,17 @@ void teleport_char(Ped pPed, float x,float y,float z){
 	}
 	REQUEST_COLLISION_AT_POSN(x,y,z);
 }
-int i = 0;
 
 void delete_spawnguards(void){
 	GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
-	if(DOES_GROUP_EXIST(Bgroup)){				
-		for(i;i <= 7; i++){
+	if(DOES_GROUP_EXIST(Bgroup)){
+		int i = 0;
+		for(i = 0;i <= 7; i++){
 				
 			if(DOES_CHAR_EXIST(gameped[i])){
 				DELETE_CHAR(&gameped[i]);
 			}
-				
+			
 			/**
 			if(DOES_CHAR_EXIST(gameped[0])){
 				DELETE_CHAR(&gameped[0]);
@@ -217,9 +217,8 @@ void delete_spawnguards(void){
 }	
 
 void spawnguards(uint model, uint weapon){
-	//for(i;i <= 7; i++){
-
-		//if(!DOES_CHAR_EXIST(gameped[i])){
+	for(i = 0;i <= 7; i++){
+		if(!DOES_CHAR_EXIST(gameped[i])){
 			GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
 			if(!DOES_GROUP_EXIST(Bgroup)){
 				CREATE_GROUP(0, Bgroup, TRUE);
@@ -235,8 +234,6 @@ void spawnguards(uint model, uint weapon){
 				print("Max guards (7) exceeded");
 				return;
 			}
-			
-			i = guards;
 			
 			REQUEST_MODEL(model);
 			while (!HAS_MODEL_LOADED(model)) WAIT(0);
@@ -268,12 +265,9 @@ void spawnguards(uint model, uint weapon){
 			SET_CURRENT_CHAR_WEAPON(gameped[i], weapon, true);
 			
 			print("Spawned Bodyguard");
-			
-			//if(i >= 7) return;
-			//i += 1;
 			return;
-		//}
-	//}
+		}
+	}
 	return;
 }
 
@@ -1927,12 +1921,13 @@ void menu_functions(void){
 					spawn_car(menu[item_select].value);
 					return;
 				}
+			}
 				//0xCB26803D = blue
 				//0xD20167BE = red
 				//0xFCB32869 = white
 				//0xB3AC6409  = yellow
 				//0xD611D7B6 = green
-				if(last_selected[2] == 4){
+			if(last_selected[1] == 4){
 					if(item_select == 1){
 						if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 							GET_CAR_CHAR_IS_USING(pPlayer, &pveh);
@@ -2004,7 +1999,6 @@ void menu_functions(void){
 			}
 		}
 	}	
-}
 void looped_functions(void){
 	//player options
 	SET_CHAR_INVINCIBLE(pPlayer,godmode);
