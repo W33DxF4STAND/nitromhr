@@ -173,13 +173,15 @@ void teleport_char(Ped pPed, float x,float y,float z){
 void delete_spawnguards(void){
 	GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
 	if(DOES_GROUP_EXIST(Bgroup)){
-		int i = 0;
 		for(i = 0;i <= 7; i++){
 				
 			if(DOES_CHAR_EXIST(gameped[i])){
 				DELETE_CHAR(&gameped[i]);
 			}
-			
+			if(i >= 7){
+				print("Guards Deleted");	
+				return;
+			}
 			/**
 			if(DOES_CHAR_EXIST(gameped[0])){
 				DELETE_CHAR(&gameped[0]);
@@ -217,23 +219,21 @@ void delete_spawnguards(void){
 }	
 
 void spawnguards(uint model, uint weapon){
+	GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
+	if(!DOES_GROUP_EXIST(Bgroup)){
+		CREATE_GROUP(0, Bgroup, TRUE);
+		SET_GROUP_LEADER(Bgroup, GetPlayerPed());
+		SET_GROUP_SEPARATION_RANGE(Bgroup, 9999.9);
+		SET_GROUP_FORMATION(Bgroup, 2);
+	}	
+	uint test,guards;
+	GET_GROUP_SIZE(Bgroup, &test, &guards);	
+	if(guards >= 7){
+		print("Max guards (7) exceeded");
+		return;
+	}
 	for(i = 0;i <= 7; i++){
 		if(!DOES_CHAR_EXIST(gameped[i])){
-			GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
-			if(!DOES_GROUP_EXIST(Bgroup)){
-				CREATE_GROUP(0, Bgroup, TRUE);
-				SET_GROUP_LEADER(Bgroup, GetPlayerPed());
-				SET_GROUP_SEPARATION_RANGE(Bgroup, 9999.9);
-				SET_GROUP_FORMATION(Bgroup, 2);
-			}
-			
-			uint test,guards;
-			GET_GROUP_SIZE(Bgroup, &test, &guards);
-			
-			if(guards >= 7){
-				print("Max guards (7) exceeded");
-				return;
-			}
 			
 			REQUEST_MODEL(model);
 			while (!HAS_MODEL_LOADED(model)) WAIT(0);

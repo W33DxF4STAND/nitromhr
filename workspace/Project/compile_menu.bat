@@ -39,7 +39,6 @@ echo %%a
 )
 if not exist ../../out_sco/*.sco goto err_build
 set "outsco=*.sco"
-echo.
 cd ../../out_sco/
 ren "main.sco" "xmc_modmenu.sco"
 echo.
