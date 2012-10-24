@@ -185,9 +185,15 @@ void menu_setup(void){
 			}
 			if(last_selected[1] == 13){
 				footer = "Bodyguards";
-				add_item("Delete All Guards",true);
+				add_item("Delete 1 Guards",true);
 				add_item("Dwayne",true);
 				add_item("Brucie",true);
+				add_item("Nigga",true);
+				add_item("FBI",true);
+				add_item("Cop",true);
+				add_item("Fat Cop",true);
+				add_item("Male",true);
+				add_item("Female",true);
 				return;
 			}
 		}

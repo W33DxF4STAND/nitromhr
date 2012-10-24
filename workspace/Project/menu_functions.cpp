@@ -173,36 +173,18 @@ void teleport_char(Ped pPed, float x,float y,float z){
 void delete_spawnguards(void){
 	GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
 	if(DOES_GROUP_EXIST(Bgroup)){
-
-		if(DOES_CHAR_EXIST(gameped[0])){
-			DELETE_CHAR(&gameped[0]);
+		for(i = 0;i <= 7; i++){
+			if(DOES_CHAR_EXIST(gameped[i])){
+				DELETE_CHAR(&gameped[i]);
+				print("1 was Guard Deleted");					
+				return;
+			}
+			if(i >= 7) return;
 		}
-		if(DOES_CHAR_EXIST(gameped[1])){
-			DELETE_CHAR(&gameped[1]);
-		}
-		if(DOES_CHAR_EXIST(gameped[2])){
-			DELETE_CHAR(&gameped[2]);
-		}
-		if(DOES_CHAR_EXIST(gameped[3])){
-			DELETE_CHAR(&gameped[3]);
-		}
-		if(DOES_CHAR_EXIST(gameped[4])){
-			DELETE_CHAR(&gameped[4]);
-		}
-		if(DOES_CHAR_EXIST(gameped[5])){
-			DELETE_CHAR(&gameped[5]);
-		}
-		if(DOES_CHAR_EXIST(gameped[6])){
-			DELETE_CHAR(&gameped[6]);
-		}
-		if(DOES_CHAR_EXIST(gameped[7])){
-			DELETE_CHAR(&gameped[7]);
-		}
-		print("Guards Deleted");					
-		return;					
-	}
-	else print("No guards exist");			
-}	
+	print("No guards exist");			
+	return;
+	}	
+}
 
 void spawnguards(uint model, uint weapon){
 	GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
@@ -230,9 +212,12 @@ void spawnguards(uint model, uint weapon){
 			CREATE_CHAR(26, model, x,y,z, &gameped[i], true);
 			WAIT(500);
 			SET_GROUP_MEMBER(Bgroup, gameped[i]);
+			SET_CHAR_RELATIONSHIP_GROUP(gameped[i], 24);
+			SET_CHAR_RELATIONSHIP(gameped[i], 5, 0);
 			SET_CHAR_NEVER_LEAVES_GROUP(gameped[i], true);
 			SET_CHAR_ACCURACY(gameped[i], 100);
 			SET_SENSE_RANGE(gameped[i], 50.0);
+			SET_CHAR_RANDOM_COMPONENT_VARIATION(gameped[i]);
 			SET_PED_GENERATES_DEAD_BODY_EVENTS(gameped[i], true);
 			SET_CHAR_SHOOT_RATE(gameped[i], 100);
 			SET_CHAR_WILL_DO_DRIVEBYS(gameped[i], true);
@@ -933,6 +918,30 @@ void menu_functions(void){
 				}
 				else if(item_select == 3){
 					spawnguards(MODEL_IG_BRUCIE, WEAPON_AK47);
+					return;
+				}
+				else if(item_select == 4){
+					spawnguards(MODEL_M_Y_GAFR_LO_01, WEAPON_MICRO_UZI);
+					return;
+				}
+				else if(item_select == 5){
+					spawnguards(MODEL_M_M_FBI, WEAPON_DEAGLE);
+					return;
+				}
+				else if(item_select == 6){
+					spawnguards(MODEL_M_Y_COP, WEAPON_DEAGLE);
+					return;
+				}
+				else if(item_select == 7){
+					spawnguards(MODEL_M_M_FATCOP_01, WEAPON_RLAUNCHER);
+					return;
+				}
+				else if(item_select == 8){
+					spawnguards(MODEL_M_Y_MULTIPLAYER, WEAPON_M4);
+					return;
+				}
+				else if(item_select == 9){
+					spawnguards(MODEL_F_Y_MULTIPLAYER, WEAPON_M4);
 					return;
 				}
 			}
