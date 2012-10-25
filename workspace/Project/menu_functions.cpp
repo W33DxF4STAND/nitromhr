@@ -172,6 +172,12 @@ void teleport_char(Ped pPed, float x,float y,float z){
 
 void delete_spawnguards(void){
 	GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
+	uint test,guards;
+	GET_GROUP_SIZE(Bgroup, &test, &guards);	
+	if(guards <= 0){
+		print("No guards exist");
+		return;
+	}
 	if(DOES_GROUP_EXIST(Bgroup)){
 		for(i = 0;i <= 7; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
@@ -183,7 +189,8 @@ void delete_spawnguards(void){
 		}
 	print("No guards exist");			
 	return;
-	}	
+	}
+	return;
 }
 
 void spawnguards(uint model, uint weapon){
@@ -211,13 +218,13 @@ void spawnguards(uint model, uint weapon){
 			
 			CREATE_CHAR(26, model, x,y,z, &gameped[i], true);
 			WAIT(500);
+			SET_CHAR_RANDOM_COMPONENT_VARIATION(gameped[i]);
 			SET_GROUP_MEMBER(Bgroup, gameped[i]);
 			SET_CHAR_RELATIONSHIP_GROUP(gameped[i], 24);
 			SET_CHAR_RELATIONSHIP(gameped[i], 5, 0);
 			SET_CHAR_NEVER_LEAVES_GROUP(gameped[i], true);
 			SET_CHAR_ACCURACY(gameped[i], 100);
 			SET_SENSE_RANGE(gameped[i], 50.0);
-			SET_CHAR_RANDOM_COMPONENT_VARIATION(gameped[i]);
 			SET_PED_GENERATES_DEAD_BODY_EVENTS(gameped[i], true);
 			SET_CHAR_SHOOT_RATE(gameped[i], 100);
 			SET_CHAR_WILL_DO_DRIVEBYS(gameped[i], true);
@@ -941,7 +948,31 @@ void menu_functions(void){
 					return;
 				}
 				else if(item_select == 9){
-					spawnguards(MODEL_F_Y_MULTIPLAYER, WEAPON_M4);
+					spawnguards(MODEL_F_Y_MULTIPLAYER, WEAPON_ROCKET);
+					return;
+				}
+				else if(item_select == 10){
+					spawnguards(MODEL_M_M_GUNNUT_01, WEAPON_AK47);
+					return;
+				}
+				else if(item_select == 11){
+					spawnguards(MODEL_M_Y_CLUBFIT, WEAPON_PISTOL);
+					return;
+				}
+				else if(item_select == 12){
+					spawnguards(MODEL_F_Y_STRIPPERC01, WEAPON_AK47);
+					return;
+				}
+				else if(item_select == 13){
+					spawnguards(MODEL_M_Y_SWAT, WEAPON_M4);
+					return;
+				}
+				else if(item_select == 14){
+					spawnguards(MODEL_CS_LUIS, WEAPON_POOLCUE);
+					return;
+				}
+				else if(item_select == 15){
+					spawnguards(MODEL_M_Y_THIEF, WEAPON_KNIFE);
 					return;
 				}
 			}
