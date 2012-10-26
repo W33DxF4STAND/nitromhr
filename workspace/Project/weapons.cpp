@@ -1,3 +1,84 @@
+
+typedef struct __data{
+        int projectile;
+        //int actionid;
+       
+        float aimx;
+        float aimy;
+        float aimz;
+       
+        float playx;
+        float playy;
+        float playz;
+       
+        float velx;
+        float vely;
+        float velz;
+       
+        float dist;
+} _data;
+ 
+_data data[15];
+ 
+void fire_projectile(void){
+        int i = 0;
+        for(i;i <= 10;i++){
+			if(!DOES_OBJECT_EXIST(data[i].projectile)){
+                        //data[i].actionid = weapon;
+               
+                        data[i].aimx = aim_tmp.x;
+                        data[i].aimy = aim_tmp.y;
+                        data[i].aimz = aim_tmp.z;
+                               
+                        data[i].playx = play_tmp.x;
+                        data[i].playy = play_tmp.y;
+                        data[i].playz = play_tmp.z;
+                       
+                        GET_DISTANCE_BETWEEN_COORDS_3D(aim_tmp.x,aim_tmp.y,aim_tmp.z,play_tmp.x,play_tmp.y,play_tmp.z,&data[i].dist);
+                        #define SPEED 500
+                        data[i].velx = SPEED * (aim_tmp.x - play_tmp.x) / data[i].dist;
+                        data[i].vely = SPEED * (aim_tmp.y - play_tmp.y) / data[i].dist;
+                        data[i].velz = SPEED * (aim_tmp.z - play_tmp.z) / data[i].dist;
+                       
+                        CREATE_OBJECT(MODEL_dildo,play_tmp.x,play_tmp.y,play_tmp.z,&data[i].projectile,true);
+                        SET_OBJECT_RECORDS_COLLISIONS(data[i].projectile,true);
+                        FREEZE_OBJECT_POSITION(data[i].projectile,false);
+                        SET_OBJECT_VISIBLE(data[i].projectile,true);
+                        SET_OBJECT_COLLISION(data[i].projectile,true);
+                       
+                        SET_OBJECT_INITIAL_VELOCITY(data[i].projectile,data[i].velx,data[i].vely,data[i].velz);
+                       
+                        return;
+                }
+        }
+}
+ 
+void projectile_action(void){
+	int i = 0;
+	for(i;i <= 10;i++){
+		if(DOES_OBJECT_EXIST(data[i].projectile)){
+			if(HAS_OBJECT_COLLIDED_WITH_ANYTHING(data[i].projectile) || data[i].dist > 150){
+									//FREEZE_OBJECT_POSITION(data[i].projectile,true);
+									//GET_OBJECT_COORDINATES(data[i].projectile,&data[i].aimx,&data[i].aimy,&data[i].aimz);
+								   
+									//ADD_EXPLOSION(data[i].aimx,data[i].aimy,data[i].aimz,EXPLOSION_MOLOTOV,5.0,true,false,0.0);
+								   
+				DELETE_OBJECT(&data[i].projectile);
+				MARK_OBJECT_AS_NO_LONGER_NEEDED(&data[i].projectile);
+			}
+			else{
+				GET_OBJECT_COORDINATES(data[i].projectile,&data[i].aimx,&data[i].aimy,&data[i].aimz);
+												   
+				GET_DISTANCE_BETWEEN_COORDS_3D(data[i].aimx,data[i].aimy,data[i].aimz,data[i].playx,data[i].playy,data[i].playz,&data[i].dist);
+	 
+				SET_OBJECT_INITIAL_VELOCITY(data[i].projectile,data[i].velx,data[i].vely,data[i].velz);
+				SET_OBJECT_COLLISION(data[i].projectile,true);                 
+						   
+			}
+		}
+	}
+}
+/**
 void rocket_aim(void){
 		GET_CURRENT_CHAR_WEAPON(GetPlayerPed(), &wWeapon);
 		if((wWeapon == WEAPON_PISTOL) && (IS_BUTTON_PRESSED(0,BUTTON_L))){
@@ -26,14 +107,14 @@ void rocket_aim(void){
 				*   I apologize if this is confusing, but if you want to change the distance from the game_cam that the  *
 				*   object is spawned, adjust "3.0" to your preference on the first and fourth lines.  Also prjT is the  *
 				*   adjacent side from the pitch calculation, its purpose is to be the tangent in the following 2 lines */
-				prjT = (3.0 * COS(gcrotX));       // adj side calculation to be used as a tangent below
-				prjX = gcX - (prjT * SIN(gcrotZ));// calculates how far to spawn the object from the game_cam on the X plane
-				prjY = gcY + (prjT * COS(gcrotZ));// calculates how far to spawn the object from the game_cam on the Y plane
-				prjZ = gcZ + (3.0 * SIN(gcrotX)); // calculates how far to spawn the object from the game_cam on the Z plane
-			}
-		}
-}
-
+//				prjT = (3.0 * COS(gcrotX));       // adj side calculation to be used as a tangent below
+//				prjX = gcX - (prjT * SIN(gcrotZ));// calculates how far to spawn the object from the game_cam on the X plane
+//				prjY = gcY + (prjT * COS(gcrotZ));// calculates how far to spawn the object from the game_cam on the Y plane
+//				prjZ = gcZ + (3.0 * SIN(gcrotX)); // calculates how far to spawn the object from the game_cam on the Z plane
+//			}
+//		}
+//}
+/**
 void rocket_shoot(void){
 	GET_CURRENT_CHAR_WEAPON(GetPlayerPed(), &wWeapon);
 	if((wWeapon == WEAPON_PISTOL) && (IS_CHAR_SHOOTING(pPlayer))){
@@ -90,14 +171,14 @@ void dildo_aim(void){
 				*   I apologize if this is confusing, but if you want to change the distance from the game_cam that the  *
 				*   object is spawned, adjust "3.0" to your preference on the first and fourth lines.  Also prjT is the  *
 				*   adjacent side from the pitch calculation, its purpose is to be the tangent in the following 2 lines */
-				prjT = (3.0 * COS(gcrotX));       // adj side calculation to be used as a tangent below
-				prjX = gcX - (prjT * SIN(gcrotZ));// calculates how far to spawn the object from the game_cam on the X plane
-				prjY = gcY + (prjT * COS(gcrotZ));// calculates how far to spawn the object from the game_cam on the Y plane
-				prjZ = gcZ + (3.0 * SIN(gcrotX)); // calculates how far to spawn the object from the game_cam on the Z plane
-			}
-		}
-}
-
+//				prjT = (3.0 * COS(gcrotX));       // adj side calculation to be used as a tangent below
+//				prjX = gcX - (prjT * SIN(gcrotZ));// calculates how far to spawn the object from the game_cam on the X plane
+//				prjY = gcY + (prjT * COS(gcrotZ));// calculates how far to spawn the object from the game_cam on the Y plane
+//				prjZ = gcZ + (3.0 * SIN(gcrotX)); // calculates how far to spawn the object from the game_cam on the Z plane
+//			}
+//		}
+//}
+/**
 void dildo_shoot(void){
 	GET_CURRENT_CHAR_WEAPON(GetPlayerPed(), &wWeapon);
 	if((wWeapon == WEAPON_DEAGLE) && (IS_CHAR_SHOOTING(pPlayer))){
@@ -126,3 +207,4 @@ void dildo_shoot(void){
 		}
 	}
 }
+**/

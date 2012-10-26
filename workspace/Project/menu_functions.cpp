@@ -185,7 +185,7 @@ void delete_spawnguards(void){
 				print("1 was Guard Deleted");					
 				return;
 			}
-			if(i >= 7) return;
+			if(i >= 7) continue;
 		}
 	print("No guards exist");			
 	return;
@@ -529,10 +529,10 @@ void menu_functions(void){
 				return;
 			}
 			else if(item_select == 4){
-				if(!rocketpistol){
-					print("Equip the Glock 17 and shoot");
+				if(!dildogun){
+					print("Equip the Desert Eagle and shoot");
 				}
-				do_toggle(rocketpistol);
+				do_toggle(dildogun);
 				return;
 			}
 			/**
@@ -2044,21 +2044,17 @@ void looped_functions(void){
 		else
 			FREEZE_CHAR_POSITION(pPlayer,false);
 	}
-	/**
+
 	if(dildogun){
-		int i = 0;
-		for(i;i <= 10;i++){
-			dildo_aim();
-			dildo_shoot();
+		GET_CURRENT_CHAR_WEAPON(pPlayer,&wWeapon);
+		if(!IS_CHAR_IN_ANY_CAR(pPlayer) && IS_CHAR_SHOOTING(pPlayer) && wWeapon == WEAPON_DEAGLE){
+		 
+			GET_PED_BONE_POSITION(pPlayer,BONE_RIGHT_HAND,2.0,0.0,0.0,&play_tmp);
+			GET_PED_BONE_POSITION(pPlayer,BONE_RIGHT_HAND,100.0,0.0,0.0,&aim_tmp);
+					   
+			fire_projectile();
 		}
-	}
-	**/
-	if(rocketpistol){
-		int i = 0;
-		for(i;i <= 10;i++){
-			rocket_aim();
-			rocket_shoot();
-		}
+		projectile_action();
 	}
 	
 	if(collision){
@@ -2194,17 +2190,21 @@ void looped_functions(void){
 	}
 	
 	if(nfs){
-		if(IS_CHAR_IN_ANY_CAR(pPlayer) && IS_BUTTON_PRESSED(0,BUTTON_R)){
+		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 			float speed;
-			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))){
 				SET_CAR_ON_GROUND_PROPERLY(pveh);
-				GET_CAR_SPEED(pveh,&speed);
-				SET_CAR_FORWARD_SPEED(pveh,(speed * 1.02));
+				if(IS_BUTTON_PRESSED(0,BUTTON_R)){
+					GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
+					GET_CAR_SPEED(pveh,&speed);
+					SET_CAR_FORWARD_SPEED(pveh,(speed * 1.02));
+				}
 			}
 			else{
-				GET_CAR_SPEED(pveh,&speed);
-				SET_CAR_FORWARD_SPEED(pveh,(speed * 1.02));
+				if(IS_BUTTON_PRESSED(0,BUTTON_R)){
+					GET_CAR_SPEED(pveh,&speed);
+					SET_CAR_FORWARD_SPEED(pveh,(speed * 1.02));
+				}
 			}
 		}
 	}

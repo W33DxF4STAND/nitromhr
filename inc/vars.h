@@ -87,7 +87,7 @@ Vehicle ClosestCar, pveh;
 Camera game_cam;
 Object attachObj;
 Group Bgroup;
-Vector3 aim_tmp;
+Vector3 aim_tmp, play_tmp;
 float heading, x, y, z;
 
 Ped gameped[7];
@@ -109,11 +109,11 @@ bool show_menu = false,
 	godmode = true,
 	bikefly = false,
 	collision = false,
-	rocketpistol = false,
+	//rocketpistol = false,
 	neverwanted = false,
 	invisible = false,
 	fastreload = true,
-	//dildogun = false,
+	dildogun = false,
 	pprotection = false,
 	superrun = false,
 	hydrolics = false,
