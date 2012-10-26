@@ -485,7 +485,7 @@ void menu_functions(void){
 				}
 				do_toggle(hydrolics);
 				return;
-				}
+			}
 			if(item_select == 12){
 				//// float x, y, z;
 				if(IS_CHAR_IN_ANY_CAR(pPlayer)){
@@ -2116,11 +2116,11 @@ void looped_functions(void){
 	
 	if(hydrolics){
 		if(IS_BUTTON_PRESSED(0,BUTTON_X)){
-			if (IS_CHAR_IN_ANY_CAR(GetPlayerPed())){
-				GET_CAR_CHAR_IS_USING(GetPlayerPed(), &pveh);	
+			if (IS_CHAR_IN_ANY_CAR(pPlayer)){
+				GET_CAR_CHAR_IS_USING(pPlayer, &pveh);	
 				if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))){
 					if (IS_VEHICLE_ON_ALL_WHEELS(pveh)){
-						APPLY_FORCE_TO_CAR(PlayerVehicle, 0.0f, 0.0f, 0.0f, 60.0f , 0.0f,0.0f,-60.0f, 0, 1, 1, 1 );
+						APPLY_FORCE_TO_CAR(pveh, 0.0f, 0.0f, 0.0f, 60.0f , 0.0f,0.0f,-60.0f, 0, 1, 1, 1 );
 					}
 				}
 			}

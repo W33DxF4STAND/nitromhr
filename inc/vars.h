@@ -83,7 +83,7 @@ uint model, bone;
 int tmp, tmp_ped[2];	
 Ped iPed;
 Ped driver;
-Vehicle ClosestCar, pveh, PlayerVehicle;
+Vehicle ClosestCar, pveh;
 Camera game_cam;
 Object attachObj;
 Group Bgroup;
