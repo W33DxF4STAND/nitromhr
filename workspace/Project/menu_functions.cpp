@@ -2144,7 +2144,7 @@ void looped_functions(void){
 			{
 				if(IS_CHAR_IN_ANY_CAR(gameped))
 				{
-					GET_CAR_CHAR_IS_USING(gameped, &PlayerVehicle);	
+					GET_CAR_CHAR_IS_USING(gameped, &pveh);	
 					APPLY_FORCE_TO_CAR(ClosestCar, 3, 30.0, -20.0, 0.0, 0.0, 0.0, 0.0, 0, 1, 1, 1);
 					EXPLODE_CAR(ClosestCar, true, false);
 				}
