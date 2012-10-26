@@ -308,7 +308,7 @@ void menu_setup(void){
 					add_item("Freeze",true);
 					add_item("Burn",true);
 					add_item("Hippo",true);
-					add_item("Bodyguard",true);
+					add_item("Guard Hitlist",true);
 					return;
 				}
 			}

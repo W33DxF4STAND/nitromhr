@@ -224,6 +224,7 @@ void spawnguards(uint model, uint weapon){
 			SET_CHAR_RELATIONSHIP(gameped[i], 5, 0);
 			SET_CHAR_NEVER_LEAVES_GROUP(gameped[i], true);
 			SET_CHAR_ACCURACY(gameped[i], 100);
+			SET_CHAR_KEEP_TASK(gameped[i], true);
 			SET_SENSE_RANGE(gameped[i], 100.0);
 			SET_PED_GENERATES_DEAD_BODY_EVENTS(gameped[i], true);
 			SET_CHAR_SHOOT_RATE(gameped[i], 100);
@@ -1522,6 +1523,24 @@ void menu_functions(void){
 						print("Get Hippoed Nigga");
 					}
 					return;
+					}
+					else if(item_select == 13){
+						if(DOES_CHAR_EXIST(players[index].ped)){
+							GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
+							if(DOES_GROUP_EXIST(Bgroup)){
+								for(i = 0;i <= 7; i++){
+									if(DOES_CHAR_EXIST(gameped[i]) && DOES_CHAR_EXIST(players[index].ped)){
+										TASK_COMBAT(gameped[i], players[index].ped);
+										print("Sent a Guard after Player");
+										return;
+										if(i >= 7) return;
+										if(i > 6) return;
+									}
+								}
+							}
+						}
+						print("No guards exist");
+						return;
 					}
 				}
 			}
