@@ -661,20 +661,8 @@ void menu_functions(void){
 				return;
 			}
 			if(item_select == 10){	
-				uint old_model;
-				// Vehicle pveh;
-				if((IS_CHAR_IN_ANY_CAR)(pPlayer)){
-					GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
-					GET_CAR_MODEL(pveh,&old_model);
-					spawn_car(MODEL_YANKEE);
-					WAIT(1000);
-				    DELETE_CAR(&pveh);
-					MARK_CAR_AS_NO_LONGER_NEEDED(&pveh);
-					print("Game has been frozen");	
-				}
-				else{
-				print("You must be in a car first");
-				}
+				spawn_car(MODEL_YANKEE);
+				print("Spawned my ~r~Yankee (my freeze car)");	
 				return;
 			}
 		}
