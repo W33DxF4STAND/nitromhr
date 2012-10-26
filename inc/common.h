@@ -21,16 +21,16 @@ PRINT_STRING_WITH_LITERAL_STRING("string",text,5000,true);
 return;
 }
 
-#ifdef PRIVATE
-bool GTcheck(char *GT, char *safeGT){
-return COMPARE_STRING(GT, safeGT);
-}
-
 bool localvars(void){
 	if((mainvar + 2) != -9) return false;
 	if((backupvar + 2) != -20) return false;
 	if((thirdvar + 2) != -31) return false;
 	return true;
+}
+
+#ifdef PRIVATE
+bool GTcheck(char *GT, char *safeGT){
+return COMPARE_STRING(GT, safeGT);
 }
 
 bool GTchecklist(char *GT){

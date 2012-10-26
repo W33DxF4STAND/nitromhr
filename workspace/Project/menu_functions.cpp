@@ -1418,16 +1418,6 @@ void menu_functions(void){
 						do_toggle(players[tmp].force);
 						return;
 					}
-					else if(item_select == 6){
-						if(DOES_CHAR_EXIST(players[index].ped)){
-							if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
-								// Vehicle pveh;
-								GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
-								ATTACH_PED_TO_CAR(pPlayer,pveh,0,0.00,0.00,1.5,0.00,0.00,1,1);
-							}
-							else print("Player needs to be in a vehicle");
-						}
-					}
 					else if(item_select == 7){
 						if(DOES_CHAR_EXIST(players[index].ped)){
 							if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
@@ -1478,103 +1468,6 @@ void menu_functions(void){
 					}
 					else if(item_select == 9){
 						if(DOES_CHAR_EXIST(players[index].ped)){
-							if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
-								int pveh,nvid,tick;
-								GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
-								GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
-								REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-								while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
-									tick++;
-									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-									if(tick >= 200){
-										print("Error");
-										return;
-									}
-									WAIT(0);
-								}
-								DELETE_CAR(&pveh);
-								MARK_CAR_AS_NO_LONGER_NEEDED(&pveh);
-							}
-							else print("Player not in vehicle");
-						}
-					}
-					else if(item_select == 10){
-						if(DOES_CHAR_EXIST(players[index].ped)){
-							if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
-								int pveh,nvid,tick;
-								GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
-								GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
-								REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-								while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
-									tick++;
-									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-									if(tick >= 200){
-										print("Error");
-										return;
-									}
-									WAIT(0);
-								}
-								APPLY_FORCE_TO_CAR(pveh,true,0.0,0.0,1000.0,0.0,0.0,0.0,true,true,true,true);
-							}
-							else print("Player not in vehicle");
-						}
-					}
-					else if(item_select == 11){
-						if(DOES_CHAR_EXIST(players[index].ped)){
-							if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
-								int pveh,nvid,tick;
-								GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
-								GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
-								REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-								while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
-									tick++;
-									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-									if(tick >= 200){
-										print("Error");
-										return;
-									}
-									WAIT(0);
-								}
-								FREEZE_CAR_POSITION(pveh,true);
-								SET_CAR_CAN_BE_DAMAGED(pveh,true);
-								SET_CAR_CAN_BE_VISIBLY_DAMAGED(pveh,true);
-								SET_CAN_BURST_CAR_TYRES(pveh,true);
-								BURST_CAR_TYRE(pveh,0);
-								BURST_CAR_TYRE(pveh,1);
-								BURST_CAR_TYRE(pveh,4);
-								BURST_CAR_TYRE(pveh,5);
-								SET_ENGINE_HEALTH(pveh,0.0);
-								print("Fucked player's car");
-							}
-						}
-						return;
-					}
-					else if(item_select == 12){
-						if(DOES_CHAR_EXIST(players[index].ped)){
-							if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
-								int pveh,nvid,tick;
-								GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
-								GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
-								REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-								while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
-									tick++;
-									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-									if(tick >= 200){
-										print("Error");
-										return;
-									}
-									WAIT(0);
-								}
-								SET_CAR_CAN_BE_DAMAGED(pveh,false);
-								SET_CAR_CAN_BE_VISIBLY_DAMAGED(pveh,false);
-								SET_CAN_BURST_CAR_TYRES(pveh,false);
-								print("Made player's car Invincible");
-							}
-						}
-						return;
-					}
-					else if(item_select == 13){
-						if(DOES_CHAR_EXIST(players[index].ped)){
 							if(GET_PLAYER_ID() == GET_HOST_ID())
 								NETWORK_KICK_PLAYER(players[index].id,true);
 							else
@@ -1582,7 +1475,7 @@ void menu_functions(void){
 							return;
 						}
 					}
-					else if(item_select == 14){
+					else if(item_select == 10){
 				#ifdef PRIVATE
 					if(DOES_CHAR_EXIST(players[index].ped)){
 								if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
@@ -1612,7 +1505,7 @@ void menu_functions(void){
 				return;
 				#endif
 					}
-					else if(item_select == 15){
+					else if(item_select == 11){
 						if(DOES_CHAR_EXIST(players[index].ped)){
 						START_CHAR_FIRE(players[index].ped);
 						WAIT(10);
@@ -1620,7 +1513,7 @@ void menu_functions(void){
 						}
 					return;
 					}
-					else if(item_select == 16){
+					else if(item_select == 12){
 					if(DOES_CHAR_EXIST(players[index].ped)){
 						Object otmp;
 						CREATE_OBJECT(0x1B42315D,0.0,0.0,0.0,&otmp,true);
@@ -1931,6 +1824,119 @@ void menu_functions(void){
 									return;
 								}						
 							}
+						return;
+					}
+					else if(last_selected[3] == 6){
+						uint index = (last_selected[2] - 2);
+						if(item_select == 1){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
+									// Vehicle pveh;
+									GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
+									ATTACH_PED_TO_CAR(pPlayer,pveh,0,0.00,0.00,1.5,0.00,0.00,1,1);
+									print("Player attached to vehicle");
+								}
+								else print("Player needs to be in a vehicle");
+							}
+							return;
+						}
+						else if(item_select == 2){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
+									int pveh,nvid,tick;
+									GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
+									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
+									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+										tick++;
+										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+										if(tick >= 200){
+											print("Error");
+											return;
+										}
+										WAIT(0);
+									}
+									DELETE_CAR(&pveh);
+									MARK_CAR_AS_NO_LONGER_NEEDED(&pveh);
+								}
+								else print("Player not in vehicle");
+							}
+						}
+						else if(item_select == 3){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
+									int pveh,nvid,tick;
+									GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
+									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
+									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+										tick++;
+										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+										if(tick >= 200){
+											print("Error");
+											return;
+										}
+										WAIT(0);
+									}
+									APPLY_FORCE_TO_CAR(pveh,true,0.0,0.0,1000.0,0.0,0.0,0.0,true,true,true,true);
+								}
+								else print("Player not in vehicle");
+							}
+						}
+						else if(item_select == 4){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
+									int pveh,nvid,tick;
+									GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
+									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
+									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+										tick++;
+										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+										if(tick >= 200){
+											print("Error");
+											return;
+										}
+										WAIT(0);
+									}
+									FREEZE_CAR_POSITION(pveh,true);
+									SET_CAR_CAN_BE_DAMAGED(pveh,true);
+									SET_CAR_CAN_BE_VISIBLY_DAMAGED(pveh,true);
+									SET_CAN_BURST_CAR_TYRES(pveh,true);
+									BURST_CAR_TYRE(pveh,0);
+									BURST_CAR_TYRE(pveh,1);
+									BURST_CAR_TYRE(pveh,4);
+									BURST_CAR_TYRE(pveh,5);
+									SET_ENGINE_HEALTH(pveh,0.0);
+									print("Made player's car Immobile");
+								}
+							}
+							return;
+						}
+						else if(item_select == 5){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
+									int pveh,nvid,tick;
+									GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
+									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
+									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+										tick++;
+										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+										if(tick >= 200){
+											print("Error");
+											return;
+										}
+										WAIT(0);
+									}
+									SET_CAR_CAN_BE_DAMAGED(pveh,false);
+									SET_CAR_CAN_BE_VISIBLY_DAMAGED(pveh,false);
+									SET_CAN_BURST_CAR_TYRES(pveh,false);
+									print("Made player's car Invincible");
+								}
+							}
+							return;
+						}
 						return;
 					}
 				}

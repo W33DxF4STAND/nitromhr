@@ -296,13 +296,14 @@ void menu_setup(void){
 					add_toggle("Moddder Protection",players[tmp].mprotection);
 					add_toggle("Chronicle",players[tmp].force);
 					add_item("Teleport",false);
-					add_item("Attach Self",true);
+					add_item("Vehicle",false);
+					//add_item("Attach Self",true);
 					add_item("Nuke",true);
 					add_item("Taser",true);
-					add_item("Delete Vehicle",true);
-					add_item("Slingshot Vehicle",true);
-					add_item("Immobilize Vehicle",true);
-					add_item("Vehicle Helper",true);
+					//add_item("Delete Vehicle",true);
+					//add_item("Slingshot Vehicle",true);
+					//add_item("Immobilize Vehicle",true);
+					//add_item("Vehicle Helper",true);
 					add_item("Kick",true);
 					add_item("Freeze",true);
 					add_item("Burn",true);
@@ -324,6 +325,7 @@ void menu_setup(void){
 				if(last_selected[2] == 2){
 					footer = "Speech";
 					add_item("Placeholder",true);
+					return;
 				}
 			}
 		}
@@ -445,6 +447,14 @@ void menu_setup(void){
 						add_item("Teleport to You",true);
 						add_item("Teleport to Waypoint",true);
 						add_item("Teleport to Prison",true);
+						return;
+					}
+					if(last_selected[3] == 6){
+						add_item("Attach to Vehicle",true);
+						add_item("Delete Vehicle",true);
+						add_item("Slingshot Vehicle",true);
+						add_item("Immobilize Vehicle",true);
+						add_item("Vehicle Helper",true);
 						return;
 					}
 				}
