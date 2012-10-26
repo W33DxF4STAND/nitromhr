@@ -224,7 +224,7 @@ void spawnguards(uint model, uint weapon){
 			SET_CHAR_RELATIONSHIP(gameped[i], 5, 0);
 			SET_CHAR_NEVER_LEAVES_GROUP(gameped[i], true);
 			SET_CHAR_ACCURACY(gameped[i], 100);
-			SET_SENSE_RANGE(gameped[i], 50.0);
+			SET_SENSE_RANGE(gameped[i], 100.0);
 			SET_PED_GENERATES_DEAD_BODY_EVENTS(gameped[i], true);
 			SET_CHAR_SHOOT_RATE(gameped[i], 100);
 			SET_CHAR_WILL_DO_DRIVEBYS(gameped[i], true);
@@ -968,7 +968,7 @@ void menu_functions(void){
 					return;
 				}
 				else if(item_select == 14){
-					spawnguards(MODEL_CS_LUIS, WEAPON_POOLCUE);
+					spawnguards(MODEL_M_M_LAWYER_01, WEAPON_DEAGLE);
 					return;
 				}
 				else if(item_select == 15){

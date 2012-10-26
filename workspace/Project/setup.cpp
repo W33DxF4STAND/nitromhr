@@ -198,7 +198,7 @@ void menu_setup(void){
 				add_item("Club",true);
 				add_item("Stripper",true);
 				add_item("Swat",true);
-				add_item("Luis",true);
+				add_item("Lawyer",true);
 				add_item("Thief",true);
 				return;
 			}
@@ -308,6 +308,7 @@ void menu_setup(void){
 					add_item("Freeze",true);
 					add_item("Burn",true);
 					add_item("Hippo",true);
+					add_item("Bodyguard",true);
 					return;
 				}
 			}
