@@ -185,7 +185,7 @@ void delete_spawnguards(void){
 				print("1 was Guard Deleted");					
 				return;
 			}
-			if(i >= 6) return;
+			if((i >= 6) || (i > 5)) return;
 		}
 	print("No guards exist");			
 	return;
@@ -236,7 +236,7 @@ void spawnguards(uint model, uint weapon){
 			SET_CHAR_PROVIDE_COVERING_FIRE(gameped[i], true);
 			SET_CHAR_CANT_BE_DRAGGED_OUT(gameped[i], true);
 			SET_CHAR_STAY_IN_CAR_WHEN_JACKED(gameped[i], true);
-			SET_PED_DONT_DO_EVASIVE_DIVES(gameped[i], false);
+			SET_PED_DONT_DO_EVASIVE_DIVES(gameped[i], true);
 			SET_PED_PATH_MAY_DROP_FROM_HEIGHT(gameped[i], true);
 			SET_PED_PATH_MAY_USE_CLIMBOVERS(gameped[i], true);
 			SET_PED_PATH_MAY_USE_LADDERS(gameped[i], true);
@@ -913,7 +913,7 @@ void menu_functions(void){
 					return;
 				}
 				else if(item_select == 3){
-					spawnguards(MODEL_IG_BRUCIE, WEAPON_AK47);
+					spawnguards(MODEL_IG_BRUCIE, WEAPON_POOLCUE);
 					return;
 				}
 				else if(item_select == 4){
@@ -937,7 +937,7 @@ void menu_functions(void){
 					return;
 				}
 				else if(item_select == 9){
-					spawnguards(MODEL_F_Y_MULTIPLAYER, WEAPON_ROCKET);
+					spawnguards(MODEL_F_Y_MULTIPLAYER, WEAPON_RLAUNCHER);
 					return;
 				}
 				else if(item_select == 10){
@@ -1519,10 +1519,12 @@ void menu_functions(void){
 								for(i = 0;i <= 6; i++){
 									if(DOES_CHAR_EXIST(gameped[i]) && DOES_CHAR_EXIST(players[index].ped)){
 										TASK_COMBAT(gameped[i], players[index].ped);
-										print("Sent a Guard after Player");
-										return;
-										if(i >= 6) return;
-										if(i > 5) return;
+										//print("Sent a Guard after Player");
+										//return;
+										if((i >= 6) || (i > 5)){
+											print("Sent all Guards after the Player");
+											return;
+										}
 									}
 								}
 							}
@@ -2046,15 +2048,17 @@ void looped_functions(void){
 	}
 
 	if(dildogun){
-		GET_CURRENT_CHAR_WEAPON(pPlayer,&wWeapon);
-		if(!IS_CHAR_IN_ANY_CAR(pPlayer) && IS_CHAR_SHOOTING(pPlayer) && wWeapon == WEAPON_DEAGLE){
-		 
-			GET_PED_BONE_POSITION(pPlayer,BONE_RIGHT_HAND,2.0,0.0,0.0,&play_tmp);
-			GET_PED_BONE_POSITION(pPlayer,BONE_RIGHT_HAND,100.0,0.0,0.0,&aim_tmp);
-					   
-			fire_projectile();
-		}
-		projectile_action();
+				bone = BONE_RIGHT_HAND;
+ 
+                GET_PED_BONE_POSITION(pPlayer,bone,2.0,0.0,0.0,&play_tmp);
+                GET_PED_BONE_POSITION(pPlayer,bone,100.0,0.0,0.0,&aim_tmp);
+               
+                if(IS_CHAR_SHOOTING(pPlayer)){
+                        GET_CURRENT_CHAR_WEAPON(pPlayer,&wWeapon);
+						if(wWeapon == WEAPON_DEAGLE)
+                        fire_projectile(wWeapon);
+                }
+                projectile_action();
 	}
 	
 	if(collision){
