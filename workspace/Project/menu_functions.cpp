@@ -179,13 +179,13 @@ void delete_spawnguards(void){
 		return;
 	}
 	if(DOES_GROUP_EXIST(Bgroup)){
-		for(i = 0;i <= 7; i++){
+		for(i = 0;i <= 6; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
 				DELETE_CHAR(&gameped[i]);
 				print("1 was Guard Deleted");					
 				return;
 			}
-			if(i >= 7) continue;
+			if(i >= 6) return;
 		}
 	print("No guards exist");			
 	return;
@@ -196,18 +196,18 @@ void delete_spawnguards(void){
 void spawnguards(uint model, uint weapon){
 	GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
 	if(!DOES_GROUP_EXIST(Bgroup)){
-		CREATE_GROUP(0, Bgroup, TRUE);
-		SET_GROUP_LEADER(Bgroup, GetPlayerPed());
+		CREATE_GROUP(0, Bgroup, true);
+		SET_GROUP_LEADER(Bgroup, pPlayer);
 		SET_GROUP_SEPARATION_RANGE(Bgroup, 9999.9);
 		SET_GROUP_FORMATION(Bgroup, 2);
 	}	
 	uint test,guards;
 	GET_GROUP_SIZE(Bgroup, &test, &guards);	
-	if(guards >= 7){
-		print("Max guards (7) exceeded");
+	if(guards >= 6){
+		print("Max guards (6) exceeded");
 		return;
 	}
-	for(i = 0;i <= 7; i++){
+	for(i = 0;i <= 6; i++){
 		if(!DOES_CHAR_EXIST(gameped[i])){
 			
 			REQUEST_MODEL(model);
@@ -1516,13 +1516,13 @@ void menu_functions(void){
 						if(DOES_CHAR_EXIST(players[index].ped)){
 							GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
 							if(DOES_GROUP_EXIST(Bgroup)){
-								for(i = 0;i <= 7; i++){
+								for(i = 0;i <= 6; i++){
 									if(DOES_CHAR_EXIST(gameped[i]) && DOES_CHAR_EXIST(players[index].ped)){
 										TASK_COMBAT(gameped[i], players[index].ped);
 										print("Sent a Guard after Player");
 										return;
-										if(i >= 7) return;
-										if(i > 6) return;
+										if(i >= 6) return;
+										if(i > 5) return;
 									}
 								}
 							}
