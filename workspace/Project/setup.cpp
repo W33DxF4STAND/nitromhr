@@ -442,7 +442,7 @@ void menu_setup(void){
 			if(last_selected[1] == 1){
 				if(last_selected[2] != 1){
 					if(last_selected[3] == 5){
-					//footer will remain the players gt
+						footer = players[(last_selected[2] - 2)].gamertag;
 						add_item("Teleport to Them",true);
 						add_item("Teleport in Car",true);
 						add_item("Teleport to You",true);
@@ -451,6 +451,7 @@ void menu_setup(void){
 						return;
 					}
 					if(last_selected[3] == 6){
+						footer = players[(last_selected[2] - 2)].gamertag;
 						add_item("Attach to Vehicle",true);
 						add_item("Delete Vehicle",true);
 						add_item("Slingshot Vehicle",true);
