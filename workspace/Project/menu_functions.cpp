@@ -1529,7 +1529,7 @@ void menu_functions(void){
 								}
 							}
 						}
-						print("No guards exist");
+						print("Sent all Guards after the Player");
 						return;
 					}
 				}
@@ -1957,13 +1957,13 @@ void menu_functions(void){
 					spawn_car(menu[item_select].value);
 					return;
 				}
-			}
-				//0xCB26803D = blue
-				//0xD20167BE = red
+				//0xD20167BE = blue
+				//0xCB26803D = red
 				//0xFCB32869 = white
-				//0xB3AC6409  = yellow
+				//0x2F8AEA79 = orange
 				//0xD611D7B6 = green
-			if(last_selected[1] == 4){
+				//0xBBF41314 = rainbow
+				if(last_selected[2] == 4){
 					if(item_select == 1){
 						if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 							GET_CAR_CHAR_IS_USING(pPlayer, &pveh);
@@ -2034,7 +2034,8 @@ void menu_functions(void){
 				}
 			}
 		}
-	}	
+	}
+}
 void looped_functions(void){
 	//player options
 	SET_CHAR_INVINCIBLE(pPlayer,godmode);
