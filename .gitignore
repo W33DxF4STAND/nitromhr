@@ -2,7 +2,8 @@
 key.c
 bad.c
 key.cpp
-security.cpp
 bad.cpp
+security.cpp
+security.c
 out_sco/*
 *.txt
