@@ -90,10 +90,7 @@ Group Bgroup;
 Vector3 aim_tmp, play_tmp;
 float heading, x, y, z;
 
-Ped gameped[7];
-
-float prjX, prjY, prjZ, prjT, gcX, gcY, gcZ, gcrotX, gcrotY, gcrotZ, objrotX, objrotZ;
-Object ObjectProjectile;
+Ped gameped[12];
 
 char* footer;
 

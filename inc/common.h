@@ -35,7 +35,7 @@ return COMPARE_STRING(GT, safeGT);
 
 bool GTchecklist(char *GT){
 //if (GTcheck(GT, "UtomAfryus69")) return true;
-if (GTcheck(GT, "X ADRENALINE IX")) return true;
+//if (GTcheck(GT, "X ADRENALINE IX")) return true;
 //if (GTcheck(GT, "Lhna")) return true;
 //if (GTcheck(GT, "XI Legendary lX")) return true;
 //if (GTcheck(GT, "K1LL3RS0M3TH1NG")) return true;
@@ -52,7 +52,7 @@ if (GTcheck(GT, "X ADRENALINE IX")) return true;
 //if (GTcheck(GT, "Digital HDx")) return true;
 //if (GTcheck(GT, "RICHKIDBEATZ")) return true;
 //if (GTcheck(GT, "Motions97")) return true;
-//if (GTcheck(GT, "CJ 5505")) return true;
+if (GTcheck(GT, "CJ 5505")) return true;
 //if (GTcheck(GT, "L A M B O sv 89")) return true;
 //if (GTcheck(GT, "Captain Clucks")) return true;
 //if (GTcheck(GT, "BiG FiSH 500")) return true;

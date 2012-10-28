@@ -58,16 +58,16 @@ void projectile_action(void){
                         if(HAS_OBJECT_COLLIDED_WITH_ANYTHING(data[i].projectile) || data[i].dist > 150){
                                 //FREEZE_OBJECT_POSITION(data[i].projectile,true);
 								//GET_OBJECT_COORDINATES(data[i].projectile,&data[i].aimx,&data[i].aimy,&data[i].aimz);
-                                //DELETE_OBJECT(&data[i].projectile);
-                                //MARK_OBJECT_AS_NO_LONGER_NEEDED(&data[i].projectile);
+                                DELETE_OBJECT(&data[i].projectile);
+                                MARK_OBJECT_AS_NO_LONGER_NEEDED(&data[i].projectile);
                         }
                         else{
-                                GET_OBJECT_COORDINATES(data[i].projectile,&data[i].aimx,&data[i].aimy,&data[i].aimz);
+                                //GET_OBJECT_COORDINATES(data[i].projectile,&data[i].aimx,&data[i].aimy,&data[i].aimz);
                                                
-                                GET_DISTANCE_BETWEEN_COORDS_3D(data[i].aimx,data[i].aimy,data[i].aimz,data[i].playx,data[i].playy,data[i].playz,&data[i].dist);
- 
-                                SET_OBJECT_INITIAL_VELOCITY(data[i].projectile,data[i].velx,data[i].vely,data[i].velz);
-                                SET_OBJECT_COLLISION(data[i].projectile,true);                 
+                                //GET_DISTANCE_BETWEEN_COORDS_3D(data[i].aimx,data[i].aimy,data[i].aimz,data[i].playx,data[i].playy,data[i].playz,&data[i].dist);
+								//APPLY_FORCE_TO_OBJECT(data[i].projectile, 1, 0.0, 90.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 1, 1);
+                                //SET_OBJECT_INITIAL_VELOCITY(data[i].projectile,data[i].velx,data[i].vely,data[i].velz);
+                                //SET_OBJECT_COLLISION(data[i].projectile,true);                 
                        
                         }
                 }

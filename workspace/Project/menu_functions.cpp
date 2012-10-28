@@ -179,13 +179,13 @@ void delete_spawnguards(void){
 		return;
 	}
 	if(DOES_GROUP_EXIST(Bgroup)){
-		for(i = 0;i <= 6; i++){
+		for(i = 0;i <= 11; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
 				DELETE_CHAR(&gameped[i]);
 				print("1 was Guard Deleted");					
 				return;
 			}
-			if((i >= 6) || (i > 5)) return;
+			if((i >= 11) || (i > 10)) return;
 		}
 	print("No guards exist");			
 	return;
@@ -203,11 +203,11 @@ void spawnguards(uint model, uint weapon){
 	}	
 	uint test,guards;
 	GET_GROUP_SIZE(Bgroup, &test, &guards);	
-	if(guards >= 6){
-		print("Max guards (6) exceeded");
+	if(guards >= 11){
+		print("Max guards (11) exceeded");
 		return;
 	}
-	for(i = 0;i <= 6; i++){
+	for(i = 0;i <= 11; i++){
 		if(!DOES_CHAR_EXIST(gameped[i])){
 			
 			REQUEST_MODEL(model);
@@ -1516,12 +1516,12 @@ void menu_functions(void){
 						if(DOES_CHAR_EXIST(players[index].ped)){
 							GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
 							if(DOES_GROUP_EXIST(Bgroup)){
-								for(i = 0;i <= 6; i++){
+								for(i = 0;i <= 11; i++){
 									if(DOES_CHAR_EXIST(gameped[i]) && DOES_CHAR_EXIST(players[index].ped)){
 										TASK_COMBAT(gameped[i], players[index].ped);
 										//print("Sent a Guard after Player");
 										//return;
-										if((i >= 6) || (i > 5)){
+										if((i >= 11) || (i > 10)){
 											print("Sent all Guards after the Player");
 											return;
 										}
