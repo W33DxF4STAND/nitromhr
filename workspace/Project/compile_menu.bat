@@ -1,6 +1,7 @@
 @echo off
 setLocal EnableDelayedExpansion
-set compiler=main.cpp
+set compiler=main.c
+set out=xmc_modmenu.sco
 COLOR 0b
 Title Emmanuel Utomi's SCO Compiler
 
@@ -40,9 +41,9 @@ echo %%a
 if not exist ../../out_sco/*.sco goto err_build
 set "outsco=*.sco"
 cd ../../out_sco/
-ren "main.sco" "xmc_modmenu.sco"
+ren "main.sco" "%out%"
 echo.
-for %%A in (%outsco%) do echo.Size of "xmc_modmenu.sco" is %%~zA bytes
+for %%A in (%outsco%) do echo.Size of "%out%" is %%~zA bytes
 cd ../workspace/Project/
 del -f build.txt
 pause
@@ -59,7 +60,7 @@ exit 1
 
 :err_custom
 cls
-echo Your custom script is not a .c file, please try again
+echo Your custom script is not a .c or .cpp file, please try again
 pause
 exit 1
 
