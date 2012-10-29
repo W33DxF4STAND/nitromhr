@@ -217,7 +217,7 @@ void spawnguards(uint model, uint weapon){
 			GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS(pPlayer, 0, 2, 0, &x, &y, &z);
 			
 			CREATE_CHAR(26, model, x,y,z, &gameped[i], true);
-			WAIT(500);
+			WAIT(200);
 			SET_CHAR_RANDOM_COMPONENT_VARIATION(gameped[i]);
 			SET_GROUP_MEMBER(Bgroup, gameped[i]);
 			SET_CHAR_RELATIONSHIP_GROUP(gameped[i], 24);
@@ -292,6 +292,7 @@ void spawn_car(uint model){
     WASH_VEHICLE_TEXTURES(pveh, 255);
 	SET_CAR_ENGINE_ON(pveh,true,true);
 	WARP_CHAR_INTO_CAR(pPlayer,pveh);
+	SET_CAR_PROOFS(pveh, true, true, true, true, true);
 	SET_CAR_HEADING(pveh,h);
 	if(speed)
 		SET_CAR_FORWARD_SPEED(pveh,s);
@@ -510,6 +511,13 @@ void menu_functions(void){
 				print("All Vehicles will fly through walls, objects, and people");
 				}
 				do_toggle(collision);
+				return;
+			}
+			if(item_select == 15){
+				if(!lowerpveh){
+				print("All Vehicles will now be lowered");
+				}
+				do_toggle(lowerpveh);
 				return;
 			}
 			return;
@@ -910,7 +918,7 @@ void menu_functions(void){
 					return;
 				}
 				else if(item_select == 2){
-					spawnguards(MODEL_IG_DWAYNE, WEAPON_M4);
+					spawnguards(MODEL_IG_LILJACOB, WEAPON_MP5);
 					return;
 				}
 				else if(item_select == 3){
@@ -938,7 +946,7 @@ void menu_functions(void){
 					return;
 				}
 				else if(item_select == 9){
-					spawnguards(MODEL_F_Y_MULTIPLAYER, WEAPON_RLAUNCHER);
+					spawnguards(MODEL_F_Y_MULTIPLAYER, WEAPON_BARETTA);
 					return;
 				}
 				else if(item_select == 10){
@@ -946,11 +954,11 @@ void menu_functions(void){
 					return;
 				}
 				else if(item_select == 11){
-					spawnguards(MODEL_M_Y_CLUBFIT, WEAPON_PISTOL);
+					spawnguards(MODEL_M_Y_CLUBFIT, WEAPON_BASEBALLBAT);
 					return;
 				}
 				else if(item_select == 12){
-					spawnguards(MODEL_F_Y_STRIPPERC01, WEAPON_AK47);
+					spawnguards(MODEL_F_Y_STRIPPERC01, WEAPON_POOLCUE);
 					return;
 				}
 				else if(item_select == 13){
@@ -963,6 +971,10 @@ void menu_functions(void){
 				}
 				else if(item_select == 15){
 					spawnguards(MODEL_M_Y_THIEF, WEAPON_KNIFE);
+					return;
+				}
+				else if(item_select == 16){
+					spawnguards(MODEL_M_Y_NHELIPILOT, WEAPON_KNIFE);
 					return;
 				}
 			}
@@ -1630,6 +1642,23 @@ void menu_functions(void){
 						REQUEST_ANIMS("misscar_sex");
 						while(!HAVE_ANIMS_LOADED("misscar_sex")) WAIT(0);
 						TASK_PLAY_ANIM_WITH_FLAGS(pPlayer,"m_handjob_intro_low","misscar_sex",8.0,0,0);
+						TASK_PAUSE(GetPlayerPed(), 100);
+						return;
+					}
+					if(item_select == 8){
+						REQUEST_ANIMS("busted");
+						while(!HAVE_ANIMS_LOADED("busted")){
+						WAIT(0);	
+						TASK_PLAY_ANIM_WITH_FLAGS(pPlayer,"idle_2_hands_up","busted",8.0,0,0x20);
+						}
+						TASK_PAUSE(GetPlayerPed(), 100);
+						return;
+					}
+					if(item_select == 9){
+						REQUEST_ANIMS("amb@smoking");
+						while(!HAVE_ANIMS_LOADED("amb@smoking")) WAIT(0);
+						TASK_PLAY_ANIM_WITH_FLAGS(pPlayer,"stand_smoke","amb@smoking",8.0,0,0);
+						TASK_PAUSE(GetPlayerPed(), 100);
 						return;
 					}
 				}
@@ -1939,10 +1968,35 @@ void menu_functions(void){
 										}
 										WAIT(0);
 									}
+									SET_CAR_PROOFS(pveh, true, true, true, true, true);
 									SET_CAR_CAN_BE_DAMAGED(pveh,false);
 									SET_CAR_CAN_BE_VISIBLY_DAMAGED(pveh,false);
 									SET_CAN_BURST_CAR_TYRES(pveh,false);
 									print("Made player's car Invincible");
+								}
+							}
+							return;
+						}
+						else if(item_select == 6){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
+									int pveh,nvid,tick;
+									float speed;
+									GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
+									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
+									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+										tick++;
+										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+										if(tick >= 200){
+											print("Error");
+											return;
+										}
+										WAIT(0);
+									}
+									GET_CAR_SPEED(pveh,&speed);
+									SET_CAR_FORWARD_SPEED(pveh,(speed * 6));
+									print("Boosted Player's car");
 								}
 							}
 							return;
@@ -2048,19 +2102,37 @@ void looped_functions(void){
 		else
 			FREEZE_CHAR_POSITION(pPlayer,false);
 	}
+	
+	if(lowerpveh){
+		int tick,nvid;
+		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
+			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
+			GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
+			REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+			while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+				tick++;
+				if(tick >= 200){
+					print("Error");
+					return;
+				}
+				WAIT(0);
+			}
+			APPLY_FORCE_TO_CAR(pveh,true,0.0,0,-0.5,0.0,0.0,0.0,true,true,true,true);
+		}
+	}
 
 	if(dildogun){
-				bone = BONE_RIGHT_HAND;
- 
-                GET_PED_BONE_POSITION(pPlayer,bone,2.0,0.0,0.0,&play_tmp);
-                GET_PED_BONE_POSITION(pPlayer,bone,100.0,0.0,0.0,&aim_tmp);
-               
-                if(IS_CHAR_SHOOTING(pPlayer)){
-                        GET_CURRENT_CHAR_WEAPON(pPlayer,&wWeapon);
-						if(wWeapon == WEAPON_DEAGLE)
-                        fire_projectile(wWeapon);
-                }
-                projectile_action();
+		for(i = 0;i <= 5;i++){
+			GET_CURRENT_CHAR_WEAPON(pPlayer,&wWeapon);
+			if(wWeapon == WEAPON_DEAGLE){
+				if(IS_CHAR_SHOOTING(pPlayer)){
+					CREATE_OBJECT(MODEL_dildo,x, y, z,&dildo[i],true);
+					SET_OBJECT_VISIBLE(dildo[i],false);
+					APPLY_FORCE_TO_OBJECT(dildo[i], 1, 0.0, 90.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 1, 1);
+					SET_OBJECT_VISIBLE(dildo[i],true);
+				}
+			}
+		}
 	}
 	
 	if(collision){
@@ -2110,7 +2182,7 @@ void looped_functions(void){
 				GET_CAR_CHAR_IS_USING(pPlayer, &pveh);	
 				if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))){
 					if (IS_VEHICLE_ON_ALL_WHEELS(pveh)){
-						APPLY_FORCE_TO_CAR(pveh, 0.0f, 0.0f, 0.0f, 60.0f , 0.0f,0.0f,-60.0f, 0, 1, 1, 1 );
+						APPLY_FORCE_TO_CAR(pveh, 0.0f, 0.0f, 0.0f, 70.0f , 0.0f,0.0f,-70.0f, 0, 1, 1, 1 );
 					}
 				}
 			}
@@ -2279,7 +2351,8 @@ void better_grenade_loop(void){
 				WAIT(0);
 			}
 			GET_OBJECT_COORDINATES(tmp_object_loop,&x,&y,&z);
-			ADD_EXPLOSION(x,y,z,EXPLOSION_SHIP_DESTROY,10.0f,true,false,0.7f);
+			ADD_EXPLOSION(x,y,z,EXPLOSION_SHIP_DESTROY,20.0f,true,false,0.7f);
+			ADD_EXPLOSION(x,y,z + 1,EXPLOSION_SHIP_DESTROY,20.0f,true,false,0.7f);
 			DELETE_OBJECT(&tmp_object_loop);
 			MARK_OBJECT_AS_NO_LONGER_NEEDED(&tmp_object_loop);
 		}

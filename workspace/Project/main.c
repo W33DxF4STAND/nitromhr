@@ -18,8 +18,6 @@
 #include <strings.h>
 #include <vars.h>
 
-#include "weapons.c"
-
 #ifdef FRENCH
 #include "menu_items_french.c"
 #endif

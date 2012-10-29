@@ -84,6 +84,7 @@ void menu_setup(void){
 			add_item("Eject from Vehicle",true);
 			add_toggle("Flying Bikes",bikefly);
 			add_toggle("Translucent Vehicles",collision);
+			add_toggle("Lower Car",lowerpveh);
 			return;
 		}
 		if(last_selected[0] == 3){
@@ -186,7 +187,7 @@ void menu_setup(void){
 			if(last_selected[1] == 13){
 				footer = "Bodyguards";
 				add_item("Delete 1 Guard",true);
-				add_item("Dwayne",true);
+				add_item("Lil Jacob",true);
 				add_item("Brucie",true);
 				add_item("Nigga",true);
 				add_item("FBI",true);
@@ -408,7 +409,7 @@ void menu_setup(void){
 					add_item("Green",true);
 					add_item("Red",true);
 					add_item("Blue",true);
-				return;
+					return;
 				}
 
 			}
@@ -457,6 +458,7 @@ void menu_setup(void){
 						add_item("Slingshot Vehicle",true);
 						add_item("Immobilize Vehicle",true);
 						add_item("Vehicle Helper",true);
+						add_item("Speed Boost",true);
 						return;
 					}
 				}

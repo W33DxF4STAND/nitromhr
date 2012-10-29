@@ -91,6 +91,7 @@ Vector3 aim_tmp, play_tmp;
 float heading, x, y, z;
 
 Ped gameped[12];
+int dildo[5];
 
 char* footer;
 
@@ -110,6 +111,7 @@ bool show_menu = false,
 	neverwanted = false,
 	invisible = false,
 	fastreload = true,
+	lowerpveh = false,
 	dildogun = false,
 	pprotection = false,
 	superrun = false,
