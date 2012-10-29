@@ -1,5 +1,6 @@
 /**
-	Menu setup config
+	Menu items config
+	ENGLISH
 	Orig. by: Herr Muskelprotze
 	by: Emmanuel Utomi
 	
@@ -49,7 +50,6 @@ void menu_setup(void){
 		add_item("Others",false);
 		return;
 	}
-	
 	if(menu_level == 1){
 		if(last_selected[0] == 1){
 			footer = "Player Options";

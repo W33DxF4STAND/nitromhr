@@ -1,5 +1,5 @@
 /**
-	Menu core
+	Menu Engine
 	Orig. by: Herr Muskelprotze
 	by: Emmanuel Utomi
 

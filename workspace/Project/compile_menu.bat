@@ -59,12 +59,15 @@ pause
 exit 1
 
 :err_custom
-cls
+del -f build.txt > nul
+echo.
+echo.
 echo Your custom script is not a .c or .cpp file, please try again
 pause
 exit 1
 
 :err_build
+del -f build.txt > nul
 echo.
 echo.
 echo ERROR ABOVE
