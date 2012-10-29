@@ -225,9 +225,10 @@ void spawnguards(uint model, uint weapon){
 			SET_CHAR_NEVER_LEAVES_GROUP(gameped[i], true);
 			SET_CHAR_ACCURACY(gameped[i], 100);
 			SET_CHAR_KEEP_TASK(gameped[i], true);
-			SET_SENSE_RANGE(gameped[i], 100.0);
+			SET_SENSE_RANGE(gameped[i], 250.0);
 			SET_PED_GENERATES_DEAD_BODY_EVENTS(gameped[i], true);
 			SET_CHAR_SHOOT_RATE(gameped[i], 100);
+			SET_CHAR_WILL_USE_COVER(gameped[i], true);
 			SET_CHAR_WILL_DO_DRIVEBYS(gameped[i], true);
 			SET_CHAR_SIGNAL_AFTER_KILL(gameped[i], true);
 			SET_CHAR_WILL_USE_CARS_IN_COMBAT(gameped[i], true);
