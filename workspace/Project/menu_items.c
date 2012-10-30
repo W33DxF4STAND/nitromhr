@@ -92,8 +92,7 @@ void menu_setup(void){
 			add_item("Weapon Selector",false);
 			add_toggle("Unlimited Ammo",ammo);
 			add_toggle("Fast Reload",fastreload);
-			add_toggle("Dildo Deagle",dildogun);
-			//add_toggle("Dildo Deagle",dildogun);
+			add_toggle("Auto Aim",autoaim);
 			return;
 		}
 		if(last_selected[0] == 4){
@@ -201,6 +200,7 @@ void menu_setup(void){
 				add_item("Swat",true);
 				add_item("Lawyer",true);
 				add_item("Thief",true);
+				add_item("Swat Sniper",true);
 				return;
 			}
 		}
@@ -211,7 +211,7 @@ void menu_setup(void){
 				add_item("Vehicle Spawner",false);
 				add_item("Upgrades",false);
 				add_item("Paint",false);
-				add_item("Neons",false);
+			//	add_item("Neons",false);
 				return;
 			}
 		}

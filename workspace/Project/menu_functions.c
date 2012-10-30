@@ -197,6 +197,7 @@ void spawnguards(uint model, uint weapon){
 	GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
 	if(!DOES_GROUP_EXIST(Bgroup)){
 		CREATE_GROUP(0, Bgroup, true);
+		SET_PLAYER_GROUP_TO_FOLLOW_ALWAYS(pPlayer, true);
 		SET_GROUP_LEADER(Bgroup, pPlayer);
 		SET_GROUP_SEPARATION_RANGE(Bgroup, 9999.9);
 		SET_GROUP_FORMATION(Bgroup, 2);
@@ -224,6 +225,7 @@ void spawnguards(uint model, uint weapon){
 			SET_CHAR_RELATIONSHIP(gameped[i], 5, 0);
 			SET_CHAR_NEVER_LEAVES_GROUP(gameped[i], true);
 			SET_CHAR_ACCURACY(gameped[i], 100);
+			SET_CHAR_BULLETPROOF_VEST(gameped[i], true);
 			SET_CHAR_KEEP_TASK(gameped[i], true);
 			SET_SENSE_RANGE(gameped[i], 250.0);
 			SET_PED_GENERATES_DEAD_BODY_EVENTS(gameped[i], true);
@@ -245,90 +247,10 @@ void spawnguards(uint model, uint weapon){
 			UpdateWeaponOfPed(gameped[i], weapon);
 			SET_CURRENT_CHAR_WEAPON(gameped[i], weapon, true);
 			
-			print("Spawned Bodyguard");
 			return;
 		}
 	}
 	return;
-}
-
-typedef struct __data{
-        int projectile;
-        int actionid;
-       
-        float aimx;
-        float aimy;
-        float aimz;
-       
-        float playx;
-        float playy;
-        float playz;
-       
-        float velx;
-        float vely;
-        float velz;
-       
-        float dist;
-} _data;
- 
-//_data data[15];
- 
-Vector3 aim_tmp;
-Vector3 play_tmp;
- 
-void fire_projectile(int weapon){
-        int i = 0;
-        for(i;i <= 10;i++){
-                if(!DOES_OBJECT_EXIST(data[i].projectile)){
-                        data[i].actionid = weapon;
-               
-                        data[i].aimx = aim_tmp.x;
-                        data[i].aimy = aim_tmp.y;
-                        data[i].aimz = aim_tmp.z;
-                               
-                        data[i].playx = play_tmp.x;
-                        data[i].playy = play_tmp.y;
-                        data[i].playz = play_tmp.z;
-                       
-                        GET_DISTANCE_BETWEEN_COORDS_3D(aim_tmp.x,aim_tmp.y,aim_tmp.z,play_tmp.x,play_tmp.y,play_tmp.z,&data[i].dist);
-                        #define SPEED 500
-                        data[i].velx = SPEED * (aim_tmp.x - play_tmp.x) / data[i].dist;
-                        data[i].vely = SPEED * (aim_tmp.y - play_tmp.y) / data[i].dist;
-                        data[i].velz = SPEED * (aim_tmp.z - play_tmp.z) / data[i].dist;
-                       
-                        CREATE_OBJECT(MODEL_dildo,play_tmp.x,play_tmp.y,play_tmp.z,&data[i].projectile,true);
-                        SET_OBJECT_RECORDS_COLLISIONS(data[i].projectile,true);
-                        FREEZE_OBJECT_POSITION(data[i].projectile,false);
-                        SET_OBJECT_VISIBLE(data[i].projectile,false);
-                        //SET_OBJECT_COLLISION(data[i].projectile,false);
-						APPLY_FORCE_TO_OBJECT(data[i].projectile, 1, 0.0, 90.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 1, 1);
-						SET_OBJECT_VISIBLE(data[i].projectile,true);
-                        //SET_OBJECT_INITIAL_VELOCITY(data[i].projectile,data[i].velx,data[i].vely,data[i].velz);
-                       
-                        return;
-                }
-        }
-}
- 
-void projectile_action(void){
-        int i = 0;
-        for(i;i <= 10;i++){
-                if(DOES_OBJECT_EXIST(data[i].projectile)){
-                        if(HAS_OBJECT_COLLIDED_WITH_ANYTHING(data[i].projectile) || data[i].dist > 150){
-							//DELETE_OBJECT(&data[i].projectile);
-                            //MARK_OBJECT_AS_NO_LONGER_NEEDED(&data[i].projectile);
-                        }
-                        else{
-                                //GET_OBJECT_COORDINATES(data[i].projectile,&data[i].aimx,&data[i].aimy,&data[i].aimz);
-                                               
-                                //GET_DISTANCE_BETWEEN_COORDS_3D(data[i].aimx,data[i].aimy,data[i].aimz,data[i].playx,data[i].playy,data[i].playz,&data[i].dist);
-								APPLY_FORCE_TO_OBJECT(data[i].projectile, 1, 0.0, 90.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 1, 1);
-                                //SET_OBJECT_INITIAL_VELOCITY(data[i].projectile,data[i].velx,data[i].vely,data[i].velz);
-                                //SET_OBJECT_COLLISION(data[i].projectile,true);                 
-                       
-                        }
-                }
-        }
 }
 
 void create_throwable_object(uint model){
@@ -617,20 +539,18 @@ void menu_functions(void){
 				return;
 			}
 			else if(item_select == 4){
-				if(!dildogun){
-					print("Equip the Desert Eagle and shoot");
+				if(!autoaim){
+					print("Forced Auto Aim");
 				}
-				do_toggle(dildogun);
+				do_toggle(autoaim);
+				if(autoaim){
+					DISABLE_PLAYER_LOCKON(GetPlayerIndex(), false);
+				}
+				else{
+					DISABLE_PLAYER_LOCKON(GetPlayerIndex(), true);
+				}
 				return;
 			}
-			/**
-			else if(item_select == 5){
-				if(!dildogun){
-					print("Equip the Desert Eagle and shoot");
-				}
-				do_toggle(dildogun);
-			}
-			**/
 		}
 		if(last_selected[0] == 4){
 			if(item_select == 1){
@@ -998,62 +918,77 @@ void menu_functions(void){
 				}
 				else if(item_select == 2){
 					spawnguards(MODEL_IG_LILJACOB, WEAPON_MP5);
+					print("Spawned Lil Jacob");
 					return;
 				}
 				else if(item_select == 3){
 					spawnguards(MODEL_IG_BRUCIE, WEAPON_POOLCUE);
+					print("Spawned Brucie");
 					return;
 				}
 				else if(item_select == 4){
 					spawnguards(MODEL_M_Y_GAFR_LO_01, WEAPON_MICRO_UZI);
+					print("Spawned Gangter");
 					return;
 				}
 				else if(item_select == 5){
 					spawnguards(MODEL_M_M_FBI, WEAPON_DEAGLE);
+					print("Spawned FBI Agent");
 					return;
 				}
 				else if(item_select == 6){
-					spawnguards(MODEL_M_Y_COP, WEAPON_DEAGLE);
+					spawnguards(MODEL_M_Y_COP, WEAPON_SHOTGUN);
+					print("Spawned Cop");
 					return;
 				}
 				else if(item_select == 7){
 					spawnguards(MODEL_M_M_FATCOP_01, WEAPON_RLAUNCHER);
+					print("Spawned Fat Cop");
 					return;
 				}
 				else if(item_select == 8){
-					spawnguards(MODEL_M_Y_MULTIPLAYER, WEAPON_M4);
+					spawnguards(MODEL_M_Y_MULTIPLAYER, WEAPON_AK47);
+					print("Spawned Male");
 					return;
 				}
 				else if(item_select == 9){
 					spawnguards(MODEL_F_Y_MULTIPLAYER, WEAPON_BARETTA);
+					print("Spawned Female");
 					return;
 				}
 				else if(item_select == 10){
-					spawnguards(MODEL_M_M_GUNNUT_01, WEAPON_AK47);
+					spawnguards(MODEL_M_M_GUNNUT_01, WEAPON_M4);
+					print("Spawned Army Guy");
 					return;
 				}
 				else if(item_select == 11){
 					spawnguards(MODEL_M_Y_CLUBFIT, WEAPON_BASEBALLBAT);
+					print("Spawned Club Guard");
 					return;
 				}
 				else if(item_select == 12){
 					spawnguards(MODEL_F_Y_STRIPPERC01, WEAPON_POOLCUE);
+					print("Spawned Stripper");
 					return;
 				}
 				else if(item_select == 13){
 					spawnguards(MODEL_M_Y_SWAT, WEAPON_M4);
+					print("Spawned Swat Guard");
 					return;
 				}
 				else if(item_select == 14){
-					spawnguards(MODEL_M_M_LAWYER_01, WEAPON_DEAGLE);
+					spawnguards(MODEL_M_M_LAWYER_02, WEAPON_DEAGLE);
+					print("Spawned Lawyer");
 					return;
 				}
 				else if(item_select == 15){
 					spawnguards(MODEL_M_Y_THIEF, WEAPON_KNIFE);
+					print("Spawned Thief");
 					return;
 				}
 				else if(item_select == 16){
-					spawnguards(MODEL_M_Y_NHELIPILOT, WEAPON_KNIFE);
+					spawnguards(MODEL_M_Y_NHELIPILOT, WEAPON_SNIPERRIFLE);
+					print("Spawned Swat Sniper");
 					return;
 				}
 			}
@@ -1607,7 +1542,7 @@ void menu_functions(void){
 					else if(item_select == 13){
 						if(DOES_CHAR_EXIST(players[index].ped)){
 							GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
-							if(!DOES_GROUP_EXIST(Bgroup){
+							if(!DOES_GROUP_EXIST(Bgroup)){
 								print("No guards exist");
 								return;
 							}
@@ -2196,44 +2131,8 @@ void looped_functions(void){
 		int tick,nvid;
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
-			GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
-			REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-			while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
-				tick++;
-				if(tick >= 200){
-					print("Error");
-					return;
-				}
-				WAIT(0);
-			}
+			if (IS_VEHICLE_ON_ALL_WHEELS(pveh))
 			APPLY_FORCE_TO_CAR(pveh,true,0.0,0,-0.5,0.0,0.0,0.0,true,true,true,true);
-		}
-	}
-
-	if(dildogun){
-		uint model,bone;
-        int tmp,tmp_ped[2];
-		GET_CURRENT_CHAR_WEAPON(pPlayer,&wWeapon);
-		if(wWeapon == WEAPON_DEAGLE){
-			if(IS_CHAR_IN_ANY_CAR(pPlayer)){
-				GET_CAR_CHAR_IS_USING(pPlayer,&tmp);
-				GET_CAR_MODEL(tmp,&model);
-				if(!IS_THIS_MODEL_A_HELI(model) && !IS_THIS_MODEL_A_BIKE){
-					GET_CHAR_IN_CAR_PASSENGER_SEAT(tmp,1,&tmp_ped[0]);
-					GET_DRIVER_OF_CAR(tmp,&tmp_ped[1]);
-					if(tmp_ped[0] == pPlayer || tmp_ped[1] == pPlayer)
-						bone = BONE_LEFT_HAND;
-					}
-			}
-			else bone = BONE_RIGHT_HAND;
-	 
-			GET_PED_BONE_POSITION(pPlayer,bone,2.0,0.0,0.0,&play_tmp);
-			GET_PED_BONE_POSITION(pPlayer,bone,100.0,0.0,0.0,&aim_tmp);
-				   
-			if(IS_CHAR_SHOOTING(pPlayer)){
-				fire_projectile(wWeapon);
-			}
-					projectile_action();
 		}
 	}
 	

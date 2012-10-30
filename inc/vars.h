@@ -86,7 +86,7 @@ int wWeapon;
 Ped driver;
 Vehicle ClosestCar, pveh;
 //Camera game_cam;
-Object attachObj;
+//Object attachObj;
 Group Bgroup;
 //Vector3 aim_tmp, play_tmp;
 //float heading;
@@ -109,12 +109,11 @@ bool show_menu = false,
 	godmode = true,
 	bikefly = false,
 	collision = false,
-	//rocketpistol = false,
 	neverwanted = false,
 	invisible = false,
 	fastreload = true,
 	lowerpveh = false,
-	dildogun = false,
+	autoaim = false,
 	pprotection = false,
 	superrun = false,
 	hydrolics = false,
