@@ -323,6 +323,9 @@ void menu_setup(void){
 					add_item("Stop Anim",true);
 					add_toggle("Ragdoll",ragdoll);
 					add_item("Zohan",true);
+					add_item("Busted",true);
+					add_item("Smoking",true);	
+					return;
 				}
 				if(last_selected[2] == 2){
 					footer = "Speech";

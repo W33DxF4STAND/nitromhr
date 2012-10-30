@@ -234,6 +234,7 @@ void spawnguards(uint model, uint weapon){
 			SET_CHAR_WILL_USE_CARS_IN_COMBAT(gameped[i], true);
 			SET_CHAR_WILL_FLY_THROUGH_WINDSCREEN(gameped[i], false);
 			SET_CHAR_INVINCIBLE(gameped[i], true);
+			SET_CHAR_PROOFS(gameped[i], true, true, true, true, true);
 			SET_CHAR_PROVIDE_COVERING_FIRE(gameped[i], true);
 			SET_CHAR_CANT_BE_DRAGGED_OUT(gameped[i], true);
 			SET_CHAR_STAY_IN_CAR_WHEN_JACKED(gameped[i], true);
@@ -1642,7 +1643,7 @@ void menu_functions(void){
 						REQUEST_ANIMS("misscar_sex");
 						while(!HAVE_ANIMS_LOADED("misscar_sex")) WAIT(0);
 						TASK_PLAY_ANIM_WITH_FLAGS(pPlayer,"m_handjob_intro_low","misscar_sex",8.0,0,0);
-						TASK_PAUSE(GetPlayerPed(), 100);
+						//TASK_PAUSE(GetPlayerPed(), 100);
 						return;
 					}
 					if(item_select == 8){
@@ -1651,14 +1652,14 @@ void menu_functions(void){
 						WAIT(0);	
 						TASK_PLAY_ANIM_WITH_FLAGS(pPlayer,"idle_2_hands_up","busted",8.0,0,0x20);
 						}
-						TASK_PAUSE(GetPlayerPed(), 100);
+						//TASK_PAUSE(GetPlayerPed(), 100);
 						return;
 					}
 					if(item_select == 9){
 						REQUEST_ANIMS("amb@smoking");
 						while(!HAVE_ANIMS_LOADED("amb@smoking")) WAIT(0);
 						TASK_PLAY_ANIM_WITH_FLAGS(pPlayer,"stand_smoke","amb@smoking",8.0,0,0);
-						TASK_PAUSE(GetPlayerPed(), 100);
+						//TASK_PAUSE(GetPlayerPed(), 100);
 						return;
 					}
 				}
@@ -2123,9 +2124,11 @@ void looped_functions(void){
 
 	if(dildogun){
 		for(i = 0;i <= 5;i++){
+			float x,y,z;
 			GET_CURRENT_CHAR_WEAPON(pPlayer,&wWeapon);
 			if(wWeapon == WEAPON_DEAGLE){
 				if(IS_CHAR_SHOOTING(pPlayer)){
+					GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS(pPlayer, 0, 1, 0, &x, &y, &z);
 					CREATE_OBJECT(MODEL_dildo,x, y, z,&dildo[i],true);
 					SET_OBJECT_VISIBLE(dildo[i],false);
 					APPLY_FORCE_TO_OBJECT(dildo[i], 1, 0.0, 90.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 1, 1);
