@@ -227,7 +227,7 @@ void spawnguards(uint model, uint weapon){
 	}	
 	uint test,guards;
 	GET_GROUP_SIZE(Bgroup, &test, &guards);	
-	if((guards >= 11) || (guards == 11) || (guards > 10)){
+	if((guards >= 7) || (guards == 7) || (guards > 6)){
 		print("Max guards (11) exceeded");
 		return;
 	}

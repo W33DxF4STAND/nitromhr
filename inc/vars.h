@@ -90,7 +90,7 @@ Group Bgroup;
 //float heading;
 float x, y, z;
 
-Ped gameped[13];
+Ped gameped[8];
 
 char* footer;
 
