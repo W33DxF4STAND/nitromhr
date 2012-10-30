@@ -4,8 +4,6 @@
 
 **/
 
-#define MODEL_dildo  0x3675A6C3
-
 //Xbox 360 buttons
 #define BUTTON_SELECT 0xD
 #define BUTTON_START 0xC
@@ -78,7 +76,7 @@ Ped pPlayer, tmp_player_ped;
 
 Object tmp_object_loop;
 uint tmp_model;
-int wWeapon;
+uint MODEL_dildo = 0x3675A6C3;
 //uint model, bone;
 //int tmp; 
 //int tmp_ped[2];	
@@ -92,8 +90,7 @@ Group Bgroup;
 //float heading;
 float x, y, z;
 
-Ped gameped[12];
-int dildo[5];
+Ped gameped[13];
 
 char* footer;
 
@@ -111,6 +108,7 @@ bool show_menu = false,
 	collision = false,
 	neverwanted = false,
 	invisible = false,
+	freezecar = false,
 	fastreload = true,
 	lowerpveh = false,
 	autoaim = false,

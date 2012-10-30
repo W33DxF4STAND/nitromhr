@@ -85,6 +85,7 @@ void menu_setup(void){
 			add_toggle("Flying Bikes",bikefly);
 			add_toggle("Translucent Vehicles",collision);
 			add_toggle("Lower Car",lowerpveh);
+			add_toggle("Immobile Car",freezecar);
 			return;
 		}
 		if(last_selected[0] == 3){
@@ -128,7 +129,7 @@ void menu_setup(void){
 			add_item("Return to Single Player",true);
 			add_item("Get name of host",true);
 			add_toggle("Modder Protection",modderprotect);
-			add_item("Freeze Car",true);
+		//	add_item("Freeze Car",true);
 			return;
 		}
 		/**
@@ -186,6 +187,7 @@ void menu_setup(void){
 			if(last_selected[1] == 13){
 				footer = "Bodyguards";
 				add_item("Delete 1 Guard",true);
+				add_item("Teleport all Guards to you",true);
 				add_item("Lil Jacob",true);
 				add_item("Brucie",true);
 				add_item("Nigga",true);
@@ -255,6 +257,7 @@ void menu_setup(void){
 				add_item("Cubes",true);
 				add_item("Throwing Knives",true);
 				add_item("Grenades - that explode",true);
+				add_item("Rockets - that explode",true);
 			}
 			if(last_selected[1] == 3){
 				footer = "Air Strikes";
@@ -298,13 +301,8 @@ void menu_setup(void){
 					add_toggle("Chronicle",players[tmp].force);
 					add_item("Teleport",false);
 					add_item("Vehicle",false);
-					//add_item("Attach Self",true);
 					add_item("Nuke",true);
 					add_item("Taser",true);
-					//add_item("Delete Vehicle",true);
-					//add_item("Slingshot Vehicle",true);
-					//add_item("Immobilize Vehicle",true);
-					//add_item("Vehicle Helper",true);
 					add_item("Kick",true);
 					add_item("Freeze",true);
 					add_item("Burn",true);
@@ -462,6 +460,7 @@ void menu_setup(void){
 						add_item("Immobilize Vehicle",true);
 						add_item("Vehicle Helper",true);
 						add_item("Speed Boost",true);
+						add_item("Speed Brake",true);
 						return;
 					}
 				}

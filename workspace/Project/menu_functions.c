@@ -174,8 +174,8 @@ void delete_spawnguards(void){
 	GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
 	uint test,guards;
 	GET_GROUP_SIZE(Bgroup, &test, &guards);	
-	if(guards <= 0){
-		print("No guards exist");
+	if((guards <= 0) || (!DOES_GROUP_EXIST(Bgroup))){
+		print("No guards exist or Available");
 		return;
 	}
 	if(DOES_GROUP_EXIST(Bgroup)){
@@ -187,7 +187,30 @@ void delete_spawnguards(void){
 			}
 			if((i >= 11) || (i > 10)) return;
 		}
-	print("No guards exist");			
+	print("No guards exist or Available");			
+	return;
+	}
+	return;
+}
+
+void tele_spawnguards(void){
+	GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
+	uint test,guards;
+	GET_GROUP_SIZE(Bgroup, &test, &guards);	
+	if((guards <= 0) || (!DOES_GROUP_EXIST(Bgroup))){
+		print("No guards exist or Available");
+		return;
+	}
+	if(DOES_GROUP_EXIST(Bgroup)){
+		float x,y,z;
+		GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
+		for(i = 0;i <= 11; i++){
+			if(DOES_CHAR_EXIST(gameped[i])){
+				teleport_char(gameped[i], x, y, z);
+			}
+			if((i >= 11) || (i > 10)) return;
+		}
+	print("Teleported all guards to you");			
 	return;
 	}
 	return;
@@ -204,7 +227,7 @@ void spawnguards(uint model, uint weapon){
 	}	
 	uint test,guards;
 	GET_GROUP_SIZE(Bgroup, &test, &guards);	
-	if(guards >= 11){
+	if((guards >= 11) || (guards == 11) || (guards > 10)){
 		print("Max guards (11) exceeded");
 		return;
 	}
@@ -221,11 +244,10 @@ void spawnguards(uint model, uint weapon){
 			WAIT(200);
 			SET_CHAR_RANDOM_COMPONENT_VARIATION(gameped[i]);
 			SET_GROUP_MEMBER(Bgroup, gameped[i]);
+			SET_CHAR_NEVER_LEAVES_GROUP(gameped[i], true);
 			SET_CHAR_RELATIONSHIP_GROUP(gameped[i], 24);
 			SET_CHAR_RELATIONSHIP(gameped[i], 5, 0);
-			SET_CHAR_NEVER_LEAVES_GROUP(gameped[i], true);
 			SET_CHAR_ACCURACY(gameped[i], 100);
-			SET_CHAR_BULLETPROOF_VEST(gameped[i], true);
 			SET_CHAR_KEEP_TASK(gameped[i], true);
 			SET_SENSE_RANGE(gameped[i], 250.0);
 			SET_PED_GENERATES_DEAD_BODY_EVENTS(gameped[i], true);
@@ -246,7 +268,8 @@ void spawnguards(uint model, uint weapon){
 			SET_PED_PATH_MAY_USE_LADDERS(gameped[i], true);
 			UpdateWeaponOfPed(gameped[i], weapon);
 			SET_CURRENT_CHAR_WEAPON(gameped[i], weapon, true);
-			
+			WAIT(200);
+			print("Spawned Guard");
 			return;
 		}
 	}
@@ -312,7 +335,7 @@ void xmc_airstrike(void){
 		Vector3 pos;
 		GET_BLIP_COORDS(GET_FIRST_BLIP_INFO_ID(BLIP_WAYPOINT),&pos);
 		GET_GROUND_Z_FOR_3D_COORD(pos.x,pos.y,pos.z,&z);
-		create_big_explosion(pos.x,pos.y,z+10.0f);//adding 10.0f isn't tested
+		create_big_explosion(pos.x,pos.y,z+5.0f);
 		print("Launching Airstrike!");
 	}
 	else print("You need to set a waypoint!");
@@ -521,6 +544,18 @@ void menu_functions(void){
 				do_toggle(lowerpveh);
 				return;
 			}
+			if(item_select == 16){
+				do_toggle(freezecar);
+				if(freezecar){
+					FREEZE_CAR_POSITION(pveh,true);
+					print("Car is now immobile");
+				}
+				else{
+					FREEZE_CAR_POSITION(pveh,false);
+					print("Car is now mobile");
+				}
+				return;
+			}
 			return;
 		}
 		if(last_selected[0] == 3){
@@ -666,11 +701,6 @@ void menu_functions(void){
 			}
 			if(item_select == 9){	
 				do_toggle(modderprotect);
-				return;
-			}
-			if(item_select == 10){	
-				spawn_car(MODEL_YANKEE);
-				print("Spawned my ~r~Yankee (my freeze car)");	
 				return;
 			}
 		}
@@ -917,78 +947,67 @@ void menu_functions(void){
 					return;
 				}
 				else if(item_select == 2){
-					spawnguards(MODEL_IG_LILJACOB, WEAPON_MP5);
-					print("Spawned Lil Jacob");
+					tele_spawnguards();
 					return;
 				}
 				else if(item_select == 3){
-					spawnguards(MODEL_IG_BRUCIE, WEAPON_POOLCUE);
-					print("Spawned Brucie");
+					spawnguards(MODEL_IG_LILJACOB, WEAPON_MP5);
 					return;
 				}
 				else if(item_select == 4){
-					spawnguards(MODEL_M_Y_GAFR_LO_01, WEAPON_MICRO_UZI);
-					print("Spawned Gangter");
+					spawnguards(MODEL_IG_BRUCIE, WEAPON_POOLCUE);
 					return;
 				}
 				else if(item_select == 5){
-					spawnguards(MODEL_M_M_FBI, WEAPON_DEAGLE);
-					print("Spawned FBI Agent");
+					spawnguards(MODEL_M_Y_GAFR_LO_01, WEAPON_MICRO_UZI);
 					return;
 				}
 				else if(item_select == 6){
-					spawnguards(MODEL_M_Y_COP, WEAPON_SHOTGUN);
-					print("Spawned Cop");
+					spawnguards(MODEL_M_M_FBI, WEAPON_DEAGLE);
 					return;
 				}
 				else if(item_select == 7){
-					spawnguards(MODEL_M_M_FATCOP_01, WEAPON_RLAUNCHER);
-					print("Spawned Fat Cop");
+					spawnguards(MODEL_M_Y_COP, WEAPON_SHOTGUN);
 					return;
 				}
 				else if(item_select == 8){
-					spawnguards(MODEL_M_Y_MULTIPLAYER, WEAPON_AK47);
-					print("Spawned Male");
+					spawnguards(MODEL_M_M_FATCOP_01, WEAPON_RLAUNCHER);
 					return;
 				}
 				else if(item_select == 9){
-					spawnguards(MODEL_F_Y_MULTIPLAYER, WEAPON_BARETTA);
-					print("Spawned Female");
+					spawnguards(MODEL_M_Y_MULTIPLAYER, WEAPON_AK47);
 					return;
 				}
 				else if(item_select == 10){
-					spawnguards(MODEL_M_M_GUNNUT_01, WEAPON_M4);
-					print("Spawned Army Guy");
+					spawnguards(MODEL_F_Y_MULTIPLAYER, WEAPON_BARETTA);
 					return;
 				}
 				else if(item_select == 11){
-					spawnguards(MODEL_M_Y_CLUBFIT, WEAPON_BASEBALLBAT);
-					print("Spawned Club Guard");
+					spawnguards(MODEL_M_M_GUNNUT_01, WEAPON_M4);
 					return;
 				}
 				else if(item_select == 12){
-					spawnguards(MODEL_F_Y_STRIPPERC01, WEAPON_POOLCUE);
-					print("Spawned Stripper");
+					spawnguards(MODEL_M_Y_CLUBFIT, WEAPON_BASEBALLBAT);
 					return;
 				}
 				else if(item_select == 13){
-					spawnguards(MODEL_M_Y_SWAT, WEAPON_M4);
-					print("Spawned Swat Guard");
+					spawnguards(MODEL_F_Y_STRIPPERC01, WEAPON_POOLCUE);
 					return;
 				}
 				else if(item_select == 14){
-					spawnguards(MODEL_M_M_LAWYER_02, WEAPON_DEAGLE);
-					print("Spawned Lawyer");
+					spawnguards(MODEL_M_Y_SWAT, WEAPON_M4);
 					return;
 				}
 				else if(item_select == 15){
-					spawnguards(MODEL_M_Y_THIEF, WEAPON_KNIFE);
-					print("Spawned Thief");
+					spawnguards(MODEL_M_M_LAWYER_01, WEAPON_DEAGLE);
 					return;
 				}
 				else if(item_select == 16){
+					spawnguards(MODEL_M_Y_THIEF, WEAPON_KNIFE);
+					return;
+				}
+				else if(item_select == 17){
 					spawnguards(MODEL_M_Y_NHELIPILOT, WEAPON_SNIPERRIFLE);
-					print("Spawned Swat Sniper");
 					return;
 				}
 			}
@@ -1147,7 +1166,7 @@ void menu_functions(void){
 				if(item_select == 2){
 					create_throwable_object(0x6066DF1D);
 				}
-				if(item_select == 3){ //cubes :D
+				if(item_select == 3){
 					create_throwable_object(0x2718C626);
 					create_throwable_object(0xDD28B247);
 					create_throwable_object(0xCCEA11CA);
@@ -1166,7 +1185,13 @@ void menu_functions(void){
 					for(i;i <= 5;i++){
 						create_throwable_object(0x501811B6);
 					}
-				}				
+				}
+				if(item_select == 6){
+					int i = 0;
+					for(i;i <= 5;i++){
+						create_throwable_object(0x1B42315D);
+					}
+				}
 			}
 			if(last_selected[1] == 3){
 				if(item_select == 1){
@@ -1301,6 +1326,7 @@ void menu_functions(void){
 					else if(item_select == 7){
 						//// float x,y,z;
 						GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
+						FREEZE_CHAR_POSITION(pPlayer,true);
 						for(i = 0;i <= player_loop;i++){
 							if(DOES_CHAR_EXIST(players[i].ped)){
 								if(IS_CHAR_IN_ANY_CAR(players[i].ped)){
@@ -1310,6 +1336,8 @@ void menu_functions(void){
 							}
 						}
 						print("Party time!");
+						WAIT(500);
+						FREEZE_CHAR_POSITION(pPlayer,false);
 						return;
 					}
 					else if(item_select == 8){
@@ -1542,14 +1570,10 @@ void menu_functions(void){
 					else if(item_select == 13){
 						if(DOES_CHAR_EXIST(players[index].ped)){
 							GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
-							if(!DOES_GROUP_EXIST(Bgroup)){
-								print("No guards exist");
-								return;
-							}
 							int test, guards;
 							GET_GROUP_SIZE(Bgroup, &test, &guards);	
-							if(guards <= 0){
-								print("No guards exist");
+							if((guards <= 0) || (!DOES_GROUP_EXIST(Bgroup))){
+								print("No guards exist or Available");
 								return;
 							}
 							if(DOES_GROUP_EXIST(Bgroup)){
@@ -1665,24 +1689,19 @@ void menu_functions(void){
 					if(item_select == 7){
 						REQUEST_ANIMS("misscar_sex");
 						while(!HAVE_ANIMS_LOADED("misscar_sex")) WAIT(0);
-						TASK_PLAY_ANIM_WITH_FLAGS(pPlayer,"m_handjob_intro_low","misscar_sex",8.0,0,0);
-						//TASK_PAUSE(GetPlayerPed(), 100);
+						TASK_PLAY_ANIM_WITH_FLAGS(pPlayer,"m_handjob_intro_low","misscar_sex",8.0,0,0x20);
 						return;
 					}
 					if(item_select == 8){
 						REQUEST_ANIMS("busted");
-						while(!HAVE_ANIMS_LOADED("busted")){
-						WAIT(0);	
+						while(!HAVE_ANIMS_LOADED("busted")) WAIT(0); 
 						TASK_PLAY_ANIM_WITH_FLAGS(pPlayer,"idle_2_hands_up","busted",8.0,0,0x20);
-						}
-						//TASK_PAUSE(GetPlayerPed(), 100);
 						return;
 					}
 					if(item_select == 9){
 						REQUEST_ANIMS("amb@smoking");
 						while(!HAVE_ANIMS_LOADED("amb@smoking")) WAIT(0);
-						TASK_PLAY_ANIM_WITH_FLAGS(pPlayer,"stand_smoke","amb@smoking",8.0,0,0);
-						//TASK_PAUSE(GetPlayerPed(), 100);
+						TASK_PLAY_ANIM_WITH_FLAGS(pPlayer,"stand_smoke","amb@smoking",8.0,0,0x20);
 						return;
 					}
 				}
@@ -2025,6 +2044,30 @@ void menu_functions(void){
 							}
 							return;
 						}
+						else if(item_select == 7){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
+									int pveh,nvid,tick;
+									float speed;
+									GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
+									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
+									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+										tick++;
+										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+										if(tick >= 200){
+											print("Error");
+											return;
+										}
+										WAIT(0);
+									}
+									GET_CAR_SPEED(pveh,&speed);
+									SET_CAR_FORWARD_SPEED(pveh,(speed / 6));
+									print("Braked Player's car");
+								}
+							}
+							return;
+						}
 						return;
 					}
 				}
@@ -2131,8 +2174,8 @@ void looped_functions(void){
 		int tick,nvid;
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
-			if (IS_VEHICLE_ON_ALL_WHEELS(pveh))
-			APPLY_FORCE_TO_CAR(pveh,true,0.0,0,-0.5,0.0,0.0,0.0,true,true,true,true);
+			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))&& (!IS_CHAR_ON_ANY_BIKE(pPlayer)) && (IS_VEHICLE_ON_ALL_WHEELS(pveh)))
+				APPLY_FORCE_TO_CAR(pveh,true,0.0,0,-0.5,0.0,0.0,0.0,true,true,true,true);
 		}
 	}
 	
