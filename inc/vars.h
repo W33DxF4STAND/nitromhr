@@ -80,7 +80,7 @@ Object tmp_object_loop;
 uint tmp_model;
 int wWeapon;
 //uint model, bone;
-int tmp; 
+//int tmp; 
 //int tmp_ped[2];	
 //Ped iPed;
 Ped driver;

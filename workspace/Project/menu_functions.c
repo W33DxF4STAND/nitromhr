@@ -252,6 +252,84 @@ void spawnguards(uint model, uint weapon){
 	return;
 }
 
+typedef struct __data{
+        int projectile;
+        int actionid;
+       
+        float aimx;
+        float aimy;
+        float aimz;
+       
+        float playx;
+        float playy;
+        float playz;
+       
+        float velx;
+        float vely;
+        float velz;
+       
+        float dist;
+} _data;
+ 
+//_data data[15];
+ 
+Vector3 aim_tmp;
+Vector3 play_tmp;
+ 
+void fire_projectile(int weapon){
+        int i = 0;
+        for(i;i <= 10;i++){
+                if(!DOES_OBJECT_EXIST(data[i].projectile)){
+                        data[i].actionid = weapon;
+               
+                        data[i].aimx = aim_tmp.x;
+                        data[i].aimy = aim_tmp.y;
+                        data[i].aimz = aim_tmp.z;
+                               
+                        data[i].playx = play_tmp.x;
+                        data[i].playy = play_tmp.y;
+                        data[i].playz = play_tmp.z;
+                       
+                        GET_DISTANCE_BETWEEN_COORDS_3D(aim_tmp.x,aim_tmp.y,aim_tmp.z,play_tmp.x,play_tmp.y,play_tmp.z,&data[i].dist);
+                        #define SPEED 500
+                        data[i].velx = SPEED * (aim_tmp.x - play_tmp.x) / data[i].dist;
+                        data[i].vely = SPEED * (aim_tmp.y - play_tmp.y) / data[i].dist;
+                        data[i].velz = SPEED * (aim_tmp.z - play_tmp.z) / data[i].dist;
+                       
+                        CREATE_OBJECT(MODEL_dildo,play_tmp.x,play_tmp.y,play_tmp.z,&data[i].projectile,true);
+                        SET_OBJECT_RECORDS_COLLISIONS(data[i].projectile,true);
+                        FREEZE_OBJECT_POSITION(data[i].projectile,false);
+                        SET_OBJECT_VISIBLE(data[i].projectile,false);
+                        //SET_OBJECT_COLLISION(data[i].projectile,false);
+						APPLY_FORCE_TO_OBJECT(data[i].projectile, 1, 0.0, 90.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 1, 1);
+						SET_OBJECT_VISIBLE(data[i].projectile,true);
+                        //SET_OBJECT_INITIAL_VELOCITY(data[i].projectile,data[i].velx,data[i].vely,data[i].velz);
+                       
+                        return;
+                }
+        }
+}
+ 
+void projectile_action(void){
+        int i = 0;
+        for(i;i <= 10;i++){
+                if(DOES_OBJECT_EXIST(data[i].projectile)){
+                        if(HAS_OBJECT_COLLIDED_WITH_ANYTHING(data[i].projectile) || data[i].dist > 150){
+							//DELETE_OBJECT(&data[i].projectile);
+                            //MARK_OBJECT_AS_NO_LONGER_NEEDED(&data[i].projectile);
+                        }
+                        else{
+                                //GET_OBJECT_COORDINATES(data[i].projectile,&data[i].aimx,&data[i].aimy,&data[i].aimz);
+                                               
+                                //GET_DISTANCE_BETWEEN_COORDS_3D(data[i].aimx,data[i].aimy,data[i].aimz,data[i].playx,data[i].playy,data[i].playz,&data[i].dist);
+								APPLY_FORCE_TO_OBJECT(data[i].projectile, 1, 0.0, 90.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 1, 1);
+                                //SET_OBJECT_INITIAL_VELOCITY(data[i].projectile,data[i].velx,data[i].vely,data[i].velz);
+                                //SET_OBJECT_COLLISION(data[i].projectile,true);                 
+                       
+                        }
+                }
+        }
+}
 
 void create_throwable_object(uint model){
 	int obj = 0;
@@ -1529,6 +1607,16 @@ void menu_functions(void){
 					else if(item_select == 13){
 						if(DOES_CHAR_EXIST(players[index].ped)){
 							GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
+							if(!DOES_GROUP_EXIST(Bgroup){
+								print("No guards exist");
+								return;
+							}
+							int test, guards;
+							GET_GROUP_SIZE(Bgroup, &test, &guards);	
+							if(guards <= 0){
+								print("No guards exist");
+								return;
+							}
 							if(DOES_GROUP_EXIST(Bgroup)){
 								for(i = 0;i <= 11; i++){
 									if(DOES_CHAR_EXIST(gameped[i]) && DOES_CHAR_EXIST(players[index].ped)){
@@ -2123,18 +2211,29 @@ void looped_functions(void){
 	}
 
 	if(dildogun){
-		for(i = 0;i <= 5;i++){
-			float x,y,z;
-			GET_CURRENT_CHAR_WEAPON(pPlayer,&wWeapon);
-			if(wWeapon == WEAPON_DEAGLE){
-				if(IS_CHAR_SHOOTING(pPlayer)){
-					GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS(pPlayer, 0, 1, 0, &x, &y, &z);
-					CREATE_OBJECT(MODEL_dildo,x, y, z,&dildo[i],true);
-					SET_OBJECT_VISIBLE(dildo[i],false);
-					APPLY_FORCE_TO_OBJECT(dildo[i], 1, 0.0, 90.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 1, 1);
-					SET_OBJECT_VISIBLE(dildo[i],true);
-				}
+		uint model,bone;
+        int tmp,tmp_ped[2];
+		GET_CURRENT_CHAR_WEAPON(pPlayer,&wWeapon);
+		if(wWeapon == WEAPON_DEAGLE){
+			if(IS_CHAR_IN_ANY_CAR(pPlayer)){
+				GET_CAR_CHAR_IS_USING(pPlayer,&tmp);
+				GET_CAR_MODEL(tmp,&model);
+				if(!IS_THIS_MODEL_A_HELI(model) && !IS_THIS_MODEL_A_BIKE){
+					GET_CHAR_IN_CAR_PASSENGER_SEAT(tmp,1,&tmp_ped[0]);
+					GET_DRIVER_OF_CAR(tmp,&tmp_ped[1]);
+					if(tmp_ped[0] == pPlayer || tmp_ped[1] == pPlayer)
+						bone = BONE_LEFT_HAND;
+					}
 			}
+			else bone = BONE_RIGHT_HAND;
+	 
+			GET_PED_BONE_POSITION(pPlayer,bone,2.0,0.0,0.0,&play_tmp);
+			GET_PED_BONE_POSITION(pPlayer,bone,100.0,0.0,0.0,&aim_tmp);
+				   
+			if(IS_CHAR_SHOOTING(pPlayer)){
+				fire_projectile(wWeapon);
+			}
+					projectile_action();
 		}
 	}
 	
