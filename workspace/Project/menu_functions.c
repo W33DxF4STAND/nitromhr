@@ -1192,6 +1192,9 @@ void menu_functions(void){
 						create_throwable_object(0x48FA2738);
 					}
 				}
+				if(item_select == 7){
+					create_throwable_object(0x8079978D);
+				}
 			}
 			if(last_selected[1] == 3){
 				if(item_select == 1){
@@ -1308,8 +1311,9 @@ void menu_functions(void){
 									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 										tick++;
 										if(tick >= 200){
-											print("Error");
-											return;
+											//print("Error");
+											//return;
+											continue;
 										}
 										WAIT(0);
 									}
@@ -1375,8 +1379,9 @@ void menu_functions(void){
 									tick++;
 									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
 									if(tick >= 200){
-										print("Error");
-										return;
+										//print("Error");
+										//return;
+										continue;
 									}
 									WAIT(0);
 								}
@@ -2198,7 +2203,7 @@ void looped_functions(void){
 			}
 			
 			GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS(pPlayer, 0, 2, 0, &x, &y, &z);
-			CREATE_OBJECT(0x8F2A7EB3, x, y, z, &dildo, 1);
+			CREATE_OBJECT(MODEL_dildo, x, y, z, &dildo, 1);
 			SET_OBJECT_VISIBLE(dildo, 0);
 			MARK_MODEL_AS_NO_LONGER_NEEDED(0x8F2A7EB3);
 			if(DOES_OBJECT_EXIST(dildo)){

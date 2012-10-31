@@ -259,6 +259,7 @@ void menu_setup(void){
 				add_item("Throwing Knives",true);
 				add_item("Grenades - that explode",true);
 				add_item("Rockets - that explode",true);
+				add_item("AK47",true);
 			}
 			if(last_selected[1] == 3){
 				footer = "Air Strikes";
