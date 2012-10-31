@@ -94,6 +94,7 @@ void menu_setup(void){
 			add_toggle("Unlimited Ammo",ammo);
 			add_toggle("Fast Reload",fastreload);
 			add_toggle("Auto Aim",autoaim);
+			add_toggle("Dildo Deagle",dildogun);
 			return;
 		}
 		if(last_selected[0] == 4){
@@ -328,6 +329,9 @@ void menu_setup(void){
 				if(last_selected[2] == 2){
 					footer = "Speech";
 					add_item("Thanks",true);
+					add_item("Scream",true);
+					add_item("Fuck Off",true);
+					add_item("Take Cover",true);
 					return;
 				}
 			}

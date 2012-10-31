@@ -100,6 +100,7 @@ bool in_paint = false;
 
 uint tick;
 int i;
+int dildo;
 int nvid;
 
 bool show_menu = false,
@@ -107,6 +108,7 @@ bool show_menu = false,
 	bikefly = false,
 	collision = false,
 	neverwanted = false,
+	dildogun = false,
 	invisible = false,
 	freezecar = false,
 	fastreload = true,

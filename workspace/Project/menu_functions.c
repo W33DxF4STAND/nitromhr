@@ -1708,7 +1708,22 @@ void menu_functions(void){
 				else if(last_selected[2] == 2){
 					if(item_select == 1){
 						SAY_AMBIENT_SPEECH(pPlayer, "Thanks", 1, 1, 0);
-						print("Thanks!");
+						print("~g~Thanks!");
+						return;
+					}
+					else if(item_select == 2){
+						HIGH_FALL_SCREAM(pPlayer);
+						print("~g~AAAAHHHHHHH!");
+						return;
+				   }
+					else if(item_select == 3){
+						SAY_AMBIENT_SPEECH(pPlayer, "Generic_f*ck_off", 1, 1, 0);
+						print("~g~Fuck Off!");
+						return;
+					}
+					else if(item_select == 4){
+						SAY_AMBIENT_SPEECH(pPlayer, "Take_Cover", 1, 1, 0);
+						print("~g~Take Cover!");
 						return;
 					}
 					return;
@@ -2169,6 +2184,39 @@ void menu_functions(void){
 void looped_functions(void){
 	//player options
 	SET_CHAR_INVINCIBLE(pPlayer,godmode);
+	
+	if(dildogun){
+		int wep;
+		GET_CURRENT_CHAR_WEAPON(pPlayer, &wep);
+		if((IS_CHAR_SHOOTING(pPlayer)) && (wep == WEAPON_DEAGLE)){
+			if(DOES_OBJECT_EXIST(dildo)) DELETE_OBJECT(&dildo);
+			
+			REQUEST_MODEL(0x8F2A7EB3);
+			while(!HAS_MODEL_LOADED(0x8F2A7EB3))
+			{
+				WAIT(0);
+			}
+			
+			GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS(pPlayer, 0, 2, 0, &x, &y, &z);
+			CREATE_OBJECT(0x8F2A7EB3, x, y, z, &dildo, 1);
+			SET_OBJECT_VISIBLE(dildo, 0);
+			MARK_MODEL_AS_NO_LONGER_NEEDED(0x8F2A7EB3);
+			if(DOES_OBJECT_EXIST(dildo)){
+				SET_OBJECT_VISIBLE(dildo, 0);
+				SET_OBJECT_QUATERNION(dildo,0,0,0,0);
+				SET_OBJECT_INVINCIBLE(dildo,false);
+				FREEZE_OBJECT_POSITION(dildo,false);
+				SET_OBJECT_DYNAMIC(dildo,true);
+				SET_OBJECT_AS_STEALABLE(dildo,true);
+			//	SET_OBJECT_ROTATION(dildo, objrotX, 0.0, objrotZ);
+				SET_OBJECT_COLLISION(dildo, true);
+				WAIT(100);
+				SET_OBJECT_VISIBLE(dildo, 1);
+				APPLY_FORCE_TO_OBJECT(dildo, 1, 0.0, 90.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 1, 1);
+			}
+		}
+	}
+	
 	if(pprotection){
 		uint pos[4];
 		GET_POSITION_OF_ANALOGUE_STICKS(0,&pos[0],&pos[1],&pos[2],&pos[3]);
