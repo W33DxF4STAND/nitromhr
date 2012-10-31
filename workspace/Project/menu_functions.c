@@ -179,13 +179,13 @@ void delete_spawnguards(void){
 		return;
 	}
 	if(DOES_GROUP_EXIST(Bgroup)){
-		for(i = 0;i <= 11; i++){
+		for(i = 0;i <= 7; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
 				DELETE_CHAR(&gameped[i]);
 				print("1 was Guard Deleted");					
 				return;
 			}
-			if((i >= 11) || (i > 10)) return;
+			if((i >= 7) || (i > 6)) return;
 		}
 	print("No guards exist or Available");			
 	return;
@@ -204,11 +204,11 @@ void tele_spawnguards(void){
 	if(DOES_GROUP_EXIST(Bgroup)){
 		float x,y,z;
 		GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
-		for(i = 0;i <= 11; i++){
+		for(i = 0;i <= 7; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
 				teleport_char(gameped[i], x, y, z);
 			}
-			if((i >= 11) || (i > 10)) return;
+			if((i >= 7) || (i > 6)) return;
 		}
 	print("Teleported all guards to you");			
 	return;
@@ -228,10 +228,10 @@ void spawnguards(uint model, uint weapon){
 	uint test,guards;
 	GET_GROUP_SIZE(Bgroup, &test, &guards);	
 	if((guards >= 7) || (guards == 7) || (guards > 6)){
-		print("Max guards (11) exceeded");
+		print("Max guards (7) exceeded");
 		return;
 	}
-	for(i = 0;i <= 11; i++){
+	for(i = 0;i <= 7; i++){
 		if(!DOES_CHAR_EXIST(gameped[i])){
 			
 			REQUEST_MODEL(model);
@@ -1189,7 +1189,7 @@ void menu_functions(void){
 				if(item_select == 6){
 					int i = 0;
 					for(i;i <= 5;i++){
-						create_throwable_object(0x1B42315D);
+						create_throwable_object(0x48FA2738);
 					}
 				}
 			}
@@ -1577,12 +1577,12 @@ void menu_functions(void){
 								return;
 							}
 							if(DOES_GROUP_EXIST(Bgroup)){
-								for(i = 0;i <= 11; i++){
+								for(i = 0;i <= 7; i++){
 									if(DOES_CHAR_EXIST(gameped[i]) && DOES_CHAR_EXIST(players[index].ped)){
 										TASK_COMBAT(gameped[i], players[index].ped);
 										//print("Sent a Guard after Player");
 										//return;
-										if((i >= 11) || (i > 10)){
+										if((i >= 7) || (i == 7) || (i > 6)){
 											print("Sent all Guards after the Player");
 											return;
 										}
@@ -1704,6 +1704,14 @@ void menu_functions(void){
 						TASK_PLAY_ANIM_WITH_FLAGS(pPlayer,"stand_smoke","amb@smoking",8.0,0,0x20);
 						return;
 					}
+				}
+				else if(last_selected[2] == 2){
+					if(item_select == 1){
+						SAY_AMBIENT_SPEECH(pPlayer, "Thanks", 1, 1, 0);
+						print("Thanks!");
+						return;
+					}
+					return;
 				}
 			}
 		}
@@ -2403,7 +2411,7 @@ void better_grenade_loop(void){
 	}
 	if(IS_PED_HOLDING_AN_OBJECT(pPlayer)){
 		tmp_model = GET_MODEL_PED_IS_HOLDING(pPlayer);
-		if(tmp_model == 0x501811B6 || tmp_model == 0x1B42315D){//object to be new grenade
+		if(tmp_model == 0x501811B6 || tmp_model == 0x48FA2738){//object to be new grenade
 			grenade_active = true;
 			tmp_object_loop = GET_OBJECT_PED_IS_HOLDING(pPlayer);
 		}

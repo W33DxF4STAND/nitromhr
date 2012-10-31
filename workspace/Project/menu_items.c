@@ -327,7 +327,7 @@ void menu_setup(void){
 				}
 				if(last_selected[2] == 2){
 					footer = "Speech";
-					add_item("Placeholder",true);
+					add_item("Thanks",true);
 					return;
 				}
 			}
