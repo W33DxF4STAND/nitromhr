@@ -260,6 +260,7 @@ void menu_setup(void){
 				add_item("Grenades - that explode",true);
 				add_item("Rockets - that explode",true);
 				add_item("AK47",true);
+				return;
 			}
 			if(last_selected[1] == 3){
 				footer = "Air Strikes";

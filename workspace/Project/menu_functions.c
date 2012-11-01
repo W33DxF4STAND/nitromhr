@@ -586,6 +586,13 @@ void menu_functions(void){
 				}
 				return;
 			}
+			else if(item_select == 6){
+				if(!dildogun){
+					print("Dildos will now Fire out the Desert Eagle");
+				}
+				do_toggle(dildogun);
+				return;
+			}
 		}
 		if(last_selected[0] == 4){
 			if(item_select == 1){
