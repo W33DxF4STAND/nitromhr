@@ -2667,18 +2667,26 @@ void looped_functions(void){
 	if(nfs){
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 			float speed;
+			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))){
 				SET_CAR_ON_GROUND_PROPERLY(pveh);
 				if(IS_BUTTON_PRESSED(0,BUTTON_R)){
-					GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 					GET_CAR_SPEED(pveh,&speed);
 					SET_CAR_FORWARD_SPEED(pveh,(speed * 1.02));
+				}
+				else if(IS_BUTTON_JUST_PRESSED(0,BUTTON_L)){
+					GET_CAR_SPEED(pveh,&speed);
+					SET_CAR_FORWARD_SPEED(pveh,(speed / 6));
 				}
 			}
 			else{
 				if(IS_BUTTON_PRESSED(0,BUTTON_R)){
 					GET_CAR_SPEED(pveh,&speed);
 					SET_CAR_FORWARD_SPEED(pveh,(speed * 1.02));
+				}
+				else if(IS_BUTTON_JUST_PRESSED(0,BUTTON_L)){
+					GET_CAR_SPEED(pveh,&speed);
+					SET_CAR_FORWARD_SPEED(pveh,(speed / 6));
 				}
 			}
 		}
@@ -2748,8 +2756,8 @@ void better_grenade_loop(void){
 				WAIT(0);
 			}
 			GET_OBJECT_COORDINATES(tmp_object_loop,&x,&y,&z);
-			ADD_EXPLOSION(x,y,z,EXPLOSION_SHIP_DESTROY,20.0f,true,false,0.7f);
-			ADD_EXPLOSION(x,y,z + 1,EXPLOSION_SHIP_DESTROY,20.0f,true,false,0.7f);
+			ADD_EXPLOSION(x,y,z,EXPLOSION_SHIP_DESTROY,20.0,true,false,0.7f);
+			ADD_EXPLOSION(x,y,z + 1,EXPLOSION_SHIP_DESTROY,20.0,true,false,0.7f);
 			DELETE_OBJECT(&tmp_object_loop);
 			MARK_OBJECT_AS_NO_LONGER_NEEDED(&tmp_object_loop);
 		}
@@ -2783,13 +2791,13 @@ void do_online_player_loop(void){
 					GIVE_WEAPON_TO_CHAR(tmp,WEAPON_ARMOUR,1,false);
 					ADD_ARMOUR_TO_CHAR(tmp,99);
 				}
-				if (HAS_CHAR_GOT_WEAPON(tmp, WEAPON_ROCKET)){
+				if(HAS_CHAR_GOT_WEAPON(tmp, WEAPON_ROCKET)){
 					REMOVE_WEAPON_FROM_CHAR(tmp, WEAPON_ROCKET);
 				}
 			}
 			if(players[i].force){
 				GET_CHAR_COORDINATES(tmp,&x,&y,&z);	  	
-				ADD_EXPLOSION(x,y,z,EXPLOSION_SHIP_DESTROY,10.0,false,true,0.0);
+				ADD_EXPLOSION(x,y,z,EXPLOSION_SHIP_DESTROY,15.0,false,true,0.0);
 			}
 		}
 	}
