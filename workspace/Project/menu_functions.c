@@ -2639,6 +2639,7 @@ void looped_functions(void){
 			SET_CAR_CAN_BE_VISIBLY_DAMAGED(pveh,false);
 			SET_CAN_BURST_CAR_TYRES(pveh,false);
 			SET_HELI_BLADES_FULL_SPEED(pveh);
+			SET_CAR_PROOFS(pveh, true, true, true, true, true);
 		}
 	}
 	if(carsonground){
