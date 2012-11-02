@@ -11,14 +11,14 @@
 #define MENU_TITLE "XMC ModMenu v3 Public Edition"
 #endif
 
+#define MENU_AUTHOR "Emmanuel Utomi - UtomAfryus69"
+
 #include <natives.h>
 #include <common.h>
 #include <consts.h>
 #include <types.h>
 #include <strings.h>
 #include <vars.h>
-
-#include "weapons.c"
 
 #ifdef FRENCH
 #include "menu_items_french.c"

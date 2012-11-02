@@ -13,6 +13,7 @@ void do_menu(void){
 		
 		//draw_title(0.5,0.05,0.6,0.98,s_r,s_g,s_b,255,MENU_TITLE);
 		draw_title(0.5,0.05,0.6,0.98,s_r,s_g,s_b,255,footer);
+		draw_title(0.5,0.109,0.4,0.50,s_r,s_g,s_b,255,MENU_AUTHOR);
 		
 		set_up_draw(3,0.35,0.35,255,255,255,255);
 		//draw_text("STRING",0.05,0.975,footer);
