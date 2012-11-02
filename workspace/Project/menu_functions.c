@@ -1881,6 +1881,159 @@ void menu_functions(void){
 					print("You must be in a vehicle");
 					return;
 				}
+				if(last_selected[2] == 4){
+					if(IS_CHAR_IN_ANY_CAR(pPlayer)){
+						GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
+						if(item_select == 1){
+							Object lights;
+							CREATE_OBJECT(0xD20167BE, 0.0f, 0.0f, 0.0f, &lights, 1);
+							WAIT(1);
+							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.4,-0.2,-190,0,160.2);
+							SET_OBJECT_LIGHTS(lights, true);
+							SET_OBJECT_VISIBLE(lights, true);
+							SET_OBJECT_INVINCIBLE(lights, 1);
+							CREATE_OBJECT(0xD20167BE, 0.0f, 0.0f, 0.0f, &lights, 1);
+							WAIT(1);
+							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.2,-0.2,-190,0,160.2);
+							SET_OBJECT_LIGHTS(lights, true);
+							SET_OBJECT_VISIBLE(lights, true);
+							SET_OBJECT_INVINCIBLE(lights, 1);
+							CREATE_OBJECT(0xD20167BE, 0.0f, 0.0f, 0.0f, &lights, 1);
+							WAIT(1);
+							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.4,-0.2,-190,0,160.2);
+							SET_OBJECT_LIGHTS(lights, true);
+							SET_OBJECT_VISIBLE(lights, true);
+							SET_OBJECT_INVINCIBLE(lights, 1);
+							CREATE_OBJECT(0xD20167BE, 0.0f, 0.0f, 0.0f, &lights, 1);
+							WAIT(1);
+							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.4,0.2,-0.2,-190,0,160.2);
+							SET_OBJECT_VISIBLE(lights, true);
+							SET_OBJECT_INVINCIBLE(lights, 1);
+							SET_OBJECT_VISIBLE(lights, true);
+							print("Added Blue Neons");
+							return;
+						}
+						else if(item_select == 2){
+							if(GET_CURRENT_EPISODE() == 2){
+								Object lights;
+								CREATE_OBJECT(0xB3AC6409, 0.0f, 0.0f, 0.0f, &lights, 1);
+								WAIT(1);
+								ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.2,-0.2,-190,0,160.2);
+								SET_OBJECT_LIGHTS(lights, true);
+								SET_OBJECT_VISIBLE(lights, true);
+								SET_OBJECT_INVINCIBLE(lights, 1);
+								CREATE_OBJECT(0xB3AC6409, 0.0f, 0.0f, 0.0f, &lights, 1);
+								WAIT(1);
+								ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.5,-0.2,-190,0,160.2);
+								SET_OBJECT_LIGHTS(lights, true);
+								SET_OBJECT_VISIBLE(lights, true);
+								SET_OBJECT_INVINCIBLE(lights, 1);
+								CREATE_OBJECT(0xB3AC6409, 0.0f, 0.0f, 0.0f, &lights, 1);
+								WAIT(1);
+								ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.2,-0.2,-190,0,160.2);
+								SET_OBJECT_LIGHTS(lights, true);
+								SET_OBJECT_VISIBLE(lights, true);
+								SET_OBJECT_INVINCIBLE(lights, 1);
+								CREATE_OBJECT(0xB3AC6409, 0.0f, 0.0f, 0.0f, &lights, 1);
+								WAIT(1);
+								ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.2,-0.2,-190,0,160.2);
+								SET_OBJECT_LIGHTS(lights, true);
+								SET_OBJECT_VISIBLE(lights, true);
+								SET_OBJECT_INVINCIBLE(lights, 1);
+								print("Added Green Neons");
+								return;
+							}
+							else{
+								print("You must be on ~r~TBOGT to use");
+								return;
+							}
+						}
+						else if(item_select == 3){
+							Object lights;
+							CREATE_OBJECT(0xCB26803D , 0.0f, 0.0f, 0.0f, &lights, 1);
+							WAIT(1);
+							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.2,-0.2,-190,0,160.2);
+							SET_OBJECT_LIGHTS(lights, true);
+							SET_OBJECT_VISIBLE(lights, true);
+							SET_OBJECT_INVINCIBLE(lights, 1);
+							CREATE_OBJECT(0xCB26803D , 0.0f, 0.0f, 0.0f, &lights, 1);
+							WAIT(1);
+							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.5,-0.2,-190,0,160.2);
+							SET_OBJECT_LIGHTS(lights, true);
+							SET_OBJECT_VISIBLE(lights, true);
+							SET_OBJECT_INVINCIBLE(lights, 1);
+							CREATE_OBJECT(0xCB26803D , 0.0f, 0.0f, 0.0f, &lights, 1);
+							WAIT(1);
+							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.2,-0.2,-190,0,160.2);
+							SET_OBJECT_LIGHTS(lights, true);
+							SET_OBJECT_VISIBLE(lights, true);
+							SET_OBJECT_INVINCIBLE(lights, 1);
+							CREATE_OBJECT(0xCB26803D , 0.0f, 0.0f, 0.0f, &lights, 1);
+							WAIT(1);
+							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.2,-0.2,-190,0,160.2);
+							SET_OBJECT_LIGHTS(lights, true);
+							SET_OBJECT_VISIBLE(lights, true);
+							SET_OBJECT_INVINCIBLE(lights, 1);
+							print("Added Red Neons");
+							return;
+						}
+						else if(item_select == 4){
+							Object lights;
+							//blue
+							CREATE_OBJECT(0xD20167BE, 0.0f, 0.0f, 0.0f, &lights, 1);
+							WAIT(1);
+							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.4,-0.2,-190,0,160.2);
+							SET_OBJECT_LIGHTS(lights, true);
+							SET_OBJECT_VISIBLE(lights, true);
+							SET_OBJECT_INVINCIBLE(lights, 1);
+							CREATE_OBJECT(0xD20167BE, 0.0f, 0.0f, 0.0f, &lights, 1);
+							WAIT(1);
+							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.2,-0.2,-190,0,160.2);
+							SET_OBJECT_LIGHTS(lights, true);
+							SET_OBJECT_VISIBLE(lights, true);
+							SET_OBJECT_INVINCIBLE(lights, 1);
+							CREATE_OBJECT(0xD20167BE, 0.0f, 0.0f, 0.0f, &lights, 1);
+							WAIT(1);
+							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.4,-0.2,-190,0,160.2);
+							SET_OBJECT_LIGHTS(lights, true);
+							SET_OBJECT_VISIBLE(lights, true);
+							SET_OBJECT_INVINCIBLE(lights, 1);
+							CREATE_OBJECT(0xD20167BE, 0.0f, 0.0f, 0.0f, &lights, 1);
+							WAIT(1);
+							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.4,0.2,-0.2,-190,0,160.2);
+							SET_OBJECT_VISIBLE(lights, true);
+							SET_OBJECT_INVINCIBLE(lights, 1);
+							SET_OBJECT_VISIBLE(lights, true);
+							//red
+							CREATE_OBJECT(0xCB26803D , 0.0f, 0.0f, 0.0f, &lights, 1);
+							WAIT(1);
+							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.2,-0.2,-190,0,160.2);
+							SET_OBJECT_LIGHTS(lights, true);
+							SET_OBJECT_VISIBLE(lights, true);
+							SET_OBJECT_INVINCIBLE(lights, 1);
+							CREATE_OBJECT(0xCB26803D , 0.0f, 0.0f, 0.0f, &lights, 1);
+							WAIT(1);
+							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.5,-0.2,-190,0,160.2);
+							SET_OBJECT_LIGHTS(lights, true);
+							SET_OBJECT_VISIBLE(lights, true);
+							SET_OBJECT_INVINCIBLE(lights, 1);
+							CREATE_OBJECT(0xCB26803D , 0.0f, 0.0f, 0.0f, &lights, 1);
+							WAIT(1);
+							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.2,-0.2,-190,0,160.2);
+							SET_OBJECT_LIGHTS(lights, true);
+							SET_OBJECT_VISIBLE(lights, true);
+							SET_OBJECT_INVINCIBLE(lights, 1);
+							CREATE_OBJECT(0xCB26803D , 0.0f, 0.0f, 0.0f, &lights, 1);
+							WAIT(1);
+							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.2,-0.2,-190,0,160.2);
+							SET_OBJECT_LIGHTS(lights, true);
+							SET_OBJECT_VISIBLE(lights, true);
+							SET_OBJECT_INVINCIBLE(lights, 1);
+							print("Added Purple Neons");
+							return;
+						}
+					}
+				}
 			}
 		}
 		if(last_selected[0] == 3){
@@ -2247,81 +2400,6 @@ void menu_functions(void){
 				if(last_selected[2] == 1){
 					spawn_car(menu[item_select].value);
 					return;
-				}
-				//0xD20167BE = blue
-				//0xCB26803D = red
-				//0xFCB32869 = white
-				//0x2F8AEA79 = orange
-				//0xD611D7B6 = green
-				//0xBBF41314 = rainbow
-				if(last_selected[2] == 4){
-					if(item_select == 1){
-						if(IS_CHAR_IN_ANY_CAR(pPlayer)){
-							GET_CAR_CHAR_IS_USING(pPlayer, &pveh);
-							Object lights;
-							CREATE_OBJECT(0xD611D7B6, 0.0f, 0.0f, 0.0f, &lights, 1);
-							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.2,-0.2,-1,8,160.2);
-							SET_OBJECT_LIGHTS(lights, true);
-							SET_OBJECT_VISIBLE(lights, true);
-							SET_OBJECT_INVINCIBLE(lights, 1);
-							CREATE_OBJECT(0xD611D7B6, 0.0f, 0.0f, 0.0f, &lights, 1);
-							WAIT(1);
-							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.2,-0.2,-1,8,160.2);
-							SET_OBJECT_LIGHTS(lights, true);
-							SET_OBJECT_VISIBLE(lights, true);
-							SET_OBJECT_INVINCIBLE(lights, 1);
-							CREATE_OBJECT(0xD611D7B6, 0.0f, 0.0f, 0.0f, &lights, 1);
-							WAIT(1);
-							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.2,-0.2,-1,8,160.2);
-							SET_OBJECT_LIGHTS(lights, true);
-							SET_OBJECT_VISIBLE(lights, true);
-							SET_OBJECT_INVINCIBLE(lights, 1);
-							CREATE_OBJECT(0xD611D7B6, 0.0f, 0.0f, 0.0f, &lights, 1);
-							WAIT(1);
-							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.2,-0.2,-1,8,160.2);
-							SET_OBJECT_LIGHTS(lights, true);
-							SET_OBJECT_VISIBLE(lights, true);
-							SET_OBJECT_INVINCIBLE(lights, 1);
-							print("Green neons attached to Vehicle");
-							return;
-						}
-						else print("Must be in car");
-					return;
-					}
-					else if(item_select == 2){
-						if(IS_CHAR_IN_ANY_CAR(pPlayer)){
-							GET_CAR_CHAR_IS_USING(pPlayer, &pveh);
-							Object lights;
-							CREATE_OBJECT(0xCB26803D, 0.0f, 0.0f, 0.0f, &lights, 1);
-							WAIT(1);
-							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.2,-0.2,-190,0,160.2);
-							SET_OBJECT_LIGHTS(lights, true);
-							SET_OBJECT_VISIBLE(lights, true);
-							SET_OBJECT_INVINCIBLE(lights, 1);
-							CREATE_OBJECT(0xCB26803D, 0.0f, 0.0f, 0.0f, &lights, 1);
-							WAIT(1);
-							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.5,-0.2,-190,0,160.2);
-							SET_OBJECT_LIGHTS(lights, true);
-							SET_OBJECT_VISIBLE(lights, true);
-							SET_OBJECT_INVINCIBLE(lights, 1);
-							CREATE_OBJECT(0xCB26803D, 0.0f, 0.0f, 0.0f, &lights, 1);
-							WAIT(1);
-							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.2,-0.2,-190,0,160.2);
-							SET_OBJECT_LIGHTS(lights, true);
-							SET_OBJECT_VISIBLE(lights, true);
-							SET_OBJECT_INVINCIBLE(lights, 1);
-							CREATE_OBJECT(0xCB26803D, 0.0f, 0.0f, 0.0f, &lights, 1);
-							WAIT(1);
-							ATTACH_OBJECT_TO_CAR(lights,pveh,0.0f,0.2,0.5,-0.2,-190,0,160.2);
-							SET_OBJECT_VISIBLE(lights, true);
-							SET_OBJECT_INVINCIBLE(lights, 1);
-							SET_OBJECT_VISIBLE(lights, true);
-							print("Red neons attached to Vehicle");
-							return;
-						}
-						else print("Must be in car");
-					return;
-					}
 				}
 			}
 		}

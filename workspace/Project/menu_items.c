@@ -217,7 +217,7 @@ void menu_setup(void){
 				add_item("Vehicle Spawner",false);
 				add_item("Upgrades",false);
 				add_item("Paint",false);
-			//	add_item("Neons",false);
+				add_item("Neons",false);
 				return;
 			}
 		}
@@ -426,9 +426,10 @@ void menu_setup(void){
 				}
 				if(last_selected[2] == 4){
 					footer = "Neons";
+					add_item("Blue",true);
 					add_item("Green",true);
 					add_item("Red",true);
-					add_item("Blue",true);
+					add_item("Purple",true);
 					return;
 				}
 
