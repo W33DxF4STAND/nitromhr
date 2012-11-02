@@ -170,7 +170,7 @@ void teleport_char(Ped pPed, float x,float y,float z){
 	REQUEST_COLLISION_AT_POSN(x,y,z);
 }
 
-void delete_spawnguards(void){
+void delete_all_spawnguards(void){
 	GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
 	uint test,guards;
 	GET_GROUP_SIZE(Bgroup, &test, &guards);	
@@ -181,6 +181,30 @@ void delete_spawnguards(void){
 	if(DOES_GROUP_EXIST(Bgroup)){
 		for(i = 0;i <= 7; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
+				FORCE_CHAR_TO_DROP_WEAPON(gameped[i]);
+				WAIT(10);
+				DELETE_CHAR(&gameped[i]);
+			}
+		}
+		print("Deleted All available guards");			
+		return;
+	}
+	return;
+}
+
+void delete_one_spawnguards(void){
+	GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
+	uint test,guards;
+	GET_GROUP_SIZE(Bgroup, &test, &guards);	
+	if((guards <= 0) || (!DOES_GROUP_EXIST(Bgroup))){
+		print("No guards exist or Available");
+		return;
+	}
+	if(DOES_GROUP_EXIST(Bgroup)){
+		for(i = 0;i <= 7; i++){
+			if(DOES_CHAR_EXIST(gameped[i])){
+				FORCE_CHAR_TO_DROP_WEAPON(gameped[i]);
+				WAIT(10);
 				DELETE_CHAR(&gameped[i]);
 				print("1 was Guard Deleted");					
 				return;
@@ -189,6 +213,28 @@ void delete_spawnguards(void){
 		}
 	print("No guards exist or Available");			
 	return;
+	}
+	return;
+}
+
+void arm_spawnguards(int weapon){
+	GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
+	uint test,guards;
+	GET_GROUP_SIZE(Bgroup, &test, &guards);	
+	if((guards <= 0) || (!DOES_GROUP_EXIST(Bgroup))){
+		print("No guards exist or Available");
+		return;
+	}
+	if(DOES_GROUP_EXIST(Bgroup)){
+		for(i = 0;i <= 7; i++){
+			if(DOES_CHAR_EXIST(gameped[i])){
+				UpdateWeaponOfPed(gameped[i], weapon);
+				SET_CURRENT_CHAR_WEAPON(gameped[i], weapon, true);
+			}
+			if((i >= 7) || (i > 6)) return;
+		}
+		print("Gave all guards specified weapon");			
+		return;
 	}
 	return;
 }
@@ -403,11 +449,35 @@ void menu_functions(void){
 				return;
 			}
 			if(item_select == 12){
-				if(!IS_CHAR_ON_FIRE(pPlayer)){
+				do_toggle(onfire);
+				if(onfire){
 					START_CHAR_FIRE(pPlayer);
 				}
 				else{
 					EXTINGUISH_CHAR_FIRE(pPlayer);
+				}
+				return;
+			}
+			if(item_select == 14){
+				do_toggle(superman);
+				if(superman){
+					REQUEST_ANIMS("misscar_sex");
+					while(!HAVE_ANIMS_LOADED("misscar_sex")) WAIT(0);
+					TASK_PLAY_ANIM_WITH_FLAGS(pPlayer,"m_handjob_intro_low","misscar_sex",8.0,0,0x20);
+					print_long("LB/RB - Up/Down  DPAD - Forward/Back/Left/Right");
+				}
+				else{
+					if(IS_CHAR_IN_ANY_CAR(pPlayer)){
+						GET_CAR_CHAR_IS_USING(pPlayer, &pveh);
+						FREEZE_CAR_POSITION(pveh, false);
+					}
+					else FREEZE_CHAR_POSITION(pPlayer, false);
+					SWITCH_PED_TO_RAGDOLL(pPlayer,20,30,false,false,false,false);
+					SWITCH_PED_TO_ANIMATED(pPlayer,true);
+					GIVE_PLAYER_RAGDOLL_CONTROL(GET_PLAYER_ID(),true);
+					WAIT(30);
+					SWITCH_PED_TO_ANIMATED(pPlayer,false);
+					GIVE_PLAYER_RAGDOLL_CONTROL(GET_PLAYER_ID(),false);
 				}
 				return;
 			}
@@ -586,13 +656,15 @@ void menu_functions(void){
 				}
 				return;
 			}
-			else if(item_select == 6){
+			/**
+			else if(item_select == 5){
 				if(!dildogun){
-					print("Dildos will now Fire out the Desert Eagle");
+					print("~r~Dildos will now fire out the Desert Eagle");
 				}
 				do_toggle(dildogun);
 				return;
 			}
+			**/
 		}
 		if(last_selected[0] == 4){
 			if(item_select == 1){
@@ -708,6 +780,13 @@ void menu_functions(void){
 			}
 			if(item_select == 9){	
 				do_toggle(modderprotect);
+				return;
+			}
+			if(item_select == 10){
+				for(i = 0; i < 66; i++){
+					if(!HAS_ACHIEVEMENT_BEEN_PASSED(i)) AWARD_ACHIEVEMENT(i);
+				}
+				print("Unlocked All Achievements");
 				return;
 			}
 		}
@@ -949,12 +1028,8 @@ void menu_functions(void){
 	if(menu_level == 2){
 		if(last_selected[0] == 1){
 			if(last_selected[1] == 13){
-				if(item_select == 1){
-					delete_spawnguards();
-					return;
-				}
-				else if(item_select == 2){
-					tele_spawnguards();
+				if(item_select == 2){
+					spawnguards(MODEL_IG_LUIS, WEAPON_MP5);
 					return;
 				}
 				else if(item_select == 3){
@@ -1741,6 +1816,22 @@ void menu_functions(void){
 					return;
 				}
 			}
+			if(last_selected[1] == 13){
+				if(last_selected[2] == 1){
+					if(item_select == 1){
+						delete_one_spawnguards();
+						return;
+					}
+					else if(item_select == 2){
+						delete_all_spawnguards();
+						return;
+					}
+					else if(item_select == 3){
+						tele_spawnguards();
+						return;
+					}
+				}
+			}
 		}
 		if(last_selected[0] == 2){
 			if(last_selected[1] == 1){
@@ -2107,6 +2198,49 @@ void menu_functions(void){
 					}
 				}
 			}
+			if(last_selected[1] == 13){
+				if(last_selected[2] == 1){
+					if(last_selected[3] == 4){
+						if(item_select == 1){
+							arm_spawnguards(WEAPON_RLAUNCHER);
+							return;
+						}
+						else if(item_select == 2){
+							arm_spawnguards(WEAPON_POOLCUE);
+							return;
+						}
+						else if(item_select == 3){
+							arm_spawnguards(WEAPON_M4);
+							return;
+						}
+						else if(item_select == 4){
+							arm_spawnguards(WEAPON_DEAGLE);
+							return;
+						}
+						else if(item_select == 5){
+							arm_spawnguards(WEAPON_BASEBALLBAT);
+							return;
+						}
+						else if(item_select == 6){
+							arm_spawnguards(WEAPON_KNIFE);
+							return;
+						}
+						else if(item_select == 7){
+							arm_spawnguards(WEAPON_AK47);
+							return;
+						}
+						else if(item_select == 8){
+							arm_spawnguards(WEAPON_SHOTGUN);
+							return;
+						}
+						else if(item_select == 9){
+							arm_spawnguards(WEAPON_SNIPERRIFLE);
+							return;
+						}
+					}
+				}
+			}
+			
 		}
 		if(last_selected[0] == 2){
 			if(last_selected[1] == 1){
@@ -2197,10 +2331,44 @@ void looped_functions(void){
 	//player options
 	SET_CHAR_INVINCIBLE(pPlayer,godmode);
 	
+	/**
 	if(dildogun){
-		int wep;
+		int wep, game_cam;
+		float prjX, prjY, prjZ, prjT, gcX, gcY, gcZ, gcrotX, gcrotY, gcrotZ, objrotX, objrotZ;
+		
 		GET_CURRENT_CHAR_WEAPON(pPlayer, &wep);
-		if((IS_CHAR_SHOOTING(pPlayer)) && (wep == WEAPON_DEAGLE)){
+		if((IS_CHAR_SHOOTING(pPlayer)) && (wep == WEAPON_DEAGLE) && (!IS_CHAR_IN_ANY_CAR(pPlayer))){
+		GET_GAME_CAM(&game_cam);
+		if (IS_CAM_ACTIVE(game_cam)){
+			GET_CAM_ROT(game_cam, &gcrotX, &gcrotY, &gcrotZ);// used for setting the object rotation and for some weird trig stuff below
+			GET_CAM_POS(game_cam, &gcX, &gcY, &gcZ);// used for the spawn point of the object, because the player is offset while aiming
+			if (gcrotX < 0.0)// the range for cam rot is -180 to 180, to set object rot we need 0 to 360
+			{
+				objrotX = gcrotX + 360.0;
+			}
+			else
+			{
+				objrotX = gcrotX;
+			}
+			if (gcrotZ < 0.0)
+			{
+				objrotZ = gcrotZ + 360.0;
+			}
+			else
+			{
+				objrotZ = gcrotZ;
+			}
+			/*  the trig stuff below could possibly be replaced with vectors, I have no idea how to do that though.  *
+			*   I apologize if this is confusing, but if you want to change the distance from the game_cam that the  *
+			*   object is spawned, adjust "3.0" to your preference on the first and fourth lines.  Also prjT is the  *
+			*   adjacent side from the pitch calculation, its purpose is to be the tangent in the following 2 lines */
+		/**
+			prjT = (3.0 * COS(gcrotX));       // adj side calculation to be used as a tangent below
+			prjX = gcX - (prjT * SIN(gcrotZ));// calculates how far to spawn the object from the game_cam on the X plane
+			prjY = gcY + (prjT * COS(gcrotZ));// calculates how far to spawn the object from the game_cam on the Y plane
+			prjZ = gcZ + (3.0 * SIN(gcrotX)); // calculates how far to spawn the object from the game_cam on the Z plane
+		}
+			
 			if(DOES_OBJECT_EXIST(dildo)) DELETE_OBJECT(&dildo);
 			
 			REQUEST_MODEL(0x8F2A7EB3);
@@ -2209,8 +2377,8 @@ void looped_functions(void){
 				WAIT(0);
 			}
 			
-			GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS(pPlayer, 0, 2, 0, &x, &y, &z);
-			CREATE_OBJECT(MODEL_dildo, x, y, z, &dildo, 1);
+			GET_CHAR_COORDINATES(pPlayer, &x, &y, &z);
+			CREATE_OBJECT(MODEL_dildo, prjX, prjY, prjZ, &dildo, 1);
 			SET_OBJECT_VISIBLE(dildo, 0);
 			MARK_MODEL_AS_NO_LONGER_NEEDED(0x8F2A7EB3);
 			if(DOES_OBJECT_EXIST(dildo)){
@@ -2220,7 +2388,7 @@ void looped_functions(void){
 				FREEZE_OBJECT_POSITION(dildo,false);
 				SET_OBJECT_DYNAMIC(dildo,true);
 				SET_OBJECT_AS_STEALABLE(dildo,true);
-			//	SET_OBJECT_ROTATION(dildo, objrotX, 0.0, objrotZ);
+				SET_OBJECT_ROTATION(dildo, objrotX, 0.0, objrotZ);
 				SET_OBJECT_COLLISION(dildo, true);
 				WAIT(100);
 				SET_OBJECT_VISIBLE(dildo, 1);
@@ -2228,6 +2396,44 @@ void looped_functions(void){
 			}
 		}
 	}
+	**/
+	
+	if(superman){
+		//credit chrome mods
+		float x, y, z;
+		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
+			GET_CAR_CHAR_IS_USING(pPlayer, &pveh);
+			FREEZE_CAR_POSITION(pveh, true);
+		}
+		else FREEZE_CHAR_POSITION(pPlayer, true);
+		
+		GET_CHAR_COORDINATES(pPlayer,&x, &y, &z);
+	 
+		// For ajusting AXIS
+		if(IS_BUTTON_PRESSED(0,DPAD_DOWN)){
+			teleport_char(pPlayer, x + 9.5f, y, z);
+		}
+		if(IS_BUTTON_PRESSED(0,DPAD_UP)){
+			teleport_char(pPlayer, x - 9.5f, y, z);
+		}
+		if(IS_BUTTON_PRESSED(0,DPAD_LEFT)){
+			teleport_char(pPlayer, x, y + 9.5f, z);
+		}
+		if(IS_BUTTON_PRESSED(0,DPAD_RIGHT)){
+			teleport_char(pPlayer, x, y - 9.5f, z);
+		}
+	 
+		// For ajusting Up/Down
+		if(IS_BUTTON_PRESSED(0,R1)){
+			print_short("Up");
+			teleport_char(pPlayer, x, y, z + 1.5f);
+		}
+		if(IS_BUTTON_PRESSED(0,L1)){
+			print_short("Down");
+			teleport_char(pPlayer, x, y, z - 1.5f);
+		}
+	}
+	
 	
 	if(pprotection){
 		uint pos[4];

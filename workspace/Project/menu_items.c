@@ -64,8 +64,9 @@ void menu_setup(void){
 			add_toggle("Chronicle",forcefield);
 			add_toggle("Chaos mode",chaos);
 			add_toggle("Invisibility",invisible);
-			add_item("Set yourself on fire",true);
+			add_toggle("Burn",onfire);
 			add_item("Bodyguards",false);
+			add_toggle("Superman",superman);
 			return;
 		}
 		if(last_selected[0] == 2){
@@ -94,7 +95,7 @@ void menu_setup(void){
 			add_toggle("Unlimited Ammo",ammo);
 			add_toggle("Fast Reload",fastreload);
 			add_toggle("Auto Aim",autoaim);
-			add_toggle("Dildo Deagle",dildogun);
+		//	add_toggle("Dildo Deagle",dildogun);
 			return;
 		}
 		if(last_selected[0] == 4){
@@ -130,7 +131,7 @@ void menu_setup(void){
 			add_item("Return to Single Player",true);
 			add_item("Get name of host",true);
 			add_toggle("Modder Protection",modderprotect);
-		//	add_item("Freeze Car",true);
+			add_item("Unlock All Achievements",true);
 			return;
 		}
 		/**
@@ -187,8 +188,10 @@ void menu_setup(void){
 			}
 			if(last_selected[1] == 13){
 				footer = "Bodyguards";
-				add_item("Delete 1 Guard",true);
-				add_item("Teleport all Guards to you",true);
+				add_item("Options",false);
+				//add_item("Delete 1 Guard",true);
+				//add_item("Teleport all Guards to you",true);
+				add_item("Luis",true);
 				add_item("Lil Jacob",true);
 				add_item("Brucie",true);
 				add_item("Nigga",true);
@@ -337,6 +340,16 @@ void menu_setup(void){
 					return;
 				}
 			}
+			if(last_selected[1] == 13){
+				if(last_selected[2] == 1){
+					footer = "Bodyguard Options";
+					add_item("Delete One Guard",true);
+					add_item("Delete All Guards",true);
+					add_item("Teleport guards to you",true);
+					add_item("Give Weapon to all guards",false);
+					return;
+				}
+			}
 		}
 		if(last_selected[0] == 2){
 			if(last_selected[1] == 1){
@@ -467,6 +480,23 @@ void menu_setup(void){
 						add_item("Vehicle Helper",true);
 						add_item("Speed Boost",true);
 						add_item("Speed Brake",true);
+						return;
+					}
+				}
+			}
+			if(last_selected[1] == 13){
+				if(last_selected[2] == 1){
+					if(last_selected[3] == 4){
+						footer = "Bodyguard Weapons";
+						add_item("RPG",true);
+						add_item("Pool Stick",true);
+						add_item("M4",true);
+						add_item("Desert Eagle",true);
+						add_item("Baseball Bat",true);
+						add_item("Knife",true);
+						add_item("AK47",true);
+						add_item("Pump Shotgun",true);
+						add_item("Sniper Rifle",true);
 						return;
 					}
 				}

@@ -77,17 +77,9 @@ Ped pPlayer, tmp_player_ped;
 Object tmp_object_loop;
 uint tmp_model;
 uint MODEL_dildo = 0x3675A6C3;
-//uint model, bone;
-//int tmp; 
-//int tmp_ped[2];	
-//Ped iPed;
 Ped driver;
 Vehicle ClosestCar, pveh;
-//Camera game_cam;
-//Object attachObj;
 Group Bgroup;
-//Vector3 aim_tmp, play_tmp;
-//float heading;
 float x, y, z;
 
 Ped gameped[8];
@@ -108,11 +100,13 @@ bool show_menu = false,
 	bikefly = false,
 	collision = false,
 	neverwanted = false,
-	dildogun = false,
+	//dildogun = false,
 	invisible = false,
 	freezecar = false,
 	fastreload = true,
+	superman = false;
 	lowerpveh = false,
+	onfire = false,
 	autoaim = false,
 	pprotection = false,
 	superrun = false,
