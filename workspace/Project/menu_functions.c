@@ -181,6 +181,27 @@ void delete_all_spawnguards(void){
 	if(DOES_GROUP_EXIST(Bgroup)){
 		for(i = 0;i <= 7; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
+				int nvid;
+				GET_NETWORK_ID_FROM_PED(gameped[i], &nvid);
+				SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
+				REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+				while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+					tick++;
+					REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+					if(tick >= 250){
+						print("Unable to delete one guard");
+						continue;
+					}
+					WAIT(0);
+				}
+				FORCE_CHAR_TO_DROP_WEAPON(gameped[i]);
+				WAIT(10);
+				DELETE_CHAR(&gameped[i]);
+				MARK_CHAR_AS_NO_LONGER_NEEDED(&gameped[i]);
+				if(DOES_CHAR_EXIST(gameped[i])){
+					print("Unable to delete guard");
+					return;
+				}
 				FORCE_CHAR_TO_DROP_WEAPON(gameped[i]);
 				WAIT(10);
 				DELETE_CHAR(&gameped[i]);
@@ -203,9 +224,27 @@ void delete_one_spawnguards(void){
 	if(DOES_GROUP_EXIST(Bgroup)){
 		for(i = 0;i <= 7; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
+				int nvid;
+				GET_NETWORK_ID_FROM_PED(gameped[i], &nvid);
+				SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
+				REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+				while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+					tick++;
+					REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+					if(tick >= 250){
+						print("Unable to delete guard");
+						return;
+					}
+					WAIT(0);
+				}
 				FORCE_CHAR_TO_DROP_WEAPON(gameped[i]);
 				WAIT(10);
 				DELETE_CHAR(&gameped[i]);
+				MARK_CHAR_AS_NO_LONGER_NEEDED(&gameped[i]);
+				if(DOES_CHAR_EXIST(gameped[i])){
+					print("Unable to delete guard");
+					return;
+				}
 				print("1 was Guard Deleted");					
 				return;
 			}
@@ -228,12 +267,25 @@ void arm_spawnguards(int weapon){
 	if(DOES_GROUP_EXIST(Bgroup)){
 		for(i = 0;i <= 7; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
+				int nvid;
+				GET_NETWORK_ID_FROM_PED(gameped[i], &nvid);
+				SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
+				REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+				while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+					tick++;
+					REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+					if(tick >= 250){
+						print("Unable to arm one guard");
+						continue;
+					}
+					WAIT(0);
+				}
 				UpdateWeaponOfPed(gameped[i], weapon);
 				SET_CURRENT_CHAR_WEAPON(gameped[i], weapon, true);
 			}
 			if((i >= 7) || (i > 6)) return;
 		}
-		print("Gave all guards specified weapon");			
+		print("Gave all available guards specified weapon");			
 		return;
 	}
 	return;
@@ -252,11 +304,24 @@ void tele_spawnguards(void){
 		GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
 		for(i = 0;i <= 7; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
+				int nvid;
+				GET_NETWORK_ID_FROM_PED(gameped[i], &nvid);
+				SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
+				REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+				while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+					tick++;
+					REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+					if(tick >= 250){
+						print("Unable to teleport one guard");
+						continue;
+					}
+					WAIT(0);
+				}
 				teleport_char(gameped[i], x, y, z);
 			}
 			if((i >= 7) || (i > 6)) return;
 		}
-	print("Teleported all guards to you");			
+	print("Teleported all available guards to you");			
 	return;
 	}
 	return;
