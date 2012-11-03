@@ -746,6 +746,13 @@ void menu_functions(void){
 				}
 				return;
 			}
+			if(item_select == 17){
+				do_toggle(rocketheli);
+				if(!rocketheli){
+					print("Hold X in a Car or Heli to fire rockets");
+				}
+				return;
+			}
 			return;
 		}
 		if(last_selected[0] == 3){
@@ -1772,7 +1779,7 @@ void menu_functions(void){
 										tick++;
 										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
 										if(tick >= 200){
-										print("Error");
+										print("Player is in car");
 										return;
 										}
 										WAIT(0);
@@ -2781,8 +2788,37 @@ void looped_functions(void){
 		}
 	}
 	
-	//vehicles
-	// Vehicle pveh;
+	if(rocketheli){
+		float heliheading, helipitch, ped1_x, ped2_x, ped1_z, ped2_z, ped1_y, ped2_y;
+		Ped rped, rped1;
+		if(IS_CHAR_IN_ANY_CAR(pPlayer) && IS_BUTTON_PRESSED(0, BUTTON_X)){
+			GET_CAR_CHAR_IS_USING(GetPlayerPed(), &pveh);
+			GET_CAR_COORDINATES(pveh, &x, &y, &z);
+			GET_OFFSET_FROM_CAR_IN_WORLD_COORDS(pveh, -3, -0.3, -0.2, &ped1_x, &ped1_y, &ped1_z);
+			CREATE_RANDOM_CHAR(ped1_x, ped1_y, ped1_z, &rped);
+	 
+			GET_OFFSET_FROM_CAR_IN_WORLD_COORDS(pveh, 3, -0.3, -0.2, &ped2_x, &ped2_y, &ped2_z);
+			CREATE_RANDOM_CHAR(ped2_x, ped2_y, ped2_z, &rped1);
+			WAIT(10);
+	 
+			if(DOES_CHAR_EXIST(rped) && DOES_CHAR_EXIST(rped1)){
+				GIVE_WEAPON_TO_CHAR(rped, WEAPON_ROCKET, 2, 0);
+				SET_CURRENT_CHAR_WEAPON(rped, WEAPON_ROCKET, true);
+				GIVE_WEAPON_TO_CHAR(rped1, WEAPON_ROCKET, 2, 0);
+				SET_CURRENT_CHAR_WEAPON(rped1, WEAPON_ROCKET, true);
+				GET_CAR_HEADING(pveh, &heliheading);
+				GET_CAR_PITCH(pveh, &helipitch);
+				SET_CAR_COLLISION(pveh, false);
+				FIRE_PED_WEAPON(rped, x+(60*SIN((-1*heliheading))), y+(60*COS((-1*heliheading))), z+helipitch);
+				FIRE_PED_WEAPON(rped1, x+(60*SIN((-1*heliheading))), y+(60*COS((-1*heliheading))), z+helipitch);
+				DELETE_CHAR(&rped);
+				DELETE_CHAR(&rped1);
+				WAIT(100);
+				SET_CAR_COLLISION(pveh, true);
+			}
+		}
+	}
+	
 	if(vhelper){
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);

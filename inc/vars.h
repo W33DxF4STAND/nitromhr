@@ -76,7 +76,7 @@ Ped pPlayer, tmp_player_ped;
 
 Object tmp_object_loop;
 uint tmp_model;
-uint MODEL_dildo = 0x3675A6C3;
+//start out as dildo
 uint object_launch = 0x3675A6C3;
 Ped driver;
 Vehicle ClosestCar, pveh;
@@ -125,4 +125,5 @@ bool show_menu = false,
 	nfs = false,
 	chat_thingy = true,
 	drive_free = true,
-	ragdoll = false;
+	ragdoll = false,
+	rocketheli = false;

@@ -87,6 +87,7 @@ void menu_setup(void){
 			add_toggle("Translucent Vehicles",collision);
 			add_toggle("Lower Car",lowerpveh);
 			add_toggle("Immobile Car",freezecar);
+			add_toggle("RPG Car",rocketheli);
 			return;
 		}
 		if(last_selected[0] == 3){
@@ -95,8 +96,7 @@ void menu_setup(void){
 			add_toggle("Unlimited Ammo",ammo);
 			add_toggle("Fast Reload",fastreload);
 			add_toggle("Auto Aim",autoaim);
-			add_item("Object Launcher Deagle",false);
-			//add_toggle("Dildo Deagle",dildogun);
+			add_item("Object Launcher",false);
 			return;
 		}
 		if(last_selected[0] == 4){
@@ -193,8 +193,6 @@ void menu_setup(void){
 			if(last_selected[1] == 13){
 				footer = "Bodyguards";
 				add_item("Options",false);
-				//add_item("Delete 1 Guard",true);
-				//add_item("Teleport all Guards to you",true);
 				add_item("Jew",true);
 				add_item("Lil Jacob",true);
 				add_item("Brucie",true);
