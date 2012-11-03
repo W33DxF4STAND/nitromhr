@@ -86,13 +86,16 @@ Ped gameped[8];
 
 char* footer;
 
+Object ObjectProjectile;
+Camera game_cam;
+float prjX, prjY, prjZ, prjT, gcX, gcY, gcZ, gcrotX, gcrotY, gcrotZ, objrotX, objrotZ;
+
 bool grenade_active;
 	
 bool in_paint = false;	
 
 uint tick;
 int i;
-int dildo;
 int nvid;
 
 bool show_menu = false,
@@ -100,7 +103,7 @@ bool show_menu = false,
 	bikefly = false,
 	collision = false,
 	neverwanted = false,
-	//dildogun = false,
+	dildogun = false,
 	invisible = false,
 	freezecar = false,
 	fastreload = true,
