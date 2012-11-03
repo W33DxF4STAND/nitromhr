@@ -197,11 +197,11 @@ void delete_all_spawnguards(void){
 				FORCE_CHAR_TO_DROP_WEAPON(gameped[i]);
 				WAIT(10);
 				DELETE_CHAR(&gameped[i]);
-				MARK_CHAR_AS_NO_LONGER_NEEDED(&gameped[i]);
 				if(DOES_CHAR_EXIST(gameped[i])){
 					print("Unable to delete guard");
 					return;
 				}
+				MARK_CHAR_AS_NO_LONGER_NEEDED(&gameped[i]);
 				FORCE_CHAR_TO_DROP_WEAPON(gameped[i]);
 				WAIT(10);
 				DELETE_CHAR(&gameped[i]);
@@ -240,11 +240,11 @@ void delete_one_spawnguards(void){
 				FORCE_CHAR_TO_DROP_WEAPON(gameped[i]);
 				WAIT(10);
 				DELETE_CHAR(&gameped[i]);
-				MARK_CHAR_AS_NO_LONGER_NEEDED(&gameped[i]);
 				if(DOES_CHAR_EXIST(gameped[i])){
 					print("Unable to delete guard");
 					return;
 				}
+				MARK_CHAR_AS_NO_LONGER_NEEDED(&gameped[i]);
 				print("1 was Guard Deleted");					
 				return;
 			}
@@ -1149,7 +1149,7 @@ void menu_functions(void){
 		if(last_selected[0] == 1){
 			if(last_selected[1] == 13){
 				if(item_select == 2){
-					spawnguards(MODEL_IG_LUIS, WEAPON_MP5);
+					spawnguards(MODEL_M_O_HASID_01, WEAPON_MP5);
 					return;
 				}
 				else if(item_select == 3){
@@ -1201,7 +1201,7 @@ void menu_functions(void){
 					return;
 				}
 				else if(item_select == 15){
-					spawnguards(MODEL_M_M_LAWYER_01, WEAPON_DEAGLE);
+					spawnguards(MODEL_M_Y_GMAF_HI_02, WEAPON_DEAGLE);
 					return;
 				}
 				else if(item_select == 16){

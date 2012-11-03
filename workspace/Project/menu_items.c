@@ -194,7 +194,7 @@ void menu_setup(void){
 				add_item("Options",false);
 				//add_item("Delete 1 Guard",true);
 				//add_item("Teleport all Guards to you",true);
-				add_item("Luis",true);
+				add_item("Jew",true);
 				add_item("Lil Jacob",true);
 				add_item("Brucie",true);
 				add_item("Nigga",true);
@@ -206,10 +206,10 @@ void menu_setup(void){
 				add_item("Army Guy",true);
 				add_item("Club",true);
 				add_item("Stripper",true);
-				add_item("Swat",true);
-				add_item("Lawyer",true);
+				add_item("Noose Guard",true);
+				add_item("Suited",true);
 				add_item("Thief",true);
-				add_item("Swat Sniper",true);
+				add_item("Noose Sniper",true);
 				return;
 			}
 		}
