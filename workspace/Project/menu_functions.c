@@ -170,6 +170,41 @@ void teleport_char(Ped pPed, float x,float y,float z){
 	REQUEST_COLLISION_AT_POSN(x,y,z);
 }
 
+void kill_spawnguards(void){
+	GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
+	uint test,guards;
+	GET_GROUP_SIZE(Bgroup, &test, &guards);	
+	if((guards <= 0) || (!DOES_GROUP_EXIST(Bgroup))){
+		print("No guards Exist or Available");
+		return;
+	}
+	if(DOES_GROUP_EXIST(Bgroup)){
+		for(i = 0;i <= 7; i++){
+			if(DOES_CHAR_EXIST(gameped[i])){
+				int nvid;
+				GET_NETWORK_ID_FROM_PED(gameped[i], &nvid);
+				SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
+				REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+				while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+					tick++;
+					REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+					if(tick >= 250){
+						print("Unable to arm one guard");
+						continue;
+					}
+					WAIT(0);
+				}
+				SET_CHAR_INVINCIBLE(gameped[i], false);
+				SET_CHAR_PROOFS(gameped[i], false, false, false, false, false);
+			}
+			if((i >= 7) || (i > 6)) return;
+		}
+		print("Gave all available guards specified weapon");			
+		return;
+	}
+	return;
+}
+
 void delete_all_spawnguards(void){
 	GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
 	uint test,guards;
@@ -1963,6 +1998,10 @@ void menu_functions(void){
 					}
 					else if(item_select == 3){
 						tele_spawnguards();
+						return;
+					}
+					else if(item_select == 4){
+						kill_spawnguards();
 						return;
 					}
 				}

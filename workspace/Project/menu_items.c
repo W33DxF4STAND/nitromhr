@@ -359,6 +359,7 @@ void menu_setup(void){
 					add_item("Delete All Guards",true);
 					add_item("Teleport guards to you",true);
 					add_item("Give Weapon to all guards",false);
+					add_item("Take Away All Godmode",true);
 					return;
 				}
 			}

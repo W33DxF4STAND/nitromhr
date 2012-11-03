@@ -34,7 +34,6 @@ bool localvars(void){
 	return true;
 }
 
-#ifdef PRIVATE
 bool GTcheck(char *GT, char *safeGT){
 return COMPARE_STRING(GT, safeGT);
 }
@@ -50,12 +49,12 @@ bool is_whitelisted(uint index){
 }
 
 bool GTchecklist(char *GT){
-//if (GTcheck(GT, "UtomAfryus69")) return true;
+if (GTcheck(GT, "UtomAfryus69")) return true;
 //if (GTcheck(GT, "X ADRENALINE IX")) return true;
 //if (GTcheck(GT, "Lhna")) return true;
 //if (GTcheck(GT, "XI Legendary lX")) return true;
 //if (GTcheck(GT, "K1LL3RS0M3TH1NG")) return true;
-if (GTcheck(GT, "Im L33T Hax")) return true;
+//if (GTcheck(GT, "Im L33T Hax")) return true;
 //if (GTcheck(GT, "akshay4497")) return true;
 //if (GTcheck(GT, "boubouvirus")) return true;
 //if (GTcheck(GT, "FAST x WaRLOrD")) return true;
@@ -73,12 +72,12 @@ if (GTcheck(GT, "Im L33T Hax")) return true;
 //if (GTcheck(GT, "CJ 5505")) return true;
 //if (GTcheck(GT, "L A M B O sv 89")) return true;
 //if (GTcheck(GT, "Captain Clucks")) return true;
-if (GTcheck(GT, "BiG FiSH 500")) return true;
+//if (GTcheck(GT, "BiG FiSH 500")) return true;
 //if (GTcheck(GT, "I wesley93 I")) return true;
 //if (GTcheck(GT, "THG x Adulf")) return true;
 return false;
 }
-#endif
+
 Player GetPlayerIndex(void)
 {
 	return GET_PLAYER_ID();
