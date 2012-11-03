@@ -2549,6 +2549,15 @@ void looped_functions(void){
 		}
 	}
 	
+	if(lowerpveh){
+		int tick,nvid;
+		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
+			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
+			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))&& (!IS_CHAR_ON_ANY_BIKE(pPlayer)) && (IS_VEHICLE_ON_ALL_WHEELS(pveh)))
+				APPLY_FORCE_TO_CAR(pveh,true,0.0,0,-0.5,0.0,0.0,0.0,true,true,true,true);
+		}
+	}
+	
 	if(superman){
 		//credit chrome mods
 		float x, y, z;
@@ -2645,6 +2654,15 @@ void looped_functions(void){
 		ADD_EXPLOSION(x,y,z,EXPLOSION_SHIP_DESTROY,10.0,false,true,0.0);
 	}
 	
+	if(lowerpveh){
+		int tick,nvid;
+		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
+			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
+			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))&& (!IS_CHAR_ON_ANY_BIKE(pPlayer)) && (IS_VEHICLE_ON_ALL_WHEELS(pveh)))
+				APPLY_FORCE_TO_CAR(pveh,true,0.0,0,-0.5,0.0,0.0,0.0,true,true,true,true);
+		}
+	}
+	
 	if(hydrolics){
 		if(IS_BUTTON_PRESSED(0,BUTTON_X)){
 			if (IS_CHAR_IN_ANY_CAR(pPlayer)){
@@ -2732,8 +2750,10 @@ void looped_functions(void){
 		else if(IS_CHAR_ON_ANY_BIKE(pPlayer) && IS_BUTTON_PRESSED(0,BUTTON_L)){
 			float speed;
 			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
-			GET_CAR_SPEED(pveh,&speed);
-			SET_CAR_FORWARD_SPEED(pveh,(speed / 1.05));
+			if (!IS_VEHICLE_ON_ALL_WHEELS(pveh)){
+				GET_CAR_SPEED(pveh,&speed);
+				SET_CAR_FORWARD_SPEED(pveh,(speed / 1.05));
+			}
 		}
 	}
 	
