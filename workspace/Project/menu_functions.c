@@ -387,7 +387,7 @@ void spawnguards(uint model, uint weapon){
 	return;
 }
 
-void dildo_aim(void){
+void object_aim(void){
 	GET_GAME_CAM(&game_cam);
 	if (IS_CAM_ACTIVE(game_cam)){
 		GET_CAM_ROT(game_cam, &gcrotX, &gcrotY, &gcrotZ);// used for setting the object rotation and for some weird trig stuff below
@@ -419,15 +419,15 @@ void dildo_aim(void){
 	}
 }
 
-void dildo_shoot(void){
+void object_shoot(void){
 	if(DOES_OBJECT_EXIST(ObjectProjectile)) DELETE_OBJECT(&ObjectProjectile);
 		
-	REQUEST_MODEL(MODEL_dildo);
-	while(!HAS_MODEL_LOADED(MODEL_dildo)) WAIT(0);
+	REQUEST_MODEL(object_launch);
+	while(!HAS_MODEL_LOADED(object_launch)) WAIT(0);
 		
-	CREATE_OBJECT(MODEL_dildo, prjX, prjY, prjZ, &ObjectProjectile, 1);
+	CREATE_OBJECT(object_launch, prjX, prjY, prjZ, &ObjectProjectile, 1);
 	SET_OBJECT_VISIBLE(ObjectProjectile, 0);
-	MARK_MODEL_AS_NO_LONGER_NEEDED(MODEL_dildo);
+	MARK_MODEL_AS_NO_LONGER_NEEDED(object_launch);
 	if(DOES_OBJECT_EXIST(ObjectProjectile)){
 		SET_OBJECT_QUATERNION(ObjectProjectile,0,0,0,0);
 		SET_OBJECT_INVINCIBLE(ObjectProjectile,false);
@@ -776,7 +776,7 @@ void menu_functions(void){
 				}
 				return;
 			}
-			
+			/**
 			else if(item_select == 5){
 				if(!dildogun){
 					print("~r~Dildos will now fire out the Desert Eagle");
@@ -784,6 +784,7 @@ void menu_functions(void){
 				do_toggle(dildogun);
 				return;
 			}
+			**/
 			
 		}
 		if(last_selected[0] == 4){
@@ -1317,6 +1318,29 @@ void menu_functions(void){
 					print("You have been given a pool stick");			
 				}
 				return;
+			}
+			if(last_selected[1] == 5){
+				if(item_select == 1){
+					if(!objectgun) print("Use the Deagle to shoot the selected object");
+					do_toggle(objectgun);
+					return;
+				}
+				else if(item_select == 2){
+					object_launch = 0x3675A6C3;
+					print("Object launcher will now shoot dildos");
+				}
+				else if(item_select == 3){
+					object_launch = 0x2718C626;
+					print("Object launcher will now shoot cubes");
+				}
+				else if(item_select == 4){
+					object_launch = 0x28E5DB2C;
+					print("Object launcher will now shoot tires");
+				}
+				else if(item_select == 5){
+					object_launch = 0xDB0061B6;
+					print("Object launcher will now shoot rocket bikes");
+				}
 			}
 		}
 		if(last_selected[0] == 5){
@@ -2572,12 +2596,12 @@ void looped_functions(void){
 	SET_CHAR_INVINCIBLE(pPlayer,godmode);
 	
 
-	if(dildogun){
+	if(objectgun){
 		int wep;
 		GET_CURRENT_CHAR_WEAPON(pPlayer, &wep);
 		if((IS_CHAR_SHOOTING(pPlayer)) && (wep == WEAPON_DEAGLE) && (!IS_CHAR_IN_ANY_CAR(pPlayer))){
-			dildo_aim();
-			dildo_shoot();
+			object_aim();
+			object_shoot();
 		}
 	}
 	
@@ -2591,7 +2615,7 @@ void looped_functions(void){
 	}
 	
 	if(superman){
-		//credit chrome mods
+		//credit chrome mods for idea
 		float x, y, z;
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 			GET_CAR_CHAR_IS_USING(pPlayer, &pveh);

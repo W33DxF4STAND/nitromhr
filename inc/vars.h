@@ -77,6 +77,7 @@ Ped pPlayer, tmp_player_ped;
 Object tmp_object_loop;
 uint tmp_model;
 uint MODEL_dildo = 0x3675A6C3;
+uint object_launch = 0x3675A6C3;
 Ped driver;
 Vehicle ClosestCar, pveh;
 Group Bgroup;
@@ -103,7 +104,7 @@ bool show_menu = false,
 	bikefly = false,
 	collision = false,
 	neverwanted = false,
-	dildogun = false,
+	objectgun = false,
 	invisible = false,
 	freezecar = false,
 	fastreload = true,

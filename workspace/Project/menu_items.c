@@ -95,7 +95,8 @@ void menu_setup(void){
 			add_toggle("Unlimited Ammo",ammo);
 			add_toggle("Fast Reload",fastreload);
 			add_toggle("Auto Aim",autoaim);
-			add_toggle("Dildo Deagle",dildogun);
+			add_item("Object Launcher Deagle",false);
+			//add_toggle("Dildo Deagle",dildogun);
 			return;
 		}
 		if(last_selected[0] == 4){
@@ -243,6 +244,15 @@ void menu_setup(void){
 				add_item("Rocket Launcer",true);
 				add_item("Baseball Bat",true);
 				add_item("Pool Stick",true);
+				return;
+			}
+			if(last_selected[1] == 5){
+				footer = "Object launcher";
+				add_toggle("Object Launcher",objectgun);
+				add_item("Shoot Dildos",true);
+				add_item("Shoot Cubes",true);
+				add_item("Shoot Tires",true);
+				add_item("Shoot Rocket Bikes",true);
 				return;
 			}
 		}
