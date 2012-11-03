@@ -316,7 +316,8 @@ void menu_setup(void){
 					add_item("Freeze",true);
 					add_item("Burn",true);
 					add_item("Hippo",true);
-					add_item("Guard Hitlist",true);
+					//add_item("Guard Hitlist",true);
+					add_item("Bodyguards",false);
 					return;
 				}
 			}
@@ -484,6 +485,12 @@ void menu_setup(void){
 						add_item("Vehicle Helper",true);
 						add_item("Speed Boost",true);
 						add_item("Speed Brake",true);
+						return;
+					}
+					if(last_selected[3] == 13){
+						footer = players[(last_selected[2] - 2)].gamertag;
+						add_item("Order to Kill",true);
+						add_item("Recruit",true);
 						return;
 					}
 				}

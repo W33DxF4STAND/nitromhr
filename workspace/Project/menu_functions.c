@@ -175,7 +175,7 @@ void delete_all_spawnguards(void){
 	uint test,guards;
 	GET_GROUP_SIZE(Bgroup, &test, &guards);	
 	if((guards <= 0) || (!DOES_GROUP_EXIST(Bgroup))){
-		print("No guards exist or Available");
+		print("No guards Exist or Available");
 		return;
 	}
 	if(DOES_GROUP_EXIST(Bgroup)){
@@ -218,7 +218,7 @@ void delete_one_spawnguards(void){
 	uint test,guards;
 	GET_GROUP_SIZE(Bgroup, &test, &guards);	
 	if((guards <= 0) || (!DOES_GROUP_EXIST(Bgroup))){
-		print("No guards exist or Available");
+		print("No guards Exist or Available");
 		return;
 	}
 	if(DOES_GROUP_EXIST(Bgroup)){
@@ -250,7 +250,7 @@ void delete_one_spawnguards(void){
 			}
 			if((i >= 7) || (i > 6)) return;
 		}
-	print("No guards exist or Available");			
+	print("No guards Exist or Available");			
 	return;
 	}
 	return;
@@ -261,7 +261,7 @@ void arm_spawnguards(int weapon){
 	uint test,guards;
 	GET_GROUP_SIZE(Bgroup, &test, &guards);	
 	if((guards <= 0) || (!DOES_GROUP_EXIST(Bgroup))){
-		print("No guards exist or Available");
+		print("No guards Exist or Available");
 		return;
 	}
 	if(DOES_GROUP_EXIST(Bgroup)){
@@ -296,7 +296,7 @@ void tele_spawnguards(void){
 	uint test,guards;
 	GET_GROUP_SIZE(Bgroup, &test, &guards);	
 	if((guards <= 0) || (!DOES_GROUP_EXIST(Bgroup))){
-		print("No guards exist or Available");
+		print("No guards Exist or Available");
 		return;
 	}
 	if(DOES_GROUP_EXIST(Bgroup)){
@@ -1784,32 +1784,6 @@ void menu_functions(void){
 					}
 					return;
 					}
-					else if(item_select == 13){
-						if(DOES_CHAR_EXIST(players[index].ped)){
-							GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
-							int test, guards;
-							GET_GROUP_SIZE(Bgroup, &test, &guards);	
-							if((guards <= 0) || (!DOES_GROUP_EXIST(Bgroup))){
-								print("No guards exist or Available");
-								return;
-							}
-							if(DOES_GROUP_EXIST(Bgroup)){
-								for(i = 0;i <= 7; i++){
-									if(DOES_CHAR_EXIST(gameped[i]) && DOES_CHAR_EXIST(players[index].ped)){
-										TASK_COMBAT(gameped[i], players[index].ped);
-										//print("Sent a Guard after Player");
-										//return;
-										if((i >= 7) || (i == 7) || (i > 6)){
-											print("Sent all Guards after the Player");
-											return;
-										}
-									}
-								}
-							}
-						}
-						print("Sent all Guards after the Player");
-						return;
-					}
 				}
 			}
 		}
@@ -2478,6 +2452,64 @@ void menu_functions(void){
 							return;
 						}
 						return;
+					}
+					if(last_selected[3] == 13){
+						uint index = (last_selected[2] - 2);
+						if(item_select == 1){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
+								int test, guards;
+								GET_GROUP_SIZE(Bgroup, &test, &guards);	
+								if((guards <= 0) || (!DOES_GROUP_EXIST(Bgroup))){
+									print("No guards Exist or Available");
+									return;
+								}
+								if(DOES_GROUP_EXIST(Bgroup)){
+									for(i = 0;i <= 7; i++){
+										if(DOES_CHAR_EXIST(gameped[i]) && DOES_CHAR_EXIST(players[index].ped)){
+											int nvid;
+											GET_NETWORK_ID_FROM_PED(gameped[i], &nvid);
+											SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
+											REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+											while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+												tick++;
+												REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+												if(tick >= 250){
+													print("Unable to arm one guard");
+													continue;
+												}
+												WAIT(0);
+											}
+											TASK_COMBAT(gameped[i], players[index].ped);
+											if((i >= 7) || (i == 7) || (i > 6)){
+												print("Sent all Guards after the Player");
+												return;
+											}
+										}
+									}
+								}
+							}
+							print("Sent all Guards after the Player");
+							return;
+						}
+						else if(item_select == 2){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
+								int test, guards;
+								GET_GROUP_SIZE(Bgroup, &test, &guards);	
+								if((guards <= 0) || (!DOES_GROUP_EXIST(Bgroup))){
+									print("No guards Exist or Available");
+									return;
+								}
+								if(DOES_GROUP_EXIST(Bgroup)){
+									SET_GROUP_MEMBER(Bgroup, players[index].ped);
+									print("Recruited player");
+									return;
+								}
+							}
+							print("No guards Exist or Available");
+							return;
+						}
 					}
 				}
 			}
