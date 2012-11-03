@@ -2603,16 +2603,20 @@ void looped_functions(void){
 	 
 		// For ajusting AXIS
 		if(IS_BUTTON_PRESSED(0,DPAD_DOWN)){
-			teleport_char(pPlayer, x + 9.5f, y, z);
+			teleport_char(pPlayer, x - 9.5f, y, z);
+			print_short("Back");
 		}
 		if(IS_BUTTON_PRESSED(0,DPAD_UP)){
-			teleport_char(pPlayer, x - 9.5f, y, z);
+			teleport_char(pPlayer, x + 9.5f, y, z);
+			print_short("Forward");
 		}
 		if(IS_BUTTON_PRESSED(0,DPAD_LEFT)){
 			teleport_char(pPlayer, x, y + 9.5f, z);
+			print_short("Left");
 		}
 		if(IS_BUTTON_PRESSED(0,DPAD_RIGHT)){
 			teleport_char(pPlayer, x, y - 9.5f, z);
+			print_short("Right");
 		}
 	 
 		// For ajusting Up/Down
