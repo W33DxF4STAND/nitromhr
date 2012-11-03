@@ -287,7 +287,7 @@ void spawnguards(uint model, uint weapon){
 			GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS(pPlayer, 0, 2, 0, &x, &y, &z);
 			
 			CREATE_CHAR(26, model, x,y,z, &gameped[i], true);
-			WAIT(200);
+			WAIT(100);
 			SET_CHAR_RANDOM_COMPONENT_VARIATION(gameped[i]);
 			SET_GROUP_MEMBER(Bgroup, gameped[i]);
 			SET_CHAR_NEVER_LEAVES_GROUP(gameped[i], true);
@@ -1320,6 +1320,7 @@ void menu_functions(void){
 					uint i;
 					if(item_select == 1){
 						for(i = 0;i <= player_loop;i++){
+							if(is_whitelisted(i)) continue;
 							if(DOES_CHAR_EXIST(players[i].ped)){
 								REMOVE_ALL_CHAR_WEAPONS(players[i].ped);
 								WAIT(10);
@@ -1340,6 +1341,7 @@ void menu_functions(void){
 					}
 					else if(item_select == 2){
 						for(i = 0;i <= player_loop;i++){
+							if(is_whitelisted(i)) continue;
 							if(DOES_CHAR_EXIST(players[i].ped)){
 								REMOVE_ALL_CHAR_WEAPONS(players[i].ped);
 								WAIT(10);
@@ -1350,6 +1352,7 @@ void menu_functions(void){
 					}
 					else if(item_select == 3){
 						for(i = 0;i <= player_loop;i++){
+							if(is_whitelisted(i)) continue;
 							if(DOES_CHAR_EXIST(players[i].ped)){
 								GET_CHAR_COORDINATES(players[i].ped,&x,&y,&z);
 								ADD_EXPLOSION(x,y,z,EXPLOSION_SHIP_DESTROY,10.0,true,false,0.7);
@@ -1361,6 +1364,7 @@ void menu_functions(void){
 					}
 					else if(item_select == 4){
 						for(i = 0;i <= player_loop;i++){
+							if(is_whitelisted(i)) continue;
 							if(DOES_CHAR_EXIST(players[i].ped)){
 								START_CHAR_FIRE(players[i].ped);
 								WAIT(10);
@@ -1371,6 +1375,7 @@ void menu_functions(void){
 					}
 					else if(item_select == 5){
 						for(i = 0;i <= player_loop;i++){
+							if(is_whitelisted(i)) continue;
 							if(DOES_CHAR_EXIST(players[i].ped)){
 								Object otmp;
 								CREATE_OBJECT(0x1B42315D,0.0,0.0,0.0,&otmp,true);
@@ -1384,6 +1389,7 @@ void menu_functions(void){
 					}
 					else if(item_select == 6){
 						for(i = 0;i <= player_loop;i++){
+							if(is_whitelisted(i)) continue;
 							if(DOES_CHAR_EXIST(players[i].ped)){
 								if(IS_CHAR_IN_ANY_CAR(players[i].ped)){
 									// Vehicle pveh;
@@ -1414,6 +1420,7 @@ void menu_functions(void){
 						GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
 						FREEZE_CHAR_POSITION(pPlayer,true);
 						for(i = 0;i <= player_loop;i++){
+							if(is_whitelisted(i)) continue;
 							if(DOES_CHAR_EXIST(players[i].ped)){
 								if(IS_CHAR_IN_ANY_CAR(players[i].ped)){
 									teleport_char(players[i].ped,x,y,z);
@@ -1428,6 +1435,7 @@ void menu_functions(void){
 					}
 					else if(item_select == 8){
 						for(i = 0;i <= player_loop;i++){
+							if(is_whitelisted(i)) continue;
 							if(DOES_CHAR_EXIST(players[i].ped)){
 								if(IS_CHAR_IN_ANY_CAR(players[i].ped)){
 									teleport_char(players[i].ped,-1079.8,-469.7,2.62);
@@ -1440,17 +1448,19 @@ void menu_functions(void){
 					}
 					else if(item_select == 9){
 						for(i = 0;i <= player_loop;i++){
+							if(is_whitelisted(i)) continue;
 							if(DOES_CHAR_EXIST(players[i].ped)){
-							REMOVE_ALL_CHAR_WEAPONS(players[i].ped);
-							WAIT(10);
-							GIVE_WEAPON_TO_CHAR(players[i].ped,WEAPON_ROCKET,AMMO_MAX,false);
-							print("Everyone should freeze when aiming weapon");
-							return;
+								REMOVE_ALL_CHAR_WEAPONS(players[i].ped);
+								WAIT(10);
+								GIVE_WEAPON_TO_CHAR(players[i].ped,WEAPON_ROCKET,AMMO_MAX,false);
+								print("Everyone should freeze when aiming weapon");
+								return;
 							}
 						}	   
 					}
 					else if(item_select == 10){
 						for(i = 0;i <= player_loop;i++){
+							if(is_whitelisted(i)) continue;
 							if(DOES_CHAR_EXIST(players[i].ped)){
 							if(IS_CHAR_IN_ANY_CAR(players[i].ped)){
 								int pveh,nvid,tick;

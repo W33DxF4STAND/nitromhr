@@ -173,6 +173,9 @@ void menu_setup(void){
 					add_item("All Players",false);
 					for(i = 0;i <= player_count;i++){
 						if(players[i].connected)
+							#ifndef PRIVATE
+							if(!is_whitelisted(i))
+							#endif
 							add_item(players[i].gamertag,false);
 					}
 					return;

@@ -14,11 +14,11 @@
 #define MENU_AUTHOR "Emmanuel Utomi - UtomAfryus69"
 
 #include <natives.h>
+#include <vars.h>
 #include <common.h>
 #include <consts.h>
 #include <types.h>
 #include <strings.h>
-#include <vars.h>
 
 #ifdef FRENCH
 #include "menu_items_french.c"
