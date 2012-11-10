@@ -133,6 +133,7 @@ void menu_setup(void){
 			add_item("Get name of host",true);
 			add_toggle("Modder Protection",modderprotect);
 			add_item("Unlock All Achievements",true);
+			add_item("Clear Nearest Objects",true);
 			return;
 		}
 	}

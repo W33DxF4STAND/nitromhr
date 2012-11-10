@@ -972,6 +972,24 @@ void menu_functions(void){
 				print("Unlocked All Achievements");
 				return;
 			}
+			if(item_select == 11){
+				int i, count = 0, RADIUS = 500;
+				Object nObj;
+				float px, py, pz;
+				GET_CHAR_COORDINATES(GetPlayerPed(), &px, &py, &pz);
+				for(i;i<1000;i++){
+					GET_OBJECT_FROM_NETWORK_ID(i, &nObj);
+					if(DOES_OBJECT_EXIST(nObj)){
+						GET_CHAR_COORDINATES(GetPlayerPed(), &px, &py, &pz);
+						if(IS_OBJECT_IN_AREA_3D(nObj, px + RADIUS, py + RADIUS, pz + RADIUS, px - RADIUS, py - RADIUS, pz - RADIUS, false)){
+							while (!REQUEST_CONTROL_OF_NETWORK_ID(i) && count < 2000){count++;WAIT(0);}
+								if(HAS_CONTROL_OF_NETWORK_ID(i))DELETE_OBJECT(&nObj);
+						}
+					}
+				}
+				print("All Objects Have Been Deleted Off Player");
+				return;
+			}
 		}
 	}
 	if(menu_level == 2){
@@ -2575,6 +2593,16 @@ void looped_functions(void){
 	//player options
 	SET_CHAR_INVINCIBLE(pPlayer,godmode);
 	
+	if(ammo){
+		if(IS_CHAR_SHOOTING(pPlayer)){
+			uint weapon,ammo;
+			GET_CURRENT_CHAR_WEAPON(pPlayer,&weapon);
+			if(weapon != WEAPON_GRENADE && weapon != WEAPON_MOLOTOV){
+				GET_MAX_AMMO_IN_CLIP(pPlayer,weapon,&ammo);
+				SET_AMMO_IN_CLIP(pPlayer,weapon,ammo);
+			}
+		}
+	}
 
 	if(objectgun){
 		int wep;
@@ -2599,7 +2627,6 @@ void looped_functions(void){
 					SET_CHAR_AMMO(pPlayer, PlayerWep, MaxAmmo);
 					SET_AMMO_IN_CLIP(pPlayer, PlayerWep, ClipMax);
 					GET_PED_BONE_POSITION(pPlayer,BONE_RIGHT_HAND,100000000.0,0.0,0.0,&rapid);
-					FIRE_PED_WEAPON(pPlayer, rapid.x,rapid.y,rapid.z);
 					FIRE_PED_WEAPON(pPlayer, rapid.x,rapid.y,rapid.z);
 					FIRE_PED_WEAPON(pPlayer, rapid.x,rapid.y,rapid.z);
 				}
@@ -2768,7 +2795,7 @@ void looped_functions(void){
 			GET_CAR_SPEED(pveh,&speed);
 			SET_CAR_FORWARD_SPEED(pveh,(speed * 1.05));
 		}
-		else if(IS_CHAR_ON_ANY_BIKE(pPlayer) && IS_BUTTON_PRESSED(0,BUTTON_L)){
+		if(IS_CHAR_ON_ANY_BIKE(pPlayer) && IS_BUTTON_PRESSED(0,BUTTON_L)){
 			float speed;
 			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 			if (!IS_VEHICLE_ON_ALL_WHEELS(pveh)){
@@ -2788,7 +2815,7 @@ void looped_functions(void){
 					GET_CAR_SPEED(pveh,&speed);
 					SET_CAR_FORWARD_SPEED(pveh,(speed * 1.02));
 				}
-				else if(IS_BUTTON_JUST_PRESSED(0,BUTTON_L)){
+				if(IS_BUTTON_JUST_PRESSED(0,BUTTON_L)){
 					GET_CAR_SPEED(pveh,&speed);
 					SET_CAR_FORWARD_SPEED(pveh,(speed / 6));
 				}
@@ -2798,22 +2825,10 @@ void looped_functions(void){
 					GET_CAR_SPEED(pveh,&speed);
 					SET_CAR_FORWARD_SPEED(pveh,(speed * 1.02));
 				}
-				else if(IS_BUTTON_JUST_PRESSED(0,BUTTON_L)){
+				if(IS_BUTTON_JUST_PRESSED(0,BUTTON_L)){
 					GET_CAR_SPEED(pveh,&speed);
 					SET_CAR_FORWARD_SPEED(pveh,(speed / 6));
 				}
-			}
-		}
-	}
-	
-	//weapons
-	if(ammo){
-		if(IS_CHAR_SHOOTING(pPlayer)){
-			uint weapon,ammo;
-			GET_CURRENT_CHAR_WEAPON(pPlayer,&weapon);
-			if(weapon != WEAPON_GRENADE && weapon != WEAPON_MOLOTOV){
-				GET_MAX_AMMO_IN_CLIP(pPlayer,weapon,&ammo);
-				SET_AMMO_IN_CLIP(pPlayer,weapon,ammo);
 			}
 		}
 	}

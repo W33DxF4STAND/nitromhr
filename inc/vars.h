@@ -128,3 +128,4 @@ bool show_menu = false,
 	chat_thingy = true,
 	drive_free = true,
 	ragdoll = false;
+ 
