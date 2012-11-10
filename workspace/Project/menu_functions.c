@@ -1899,7 +1899,7 @@ void menu_functions(void){
 								SET_OBJECT_LIGHTS(lights, true);
 								SET_OBJECT_VISIBLE(lights, true);
 								SET_OBJECT_INVINCIBLE(lights, 1);
-								print("Added Green Neons");
+								print("Added Yellow Neons");
 								return;
 							}
 							else{
@@ -1988,7 +1988,7 @@ void menu_functions(void){
 							SET_OBJECT_LIGHTS(lights, true);
 							SET_OBJECT_VISIBLE(lights, true);
 							SET_OBJECT_INVINCIBLE(lights, 1);
-							print("Added Purple Neons");
+							print("Added Pink Neons");
 							return;
 						}
 					}
@@ -2306,7 +2306,104 @@ void menu_functions(void){
 							}
 							return;
 						}
+						else if(item_select == 8){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								if(IS_CHAR_IN_ANY_CAR(pPlayer)){
+									if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
+										if((!IS_CHAR_IN_ANY_BOAT(players[index].ped)) && (!IS_CHAR_IN_ANY_HELI(players[index].ped))){
+											float x,y,z,heading;
+											int pveh,paveh,nvid,tick;
+											GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
+											GET_CAR_CHAR_IS_USING(pPlayer,&paveh);
+											GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
+											REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+											while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+												tick++;
+												REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+												if(tick >= 200){
+													print("Error");
+													return;
+												}
+												WAIT(0);
+											}      
+											if(!IS_CAR_ATTACHED(pveh)){
+												SET_CHAR_VISIBLE(pPlayer, false);
+												SET_CAR_VISIBLE(paveh, false);
+												GET_CAR_HEADING(pveh,&heading);
+												GET_CHAR_COORDINATES(players[index].ped,&x,&y,&z);
+												SET_CAR_HEADING(paveh,heading);
+												teleport_char(pPlayer,x,y,z);
+												FREEZE_CAR_POSITION(pveh,true);
+												ATTACH_CAR_TO_CAR(pveh,paveh,0,0,0,-0.3,0,0,0);
+												LOCK_CAR_DOORS(paveh,4);
+												LOCK_CAR_DOORS(pveh,4);
+												print_long("Players vehicle now under your control. Press again to ~r~disable");
+												return;
+											}
+											else if(IS_CAR_ATTACHED(pveh)){
+												SET_CHAR_VISIBLE(pPlayer, true);
+												SET_CAR_VISIBLE(paveh, true);
+												LOCK_CAR_DOORS(paveh,1);
+												LOCK_CAR_DOORS(pveh,1);
+												FREEZE_CAR_POSITION(pveh,false);
+												DETACH_CAR(pveh);
+												print("Players vehicle no longer under control");
+												return;
+											}
+										}
+										else print("Player must be in a car or bike");
+									}
+									else print("Player not in Vehicle");
+								}
+								else print("You are not in a Vehicle");
+							}
+							return;
+						}
 						return;
+					}
+					if(last_selected[3] == 12){
+						uint index = (last_selected[2] - 2);
+						if(item_select == 1){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								Object otmp;
+								CREATE_OBJECT(0x1B42315D,0.0,0.0,0.0,&otmp,true);
+								ATTACH_OBJECT_TO_PED(otmp,players[index].ped,0,0.0,0.0,-0.11,0.0,0.0,3.0,false);
+								WAIT(10);
+								print("Attached Hippo to Player");
+							}
+							return;
+						}
+						else if(item_select == 2){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								Object otmp;
+								uint cubes[6],rand;
+
+								cubes[0] = 0x2718C626; //Red
+								cubes[1] = 0xDD28B247; //Blue
+								cubes[2] = 0xCCEA11CA; //Yellow
+								cubes[3] = 0xBB1F6E71; //Green 
+								cubes[4] = 0xA6E545FD; //Purple
+								cubes[5] = 0x5C5030D4; //Orange
+
+								GENERATE_RANDOM_INT_IN_RANGE(0,5,&rand);
+
+								CREATE_OBJECT(cubes[rand],0.0,0.0,0.0,&otmp,true);
+								ATTACH_OBJECT_TO_PED(otmp,players[index].ped,0x4B5,0.0,0.0,0.0,0.0,0.0,3.0,false);
+								WAIT(10);
+								print("Attached Cube to Player");
+							}
+							return;
+						}
+						else if(item_select == 3){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								Object otmp;
+								CREATE_OBJECT(0xB570F614,0.0,0.0,0.0,&otmp,true);
+								ATTACH_OBJECT_TO_PED(otmp,players[index].ped,0,0,.25,-.50,-1.55,3.10,0,0);
+								WAIT(10);
+								print("Attached Dick to Player");
+							}
+							return;
+						}
 					}
 					if(last_selected[3] == 13){
 						uint index = (last_selected[2] - 2);

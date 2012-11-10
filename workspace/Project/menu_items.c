@@ -307,14 +307,14 @@ void menu_setup(void){
 					add_item("Remove Weapons",true);
 					add_toggle("Moddder Protection",players[tmp].mprotection);
 					add_toggle("Chronicle",players[tmp].force);
-					add_item("Teleport",false);
-					add_item("Vehicle",false);
+					add_item("Teleports",false);
+					add_item("Vehicles",false);
 					add_item("Nuke",true);
 					add_item("Taser",true);
 					add_item("Kick",true);
 					add_item("Freeze",true);
 					add_item("Burn",true);
-					add_item("Hippo",true);
+					add_item("Objects",false);
 					add_item("Bodyguards",false);
 					return;
 				}
@@ -484,6 +484,14 @@ void menu_setup(void){
 						add_item("Vehicle Helper",true);
 						add_item("Speed Boost",true);
 						add_item("Speed Brake",true);
+						add_item("Gain/Lose Control",true);
+						return;
+					}
+					if(last_selected[3] == 12){
+						footer = players[(last_selected[2] - 2)].gamertag;
+						add_item("Hippo",true);
+						add_item("Cube",true);
+						add_item("Dick",true);
 						return;
 					}
 					if(last_selected[3] == 13){
@@ -507,6 +515,7 @@ void menu_setup(void){
 						add_item("AK47",true);
 						add_item("Pump Shotgun",true);
 						add_item("Sniper Rifle",true);
+						add_item("MP5",true);
 						return;
 					}
 				}
