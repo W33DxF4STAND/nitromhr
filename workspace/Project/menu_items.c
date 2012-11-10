@@ -96,7 +96,7 @@ void menu_setup(void){
 			add_toggle("Fast Reload",fastreload);
 			add_toggle("Auto Aim",autoaim);
 			add_item("Object Launcher",false);
-			add_toggle("3 Round Burst",burstfire);
+			add_toggle("RPG 3 Round Burst",burstfire);
 			return;
 		}
 		if(last_selected[0] == 4){
@@ -231,6 +231,7 @@ void menu_setup(void){
 			if(last_selected[1] == 5){
 				footer = "Object launcher";
 				add_toggle("Object Launcher - Glock",objectgun);
+				add_toggle("Delete last object every shot",del_objgun);
 				add_item("Shoot Dildos",true);
 				add_item("Shoot Red Cubes",true);
 				add_item("Shoot Blue Cubes",true);
