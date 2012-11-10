@@ -86,6 +86,7 @@ void menu_setup(void){
 			add_toggle("Translucent Vehicles",collision);
 			add_toggle("Lower Car",lowerpveh);
 			add_toggle("Immobile Car",freezecar);
+			add_item("Kick Players out of Car",true);
 			return;
 		}
 		if(last_selected[0] == 3){

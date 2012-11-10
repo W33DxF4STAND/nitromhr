@@ -769,6 +769,45 @@ void menu_functions(void){
 				}
 				return;
 			}
+			if(item_select == 17){
+				int pveh,driver;
+				float h, s;
+				uint model;
+				int color1, color2, color3, color4;
+				if(IS_CHAR_IN_ANY_CAR(pPlayer)){
+					GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
+					GET_CAR_MODEL(pveh, &model);
+					GET_CAR_COLOURS(pveh, &color1, &color2);
+					GET_EXTRA_CAR_COLOURS(pveh, &color3, &color4);
+					bool speed = false;
+					REQUEST_MODEL(model);
+					while(!HAS_MODEL_LOADED(model)) WAIT(0);
+					GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
+					GET_CHAR_HEADING(pPlayer,&h);
+					GET_CAR_SPEED(pveh,&s);
+					speed = true;
+					GET_DRIVER_OF_CAR(pveh,&driver);
+					WARP_CHAR_FROM_CAR_TO_COORD(pPlayer,x,y,z);
+					if(!DOES_CHAR_EXIST(driver) || pPlayer == driver || !IS_NETWORK_SESSION()){
+						DELETE_CAR(&pveh);
+						MARK_CAR_AS_NO_LONGER_NEEDED(&pveh);
+					}
+					CREATE_CAR(model,x,y,z,&pveh,true);
+					MARK_MODEL_AS_NO_LONGER_NEEDED(model);
+					CHANGE_CAR_COLOUR(pveh, color1, color2);
+					GET_EXTRA_CAR_COLOURS(pveh, color3, color4);
+					SET_VEHICLE_DIRT_LEVEL(pveh, 0);
+					WASH_VEHICLE_TEXTURES(pveh, 255);
+					SET_CAR_ENGINE_ON(pveh,true,true);
+					WARP_CHAR_INTO_CAR(pPlayer,pveh);
+					SET_CAR_PROOFS(pveh, true, true, true, true, true);
+					SET_CAR_HEADING(pveh,h);
+					if(speed)
+						SET_CAR_FORWARD_SPEED(pveh,s);
+					return;
+				}
+				return;
+			}
 			return;
 		}
 		if(last_selected[0] == 3){
@@ -2219,7 +2258,7 @@ void menu_functions(void){
 										}
 										WAIT(0);
 									}
-									FREEZE_CAR_POSITION(pveh,true);
+								//	FREEZE_CAR_POSITION(pveh,true);
 									SET_CAR_CAN_BE_DAMAGED(pveh,true);
 									SET_CAR_CAN_BE_VISIBLY_DAMAGED(pveh,true);
 									SET_CAN_BURST_CAR_TYRES(pveh,true);
@@ -2228,6 +2267,7 @@ void menu_functions(void){
 									BURST_CAR_TYRE(pveh,4);
 									BURST_CAR_TYRE(pveh,5);
 									SET_ENGINE_HEALTH(pveh,0.0);
+									SET_NETWORK_ID_CAN_MIGRATE(nvid,false);
 									print("Made player's car Immobile");
 								}
 							}
