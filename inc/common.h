@@ -9,6 +9,32 @@
 #include "natives.h"
 #include "consts.h"
 
+uint ZeroKey;
+uint LV4 = -369856;
+int LV3 = 2874;
+int LV2 = -1062966144;
+int LV1 = 24;
+uint LV0;
+uint mainvar = -11;
+uint backupvar = -22;
+uint thirdvar = -33;
+
+typedef struct _Security{
+	bool ChecksPassed;
+} security;
+
+security Security[1];
+
+void securityChecks(void){
+	if(LV4 * LV3 == LV2){
+		LV0 = LV2 / LV1;//-44290256
+		ZeroKey = LV0 * 2;//-88580512
+		ZeroKey = ZeroKey * -2 - ZeroKey - ZeroKey - ZeroKey;
+		return ZeroKey;
+	}
+	return;
+}
+
 void print(char* text){
 CLEAR_PRINTS();//Clears already printed text
 PRINT_STRING_WITH_LITERAL_STRING("string",text,2000,true);
@@ -31,6 +57,12 @@ bool localvars(void){
 	if((mainvar + 2) != -9) return false;
 	if((backupvar + 2) != -20) return false;
 	if((thirdvar + 2) != -31) return false;
+	if(!COMPARE_STRING(MENU_AUTHOR,"Emmanuel Utomi - UtomAfryus69")) return false;
+	#ifdef PRIVATE
+	if(!COMPARE_STRING(MENU_TITLE,"XMC ModMenu v3 Private Edition")) return false;
+	#else
+	if(!COMPARE_STRING(MENU_TITLE,"XMC ModMenu v3 Public Edition")) return false;
+	#endif
 	return true;
 }
 
@@ -45,11 +77,15 @@ bool is_whitelisted(uint index){
 	if(COMPARE_STRING(players[index].gamertag,"Xx Qc 420 xX")) return true;
 	if(COMPARE_STRING(players[index].gamertag,"MOLDY CRACK")) return true;
 	if(COMPARE_STRING(players[index].gamertag,"FAST x WaRLOrD")) return true;
+	if(COMPARE_STRING(players[index].gamertag,"THG x Adulf")) return true;
+	if(COMPARE_STRING(players[index].gamertag,"MrJellyPig")) return true;
+	if(COMPARE_STRING(players[index].gamertag,"BiG FiSH 500")) return true;
 	return false;
 }
 
+
 bool GTchecklist(char *GT){
-if (GTcheck(GT, "UtomAfryus69")) return true;
+//if (GTcheck(GT, "UtomAfryus69")) return true;
 //if (GTcheck(GT, "X ADRENALINE IX")) return true;
 //if (GTcheck(GT, "Lhna")) return true;
 //if (GTcheck(GT, "XI Legendary lX")) return true;
@@ -69,7 +105,7 @@ if (GTcheck(GT, "UtomAfryus69")) return true;
 //if (GTcheck(GT, "Motions97")) return true;
 //if (GTcheck(GT, "MrJellyPig")) return true;
 //if (GTcheck(GT, "hazy larkinOO7")) return true;
-//if (GTcheck(GT, "CJ 5505")) return true;
+if (GTcheck(GT, "CJ 5505")) return true;
 //if (GTcheck(GT, "L A M B O sv 89")) return true;
 //if (GTcheck(GT, "Captain Clucks")) return true;
 //if (GTcheck(GT, "BiG FiSH 500")) return true;

@@ -66,7 +66,6 @@ void menu_setup(void){
 			add_toggle("Invisibility",invisible);
 			add_toggle("Burn",onfire);
 			add_item("Bodyguards",false);
-			add_toggle("Superman",superman);
 			return;
 		}
 		if(last_selected[0] == 2){
@@ -87,7 +86,6 @@ void menu_setup(void){
 			add_toggle("Translucent Vehicles",collision);
 			add_toggle("Lower Car",lowerpveh);
 			add_toggle("Immobile Car",freezecar);
-			add_toggle("RPG Car",rocketheli);
 			return;
 		}
 		if(last_selected[0] == 3){
@@ -135,22 +133,6 @@ void menu_setup(void){
 			add_item("Unlock All Achievements",true);
 			return;
 		}
-		/**
-		if(last_selected[0] == 6){
-			footer = "Mod Slots";
-			add_toggle("Mod Slot 1",mod1);
-			add_toggle("Mod Slot 2",mod2);
-			add_toggle("Mod Slot 3",mod3);
-			add_toggle("Mod Slot 4",mod4);
-			add_toggle("Mod Slot 5",mod5);
-			add_toggle("Mod Slot 6",mod6);
-			add_toggle("Mod Slot 7",mod7);
-			add_toggle("Mod Slot 8",mod8);
-			add_toggle("Mod Slot 9",mod9);
-			add_toggle("Mod Slot 10",mod10);
-			return;
-		}
-		**/
 	}
 	if(menu_level == 2){
 		if(last_selected[0] == 1){
@@ -225,7 +207,7 @@ void menu_setup(void){
 		}
 		if(last_selected[0] == 3){
 			if(last_selected[1] == 1){
-				footer = "Weapon Spawner";
+				footer = "Weapon Selector";
 				add_number("All Weapons",3);
 				add_item("TBOGT Weapons",false);
 				add_item("Grenades",true);
@@ -324,7 +306,6 @@ void menu_setup(void){
 					add_item("Freeze",true);
 					add_item("Burn",true);
 					add_item("Hippo",true);
-					//add_item("Guard Hitlist",true);
 					add_item("Bodyguards",false);
 					return;
 				}
@@ -499,7 +480,7 @@ void menu_setup(void){
 					if(last_selected[3] == 13){
 						footer = players[(last_selected[2] - 2)].gamertag;
 						add_item("Order to Kill",true);
-						add_item("Friendly",true);
+					//	add_item("Friendly",true);
 						return;
 					}
 				}

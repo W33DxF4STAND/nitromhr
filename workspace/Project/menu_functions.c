@@ -366,9 +366,7 @@ void spawnguards(uint model, uint weapon){
 	GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
 	if(!DOES_GROUP_EXIST(Bgroup)){
 		CREATE_GROUP(0, Bgroup, true);
-		SET_PLAYER_GROUP_TO_FOLLOW_ALWAYS(pPlayer, true);
 		SET_GROUP_LEADER(Bgroup, pPlayer);
-		SET_GROUP_SEPARATION_RANGE(Bgroup, 9999.9);
 		SET_GROUP_FORMATION(Bgroup, 2);
 	}	
 	uint test,guards;
@@ -455,7 +453,20 @@ void object_aim(void){
 }
 
 void object_shoot(void){
-	if(DOES_OBJECT_EXIST(ObjectProjectile)) DELETE_OBJECT(&ObjectProjectile);
+	if(DOES_OBJECT_EXIST(ObjectProjectile)){
+		GET_NETWORK_ID_FROM_OBJECT(ObjectProjectile, &nvid);
+		SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
+		REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+		while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+			tick++;
+			REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+			if(tick >= 250){
+				break;
+			}
+			WAIT(0);
+		}
+		DELETE_OBJECT(&ObjectProjectile);
+	}
 		
 	REQUEST_MODEL(object_launch);
 	while(!HAS_MODEL_LOADED(object_launch)) WAIT(0);
@@ -473,7 +484,7 @@ void object_shoot(void){
 		SET_OBJECT_COLLISION(ObjectProjectile, true);
 		WAIT(100);
 		SET_OBJECT_VISIBLE(ObjectProjectile, 1);
-		APPLY_FORCE_TO_OBJECT(ObjectProjectile, 1, 0.0, 90.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 1, 1);
+		APPLY_FORCE_TO_OBJECT(ObjectProjectile, 1, 0.0, 250.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 1, 1);
 	}
 }
 
@@ -511,8 +522,8 @@ void spawn_car(uint model){
 	}
 	CREATE_CAR(model,x,y,z,&pveh,true);
 	MARK_MODEL_AS_NO_LONGER_NEEDED(model);
-    CHANGE_CAR_COLOUR(pveh, 0, 0);
-	SET_EXTRA_CAR_COLOURS(pveh, 0, 0);
+    CHANGE_CAR_COLOUR(pveh, 133, 133);
+	SET_EXTRA_CAR_COLOURS(pveh, 133, 133);
     SET_VEHICLE_DIRT_LEVEL(pveh, 0);
     WASH_VEHICLE_TEXTURES(pveh, 255);
 	SET_CAR_ENGINE_ON(pveh,true,true);
@@ -610,29 +621,6 @@ void menu_functions(void){
 				}
 				else{
 					EXTINGUISH_CHAR_FIRE(pPlayer);
-				}
-				return;
-			}
-			if(item_select == 14){
-				do_toggle(superman);
-				if(superman){
-					REQUEST_ANIMS("misscar_sex");
-					while(!HAVE_ANIMS_LOADED("misscar_sex")) WAIT(0);
-					TASK_PLAY_ANIM_WITH_FLAGS(pPlayer,"m_handjob_intro_low","misscar_sex",8.0,0,0x20);
-					print_long("LB/RB - Up/Down  DPAD - Forward/Back/Left/Right");
-				}
-				else{
-					if(IS_CHAR_IN_ANY_CAR(pPlayer)){
-						GET_CAR_CHAR_IS_USING(pPlayer, &pveh);
-						FREEZE_CAR_POSITION(pveh, false);
-					}
-					else FREEZE_CHAR_POSITION(pPlayer, false);
-					SWITCH_PED_TO_RAGDOLL(pPlayer,20,30,false,false,false,false);
-					SWITCH_PED_TO_ANIMATED(pPlayer,true);
-					GIVE_PLAYER_RAGDOLL_CONTROL(GET_PLAYER_ID(),true);
-					WAIT(30);
-					SWITCH_PED_TO_ANIMATED(pPlayer,false);
-					GIVE_PLAYER_RAGDOLL_CONTROL(GET_PLAYER_ID(),false);
 				}
 				return;
 			}
@@ -781,13 +769,6 @@ void menu_functions(void){
 				}
 				return;
 			}
-			if(item_select == 17){
-				do_toggle(rocketheli);
-				if(!rocketheli){
-					print("Hold X in a Car or Heli to fire rockets");
-				}
-				return;
-			}
 			return;
 		}
 		if(last_selected[0] == 3){
@@ -818,16 +799,6 @@ void menu_functions(void){
 				}
 				return;
 			}
-			/**
-			else if(item_select == 5){
-				if(!dildogun){
-					print("~r~Dildos will now fire out the Desert Eagle");
-				}
-				do_toggle(dildogun);
-				return;
-			}
-			**/
-			
 		}
 		if(last_selected[0] == 4){
 			if(item_select == 1){
@@ -953,240 +924,6 @@ void menu_functions(void){
 				return;
 			}
 		}
-		/**
-		if(last_selected[0] == 6){
-			if(item_select == 1){
-				do_toggle(mod1);
-				if(mod1){
-					REQUEST_SCRIPT("xmcmod1");
-					while(!HAS_SCRIPT_LOADED("xmcmod1")){
-						tick++;
-						if(tick >= 4000){
-							print("Failed to load modslot");
-							mod1 = false;
-							return;
-						}
-						WAIT(0);
-					}
-					START_NEW_SCRIPT("xmcmod1",1024);
-					MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmcmod1");
-					return;
-				}
-				else{
-					TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmcmod1");
-					return;
-				}
-				return;
-			}
-			if(item_select == 2){
-				do_toggle(mod2);
-				if(mod2){
-					REQUEST_SCRIPT("xmcmod2");
-					while(!HAS_SCRIPT_LOADED("xmcmod2")){
-						tick++;
-						if(tick >= 4000){
-							print("Failed to load modslot");
-							mod2 = false;
-							return;
-						}
-						WAIT(0);
-					}
-					START_NEW_SCRIPT("xmcmod2",1024);
-					MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmcmod2");
-					return;
-				}
-				else{
-					TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmcmod2");
-					return;
-				}
-				return;
-			}
-			if(item_select == 3){
-				do_toggle(mod3);
-				if(mod3){
-					REQUEST_SCRIPT("xmcmod3");
-					while(!HAS_SCRIPT_LOADED("xmcmod3")){
-						tick++;
-						if(tick >= 4000){
-							print("Failed to load modslot");
-							mod3 = false;
-							return;
-						}
-						WAIT(0);
-					}
-					START_NEW_SCRIPT("xmcmod3",1024);
-					MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmcmod3");
-					return;
-				}
-				else{
-					TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmcmod3");
-					return;
-				}
-				return;
-			}
-			if(item_select == 4){
-				do_toggle(mod4);
-				if(mod4){
-					REQUEST_SCRIPT("xmcmod4");
-					while(!HAS_SCRIPT_LOADED("xmcmod4")){
-						tick++;
-						if(tick >= 4000){
-							print("Failed to load modslot");
-							mod4 = false;
-							return;
-						}
-						WAIT(0);
-					}
-					START_NEW_SCRIPT("xmcmod4",1024);
-					MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmcmod4");
-					return;
-				}
-				else{
-					TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmcmod4");
-					return;
-				}
-				return;
-			}
-			if(item_select == 5){
-				do_toggle(mod5);
-				if(mod5){
-					REQUEST_SCRIPT("xmcmod5");
-					while(!HAS_SCRIPT_LOADED("xmcmod5")){
-						tick++;
-						if(tick >= 4000){
-							print("Failed to load modslot");
-							mod5 = false;
-							return;
-						}
-						WAIT(0);
-					}
-					START_NEW_SCRIPT("xmcmod5",1024);
-					MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmcmod5");
-					return;
-				}
-				else{
-					TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmcmod5");
-					return;
-				}
-				return;
-			}
-			if(item_select == 6){
-				do_toggle(mod6);
-				if(mod6){
-					REQUEST_SCRIPT("xmcmod6");
-					while(!HAS_SCRIPT_LOADED("xmcmod6")){
-						tick++;
-						if(tick >= 4000){
-							print("Failed to load modslot");
-							mod6 = false;
-							return;
-						}
-						WAIT(0);
-					}
-					START_NEW_SCRIPT("xmcmod6",1024);
-					MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmcmod6");
-					return;
-				}
-				else{
-					TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmcmod6");
-					return;
-				}
-				return;
-			}
-			if(item_select == 7){
-				do_toggle(mod7);
-				if(mod7){
-					REQUEST_SCRIPT("xmcmod7");
-					while(!HAS_SCRIPT_LOADED("xmcmod7")){
-						tick++;
-						if(tick >= 4000){
-							print("Failed to load modslot");
-							mod7 = false;
-							return;
-						}
-						WAIT(0);
-					}
-					START_NEW_SCRIPT("xmcmod7",1024);
-					MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmcmod7");
-					return;
-				}
-				else{
-					TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmcmod7");
-					return;
-				}
-				return;
-			}
-			if(item_select == 8){
-				do_toggle(mod8);
-				if(mod8){
-					REQUEST_SCRIPT("xmcmod8");
-					while(!HAS_SCRIPT_LOADED("xmcmod8")){
-						tick++;
-						if(tick >= 4000){
-							print("Failed to load modslot");
-							mod8 = false;
-							return;
-						}
-						WAIT(0);
-					}
-					START_NEW_SCRIPT("xmcmod8",1024);
-					MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmcmod8");
-					return;
-				}
-				else{
-					TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmcmod8");
-					return;
-				}
-				return;
-			}
-			if(item_select == 9){
-				do_toggle(mod9);
-				if(mod9){
-					REQUEST_SCRIPT("xmcmod9");
-					while(!HAS_SCRIPT_LOADED("xmcmod9")){
-						tick++;
-						if(tick >= 4000){
-							print("Failed to load modslot");
-							mod9 = false;
-							return;
-						}
-						WAIT(0);
-					}
-					START_NEW_SCRIPT("xmcmod9",1024);
-					MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmcmod9");
-					return;
-				}
-				else{
-					TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmcmod9");
-					return;
-				}
-				return;
-			}
-			if(item_select == 10){
-				do_toggle(mod10);
-				if(mod10){
-					REQUEST_SCRIPT("xmcmod10");
-					while(!HAS_SCRIPT_LOADED("xmcmod10")){
-						tick++;
-						if(tick >= 4000){
-							print("Failed to load modslot");
-							mod10 = false;
-							return;
-						}
-						WAIT(0);
-					}
-					START_NEW_SCRIPT("xmcmod10",1024);
-					MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmcmod10");
-					return;
-				}
-				else{
-					TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmcmod10");
-					return;
-				}
-				return;
-			}
-		}
-		**/
 	}
 	if(menu_level == 2){
 		if(last_selected[0] == 1){
@@ -2000,7 +1737,7 @@ void menu_functions(void){
 						tele_spawnguards();
 						return;
 					}
-					else if(item_select == 4){
+					else if(item_select == 5){
 						kill_spawnguards();
 						return;
 					}
@@ -2515,7 +2252,7 @@ void menu_functions(void){
 										WAIT(0);
 									}
 									GET_CAR_SPEED(pveh,&speed);
-									SET_CAR_FORWARD_SPEED(pveh,(speed / 6));
+									SET_CAR_FORWARD_SPEED(pveh,0);
 									print("Braked Player's car");
 								}
 							}
@@ -2545,7 +2282,6 @@ void menu_functions(void){
 												tick++;
 												REQUEST_CONTROL_OF_NETWORK_ID(nvid);
 												if(tick >= 250){
-													print("Unable to arm one guard");
 													continue;
 												}
 												WAIT(0);
@@ -2562,6 +2298,7 @@ void menu_functions(void){
 							print("Sent all Guards after the Player");
 							return;
 						}
+						/**
 						else if(item_select == 2){
 							if(DOES_CHAR_EXIST(players[index].ped)){
 								GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
@@ -2580,6 +2317,7 @@ void menu_functions(void){
 							print("No guards Exist or Available");
 							return;
 						}
+						**/
 					}
 				}
 			}
@@ -2622,6 +2360,10 @@ void menu_functions(void){
 							arm_spawnguards(WEAPON_SNIPERRIFLE);
 							return;
 						}
+						else if(item_select == 10){
+							arm_spawnguards(WEAPON_MP5);
+							return;
+						}
 					}
 				}
 			}
@@ -2657,46 +2399,6 @@ void looped_functions(void){
 			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))&& (!IS_CHAR_ON_ANY_BIKE(pPlayer)) && (IS_VEHICLE_ON_ALL_WHEELS(pveh)))
 				APPLY_FORCE_TO_CAR(pveh,true,0.0,0,-0.3,0.0,0.0,0.0,true,true,true,true);
-		}
-	}
-	
-	if(superman){
-		//credit chrome mods for idea
-		float x, y, z;
-		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
-			GET_CAR_CHAR_IS_USING(pPlayer, &pveh);
-			FREEZE_CAR_POSITION(pveh, true);
-		}
-		else FREEZE_CHAR_POSITION(pPlayer, true);
-		
-		GET_CHAR_COORDINATES(pPlayer,&x, &y, &z);
-	 
-		// For ajusting AXIS
-		if(IS_BUTTON_PRESSED(0,DPAD_DOWN)){
-			teleport_char(pPlayer, x - 9.5f, y, z);
-			print_short("Back");
-		}
-		if(IS_BUTTON_PRESSED(0,DPAD_UP)){
-			teleport_char(pPlayer, x + 9.5f, y, z);
-			print_short("Forward");
-		}
-		if(IS_BUTTON_PRESSED(0,DPAD_LEFT)){
-			teleport_char(pPlayer, x, y + 9.5f, z);
-			print_short("Left");
-		}
-		if(IS_BUTTON_PRESSED(0,DPAD_RIGHT)){
-			teleport_char(pPlayer, x, y - 9.5f, z);
-			print_short("Right");
-		}
-	 
-		// For ajusting Up/Down
-		if(IS_BUTTON_PRESSED(0,R1)){
-			print_short("Up");
-			teleport_char(pPlayer, x, y, z + 1.5f);
-		}
-		if(IS_BUTTON_PRESSED(0,L1)){
-			print_short("Down");
-			teleport_char(pPlayer, x, y, z - 1.5f);
 		}
 	}
 	
@@ -2823,37 +2525,6 @@ void looped_functions(void){
 			else{
 				SWITCH_PED_TO_ANIMATED(pPlayer,false);
 				GIVE_PLAYER_RAGDOLL_CONTROL(GET_PLAYER_ID(),false);
-			}
-		}
-	}
-	
-	if(rocketheli){
-		float heliheading, helipitch, ped1_x, ped2_x, ped1_z, ped2_z, ped1_y, ped2_y;
-		Ped rped, rped1;
-		if(IS_CHAR_IN_ANY_CAR(pPlayer) && IS_BUTTON_PRESSED(0, BUTTON_X)){
-			GET_CAR_CHAR_IS_USING(GetPlayerPed(), &pveh);
-			GET_CAR_COORDINATES(pveh, &x, &y, &z);
-			GET_OFFSET_FROM_CAR_IN_WORLD_COORDS(pveh, -3, -0.3, -0.2, &ped1_x, &ped1_y, &ped1_z);
-			CREATE_RANDOM_CHAR(ped1_x, ped1_y, ped1_z, &rped);
-	 
-			GET_OFFSET_FROM_CAR_IN_WORLD_COORDS(pveh, 3, -0.3, -0.2, &ped2_x, &ped2_y, &ped2_z);
-			CREATE_RANDOM_CHAR(ped2_x, ped2_y, ped2_z, &rped1);
-			WAIT(10);
-	 
-			if(DOES_CHAR_EXIST(rped) && DOES_CHAR_EXIST(rped1)){
-				GIVE_WEAPON_TO_CHAR(rped, WEAPON_ROCKET, 2, 0);
-				SET_CURRENT_CHAR_WEAPON(rped, WEAPON_ROCKET, true);
-				GIVE_WEAPON_TO_CHAR(rped1, WEAPON_ROCKET, 2, 0);
-				SET_CURRENT_CHAR_WEAPON(rped1, WEAPON_ROCKET, true);
-				GET_CAR_HEADING(pveh, &heliheading);
-				GET_CAR_PITCH(pveh, &helipitch);
-				SET_CAR_COLLISION(pveh, false);
-				FIRE_PED_WEAPON(rped, x+(60*SIN((-1*heliheading))), y+(60*COS((-1*heliheading))), z+helipitch);
-				FIRE_PED_WEAPON(rped1, x+(60*SIN((-1*heliheading))), y+(60*COS((-1*heliheading))), z+helipitch);
-				DELETE_CHAR(&rped);
-				DELETE_CHAR(&rped1);
-				WAIT(100);
-				SET_CAR_COLLISION(pveh, true);
 			}
 		}
 	}

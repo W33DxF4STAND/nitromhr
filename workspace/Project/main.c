@@ -77,6 +77,12 @@ void main(void){
 
 	print_long("~b~Xmc ~b~Modmenu ~b~- ~g~Emmanuel ~g~Utomi ~b~AKA ~g~UtomAfryus69");
 	
+	securityChecks();
+	int hiddenGlobalInt = ZeroKey;
+
+	if(ZeroKey == hiddenGlobalInt) Security[1].ChecksPassed = true;
+	else Security[1].ChecksPassed = false;
+	
 	WAIT(100);
 	do{
 		WAIT(0);
@@ -109,5 +115,5 @@ void main(void){
 		}
 		else if(HAS_CONTROL_OF_NETWORK_ID(tmp2))
 			SET_NETWORK_ID_CAN_MIGRATE(tmp2,true);
-	} while(localvars);
+	} while(Security[1].ChecksPassed && ZeroKey == hiddenGlobalInt && localvars);
 }

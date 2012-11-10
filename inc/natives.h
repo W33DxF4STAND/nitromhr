@@ -15,12 +15,6 @@
 #include "types.h"
 #include "consts.h"
 
-//make sure script is run properly
-uint mainvar = -11;
-uint backupvar = -22;
-uint thirdvar = -33;
-// END
-
 //Begin Muskel's natives
 extern uint GET_HOST_ID(void);
 extern bool REQUEST_CONTROL_OF_NETWORK_ID(int netid);
