@@ -1214,6 +1214,10 @@ void menu_functions(void){
 					object_launch = 0x6066DF1D;
 					print("Object launcher will now shoot gumball machines");
 				}
+				else if(item_select == 13){
+					object_launch = 0xF4A206E4;
+					print("Object launcher will now shoot bowling pins");
+				}
 			}
 		}
 		if(last_selected[0] == 5){
@@ -1309,6 +1313,12 @@ void menu_functions(void){
 				}
 				if(item_select == 7){
 					create_throwable_object(0x8079978D);
+				}
+				if(item_select == 8){
+					create_throwable_object(0x3129B913);
+				}
+				if(item_select == 9){
+					create_throwable_object(0xF4A206E4);
 				}
 			}
 			if(last_selected[1] == 3){
@@ -2205,6 +2215,19 @@ void menu_functions(void){
 									else print("Player ain't in no vehicle!");
 									return;
 								}						
+							}
+							else if(item_select == 6){
+								if(DOES_CHAR_EXIST(players[index].ped)){
+									if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
+										teleport_char(players[index].ped,2175.3516,761.2235,30.0);
+										print("Player teleported to Airport");
+										return;
+									}
+									else{
+										print("Player ain't in no vehicle!");
+										return;
+									}
+								}
 							}
 						return;
 					}

@@ -242,6 +242,7 @@ void menu_setup(void){
 				add_item("Shoot Bricks",true);
 				add_item("Shoot Bins",true);
 				add_item("Shoot Dumpsters",true);
+				add_item("Shoot Bowling Pins",true);
 				return;
 			}
 		}
@@ -268,6 +269,8 @@ void menu_setup(void){
 				add_item("Grenades - that explode",true);
 				add_item("Rockets - that explode",true);
 				add_item("AK47",true);
+				add_item("Axe",true);
+				add_item("Bowling Pin",true);
 				return;
 			}
 			if(last_selected[1] == 3){
@@ -479,6 +482,7 @@ void menu_setup(void){
 						add_item("Teleport to You",true);
 						add_item("Teleport to Waypoint",true);
 						add_item("Teleport to Prison",true);
+						add_item("Teleport to Airport",true);
 						return;
 					}
 					if(last_selected[3] == 6){
