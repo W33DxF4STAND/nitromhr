@@ -985,7 +985,7 @@ void menu_functions(void){
 						}
 					}
 				}
-				print("All Objects Have Been Deleted Off Player");
+				print("Deleted all Near-by Objects");
 				return;
 			}
 		}

@@ -1,5 +1,5 @@
 //Leave undefined unless you know what your doing
-#define PRIVATE 
+//#define PRIVATE 
 #define ENGLISH
 //#define SPANISH
 //#define FRENCH

@@ -133,7 +133,7 @@ void menu_setup(void){
 			add_item("Get name of host",true);
 			add_toggle("Modder Protection",modderprotect);
 			add_item("Unlock All Achievements",true);
-			add_item("Clear Nearest Objects",true);
+			add_item("Clear Nearby Objects",true);
 			return;
 		}
 	}
@@ -285,7 +285,10 @@ void menu_setup(void){
 		if(last_selected[0] == 1){
 			if(last_selected[1] == 1){
 				if(last_selected[2] == 1){
-				#ifdef PRIVATE
+					#ifndef PRIVATE
+					print("Private version only");
+					return;
+					#endif
 					footer = "All Players";
 					add_item("Give Weapons & Armor",true);
 					add_item("Remove Weapons",true);
@@ -298,10 +301,6 @@ void menu_setup(void){
 					add_item("Freeze All Players",true);
 					add_item("Slingshot All Cars",true);
 					return;
-				#else
-				print("Private version only");
-				return;
-				#endif
 				}
 				else{
 					int tmp = players[(last_selected[2] - 2)].id;
@@ -337,6 +336,10 @@ void menu_setup(void){
 					return;
 				}
 				if(last_selected[2] == 2){
+					#ifndef PRIVATE
+					print("Private version only");
+					return;
+					#endif
 					footer = "Speech";
 					add_item("Thanks",true);
 					add_item("Scream",true);
