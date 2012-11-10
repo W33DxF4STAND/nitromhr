@@ -2347,8 +2347,8 @@ void menu_functions(void){
 										WAIT(0);
 									}
 									GET_CAR_SPEED(pveh,&speed);
-									SET_CAR_FORWARD_SPEED(pveh,0);
-									print("Braked Player's car");
+									SET_CAR_FORWARD_SPEED(pveh,(speed / 10));
+									print("Halted Player's car");
 								}
 							}
 							return;

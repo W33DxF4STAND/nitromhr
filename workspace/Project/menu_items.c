@@ -223,7 +223,7 @@ void menu_setup(void){
 				add_item("AR-15",true);
 				add_item("M40-A5",true);
 				add_item("Advance Sniper",true);
-				add_item("Rocket Launcer",true);
+				add_item("Rocket Launcher",true);
 				add_item("Baseball Bat",true);
 				add_item("Pool Stick",true);
 				return;
