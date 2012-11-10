@@ -568,10 +568,10 @@ void menu_functions(void){
 			if(item_select == 5){
 				do_toggle(neverwanted);
 				if(neverwanted){
-				SET_POLICE_IGNORE_PLAYER(GetPlayerIndex(), true);
-				ALLOW_EMERGENCY_SERVICES(false);
-				SET_MAX_WANTED_LEVEL(0);
-				SET_CHAR_WANTED_BY_POLICE(pPlayer, false);
+					SET_POLICE_IGNORE_PLAYER(GetPlayerIndex(), true);
+					ALLOW_EMERGENCY_SERVICES(false);
+					SET_MAX_WANTED_LEVEL(0);
+					SET_CHAR_WANTED_BY_POLICE(pPlayer, false);
 				}
 				else
 					SET_MAX_WANTED_LEVEL(6);
@@ -797,6 +797,14 @@ void menu_functions(void){
 				else{
 					DISABLE_PLAYER_LOCKON(GetPlayerIndex(), true);
 				}
+				return;
+			}
+			else if(item_select == 6){
+				#ifndef PRIVATE
+				print("Private version only");
+				return;
+				#endif
+				do_toggle(burstfire);
 				return;
 			}
 		}
@@ -1100,7 +1108,7 @@ void menu_functions(void){
 			}
 			if(last_selected[1] == 5){
 				if(item_select == 1){
-					if(!objectgun) print("Use the Deagle to shoot the selected object");
+					if(!objectgun) print("Use the Glock to shoot the selected object");
 					do_toggle(objectgun);
 					return;
 				}
@@ -1110,15 +1118,39 @@ void menu_functions(void){
 				}
 				else if(item_select == 3){
 					object_launch = 0x2718C626;
-					print("Object launcher will now shoot cubes");
+					print("Object launcher will now shoot red cubes");
 				}
 				else if(item_select == 4){
-					object_launch = 0x28E5DB2C;
-					print("Object launcher will now shoot tires");
+					object_launch = 0xDD28B247;
+					print("Object launcher will now shoot blue cubes");
 				}
 				else if(item_select == 5){
-					object_launch = 0xDB0061B6;
-					print("Object launcher will now shoot rocket bikes");
+					object_launch = 0xBB1F6E71;
+					print("Object launcher will now shoot green cubes");
+				}
+				else if(item_select == 6){
+					object_launch = 0x90FA92C6;
+					print("Object launcher will now shoot Bowling Balls");
+				}
+				else if(item_select == 7){
+					object_launch = 0x3C4E43BC;
+					print("Object launcher will now shoot donuts");
+				}
+				else if(item_select == 8){
+					object_launch = 0xFE520830;
+					print("Object launcher will now shoot bricks");
+				}
+				else if(item_select == 9){
+					object_launch = 0x94A8F60F;
+					print("Object launcher will now shoot bins");
+				}
+				else if(item_select == 10){
+					object_launch = 0xEB12D336;
+					print("Object launcher will now shoot dumpsters");
+				}
+				else if(item_select == 11){
+					object_launch = 0x6066DF1D;
+					print("Object launcher will now shoot gumball machines");
 				}
 			}
 		}
@@ -1158,6 +1190,22 @@ void menu_functions(void){
 					s_r = 218;
 					s_g = 165;
 					s_b = 32;
+					return;
+				}
+				if(item_select == 7){
+					s_r = 105;
+					s_g = 105;
+					s_b = 105;
+					return;
+				}
+				if(item_select == 8){
+					s_r = 0;
+					s_g = 0;
+					s_b = 255;
+					return;
+				}
+				if(item_select == 9){
+					do_toggle(rainbowmenu);
 					return;
 				}
 			}
@@ -2387,11 +2435,32 @@ void looped_functions(void){
 	if(objectgun){
 		int wep;
 		GET_CURRENT_CHAR_WEAPON(pPlayer, &wep);
-		if((IS_CHAR_SHOOTING(pPlayer)) && (wep == WEAPON_DEAGLE) && (!IS_CHAR_IN_ANY_CAR(pPlayer))){
+		if((IS_CHAR_SHOOTING(pPlayer)) && (wep == WEAPON_PISTOL) && (!IS_CHAR_IN_ANY_CAR(pPlayer))){
 			object_aim();
 			object_shoot();
 		}
 	}
+	
+	if(burstfire){
+		int PlayerWep,MaxAmmo,ClipMax;
+		Vector3 rapid;
+		GET_CURRENT_CHAR_WEAPON(pPlayer, &PlayerWep);
+		if(PlayerWep != WEAPON_GRENADE && PlayerWep != WEAPON_MOLOTOV){
+			if(IS_CHAR_SHOOTING(pPlayer)){
+				GET_MAX_AMMO_IN_CLIP(pPlayer, PlayerWep, &ClipMax);
+				GET_MAX_AMMO(pPlayer, PlayerWep, &MaxAmmo);
+				SET_PLAYER_FAST_RELOAD(GetPlayerIndex(), true);
+				ENABLE_MAX_AMMO_CAP(false);
+				SET_CHAR_AMMO(pPlayer, PlayerWep, MaxAmmo);
+				SET_AMMO_IN_CLIP(pPlayer, PlayerWep, ClipMax);
+				GET_PED_BONE_POSITION(pPlayer,BONE_RIGHT_HAND,100000000.0,0.0,0.0,&rapid);
+				FIRE_PED_WEAPON(pPlayer, rapid.x,rapid.y,rapid.z);
+				FIRE_PED_WEAPON(pPlayer, rapid.x,rapid.y,rapid.z);
+				FIRE_PED_WEAPON(pPlayer, rapid.x,rapid.y,rapid.z);
+			}
+		}
+	}
+	else if(!fastreload) SET_PLAYER_FAST_RELOAD(GetPlayerIndex(), false);
 	
 	if(lowerpveh){
 		int tick,nvid;
@@ -2601,6 +2670,12 @@ void looped_functions(void){
 				SET_AMMO_IN_CLIP(pPlayer,weapon,ammo);
 			}
 		}
+	}
+	
+	if(rainbowmenu){
+		GENERATE_RANDOM_INT_IN_RANGE(0,255,&s_r);
+		GENERATE_RANDOM_INT_IN_RANGE(0,255,&s_g);
+		GENERATE_RANDOM_INT_IN_RANGE(0,255,&s_b);
 	}
 	
 	//misc

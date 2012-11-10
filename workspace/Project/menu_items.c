@@ -95,6 +95,7 @@ void menu_setup(void){
 			add_toggle("Fast Reload",fastreload);
 			add_toggle("Auto Aim",autoaim);
 			add_item("Object Launcher",false);
+			add_toggle("3 Round Burst",burstfire);
 			return;
 		}
 		if(last_selected[0] == 4){
@@ -228,11 +229,16 @@ void menu_setup(void){
 			}
 			if(last_selected[1] == 5){
 				footer = "Object launcher";
-				add_toggle("Object Launcher",objectgun);
+				add_toggle("Object Launcher - Glock",objectgun);
 				add_item("Shoot Dildos",true);
-				add_item("Shoot Cubes",true);
-				add_item("Shoot Tires",true);
-				add_item("Shoot Rocket Bikes",true);
+				add_item("Shoot Red Cubes",true);
+				add_item("Shoot Blue Cubes",true);
+				add_item("Shoot Green Cubes",true);
+				add_item("Shoot Bowling Balls",true);
+				add_item("Shoot Donuts",true);
+				add_item("Shoot Bricks",true);
+				add_item("Shoot Bins",true);
+				add_item("Shoot Dumpsters",true);
 				return;
 			}
 		}
@@ -241,10 +247,13 @@ void menu_setup(void){
 				footer = "Menu Colors";
 				add_item("Purple",true);
 				add_item("Red",true);
-				add_item("Blue",true);
+				add_item("Light Blue",true);
 				add_item("Green",true);
 				add_item("Pink",true);
 				add_item("Gold",true);
+				add_item("Gray",true);
+				add_item("Dark Blue",true);
+				add_toggle("Flashing Colors",rainbowmenu);
 				return;
 			}
 			if(last_selected[1] == 2){
