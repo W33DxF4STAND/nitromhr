@@ -929,7 +929,28 @@ void menu_functions(void){
 			if(item_select == 18){
 				xmc_teleportinfront();
 				return;
-			}			
+			}
+			if(item_select == 19){
+				GET_CHAR_COORDINATES(pPlayer,&x, &y, &z);
+				ClosestCar = GET_CLOSEST_CAR(x,y,z, 50, false, 70);
+		
+				if( DOES_VEHICLE_EXIST(ClosestCar)){
+					GET_DRIVER_OF_CAR(ClosestCar,&driver);
+					if(!DOES_CHAR_EXIST(driver)){
+						WARP_CHAR_INTO_CAR(pPlayer,ClosestCar);
+						print("Teleported into Nearest Car as Driver");
+					}
+					else{
+						for(i = 0;i <= 2;i++){
+							if(IS_CAR_PASSENGER_SEAT_FREE(ClosestCar,i)){
+								WARP_CHAR_INTO_CAR_AS_PASSENGER(pPlayer,ClosestCar,i);
+								print("Teleported into Nearest Car as Passenger");
+							}
+						}
+					}
+				}
+				return;
+			}
 		}
 		if(last_selected[0] == 5){
 			if(item_select == 4){
@@ -1671,8 +1692,8 @@ void menu_functions(void){
 										tick++;
 										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
 										if(tick >= 200){
-										print("Player is in car");
-										return;
+											print("Player is in car, giving freeze gun anwyay");
+											break;
 										}
 										WAIT(0);
 									}
@@ -2949,6 +2970,9 @@ void do_online_player_loop(void){
 				}
 				if(HAS_CHAR_GOT_WEAPON(tmp, WEAPON_ROCKET)){
 					REMOVE_WEAPON_FROM_CHAR(tmp, WEAPON_ROCKET);
+				}
+				if(IS_CHAR_ON_FIRE(tmp)){
+					EXTINGUISH_CHAR_FIRE(tmp);
 				}
 			}
 			if(players[i].force){

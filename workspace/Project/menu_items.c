@@ -119,6 +119,7 @@ void menu_setup(void){
 			add_item("Subway",true);
 			add_item("Sprunk Factory",true);
 			add_item("10ft in front",true);
+			add_item("In Nearest Car",true);
 			return;
 		}
 		if(last_selected[0] == 5){
@@ -242,7 +243,7 @@ void menu_setup(void){
 				add_item("Shoot Bricks",true);
 				add_item("Shoot Bins",true);
 				add_item("Shoot Dumpsters",true);
-				add_item("Shoot Bowling Pins",true);
+				add_item("Shoot Cones",true);
 				return;
 			}
 		}
@@ -270,7 +271,7 @@ void menu_setup(void){
 				add_item("Rockets - that explode",true);
 				add_item("AK47",true);
 				add_item("Axe",true);
-				add_item("Bowling Pin",true);
+				add_item("Cone",true);
 				return;
 			}
 			if(last_selected[1] == 3){
