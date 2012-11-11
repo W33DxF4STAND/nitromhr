@@ -407,6 +407,24 @@ void spawnguards(uint model, uint weapon){
 	return;
 }
 
+void rapidrpg(void){
+	int PlayerWep,MaxAmmo,ClipMax;
+	Vector3 rapid;
+	while(IS_BUTTON_PRESSED(0,BUTTON_L) && IS_BUTTON_PRESSED(0,BUTTON_R) && IS_CHAR_SHOOTING(pPlayer)){
+		GET_MAX_AMMO_IN_CLIP(pPlayer, PlayerWep, &ClipMax);
+		GET_MAX_AMMO(pPlayer, PlayerWep, &MaxAmmo);
+		SET_PLAYER_FAST_RELOAD(GetPlayerIndex(), true);
+		ENABLE_MAX_AMMO_CAP(false);
+		SET_CHAR_AMMO(pPlayer, PlayerWep, MaxAmmo);
+		SET_AMMO_IN_CLIP(pPlayer, PlayerWep, ClipMax);
+		GET_PED_BONE_POSITION(pPlayer,BONE_RIGHT_HAND,5,0.0,0.0,&rapid);
+	//	GET_PED_BONE_POSITION(pPlayer,BONE_RIGHT_HAND,0.0,0.0,0.0,&rapid);
+		FIRE_PED_WEAPON(pPlayer, rapid.x,rapid.y,rapid.z);
+		FIRE_PED_WEAPON(pPlayer, rapid.x,rapid.y,rapid.z);
+		WAIT(0);
+	}
+}
+
 void object_aim(void){
 	GET_GAME_CAM(&game_cam);
 	if (IS_CAM_ACTIVE(game_cam)){
@@ -2376,6 +2394,7 @@ void menu_functions(void){
 									}
 									GET_CAR_SPEED(pveh,&speed);
 									SET_CAR_FORWARD_SPEED(pveh,(speed * 6));
+									HAND_VEHICLE_CONTROL_BACK_TO_PLAYER(pveh);
 									print("Boosted Player's car");
 								}
 							}
@@ -2400,6 +2419,7 @@ void menu_functions(void){
 									}
 									GET_CAR_SPEED(pveh,&speed);
 									SET_CAR_FORWARD_SPEED(pveh,(speed / 10));
+									HAND_VEHICLE_CONTROL_BACK_TO_PLAYER(pveh);
 									print("Halted Player's car");
 								}
 							}
@@ -2455,6 +2475,35 @@ void menu_functions(void){
 									else print("Player not in Vehicle");
 								}
 								else print("You are not in a Vehicle");
+							}
+							return;
+						}
+						else if(item_select == 9){
+							if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
+								uint lock;
+								// Vehicle pveh;
+								GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
+								GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
+								REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+								while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+									tick++;
+									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+									if(tick >= 200){
+										print("Error");
+										return;
+									}
+									WAIT(0);
+								}      
+								GET_CAR_DOOR_LOCK_STATUS(pveh,&lock);
+								if(lock == VEHICLE_DOOR_UNLOCKED){
+									LOCK_CAR_DOORS(pveh,VEHICLE_DOOR_LOCKED_BOTH_SIDES);
+									print("Doors locked!");
+								}
+								else{
+									LOCK_CAR_DOORS(pveh,VEHICLE_DOOR_UNLOCKED);
+									print("Doors unlocked!");
+								}
+								HAND_VEHICLE_CONTROL_BACK_TO_PLAYER(pveh);
 							}
 							return;
 						}
@@ -2637,11 +2686,13 @@ void looped_functions(void){
 			if(weapon != WEAPON_GRENADE && weapon != WEAPON_MOLOTOV){
 				GET_MAX_AMMO_IN_CLIP(pPlayer,weapon,&ammo);
 				GET_MAX_AMMO(pPlayer, weapon, &max_ammo);
+				ENABLE_MAX_AMMO_CAP(false);
 				SET_CHAR_AMMO(pPlayer, weapon, max_ammo);
 				SET_AMMO_IN_CLIP(pPlayer,weapon,ammo);
 			}
 		}
 	}
+	else ENABLE_MAX_AMMO_CAP(true);
 
 	if(objectgun){
 		int wep;
@@ -2651,24 +2702,14 @@ void looped_functions(void){
 			object_shoot();
 		}
 	}
-	
+
 	if(burstfire){
-		int PlayerWep,MaxAmmo,ClipMax;
-		Vector3 rapid;
+		int PlayerWep;
 		GET_CURRENT_CHAR_WEAPON(pPlayer, &PlayerWep);
 		if(PlayerWep == WEAPON_RLAUNCHER){
 			if(IS_BUTTON_PRESSED(0,BUTTON_L) && IS_BUTTON_PRESSED(0,BUTTON_R)){
 				if(IS_CHAR_SHOOTING(pPlayer)){
-					GET_MAX_AMMO_IN_CLIP(pPlayer, PlayerWep, &ClipMax);
-					GET_MAX_AMMO(pPlayer, PlayerWep, &MaxAmmo);
-					SET_PLAYER_FAST_RELOAD(GetPlayerIndex(), true);
-					ENABLE_MAX_AMMO_CAP(false);
-					SET_CHAR_AMMO(pPlayer, PlayerWep, MaxAmmo);
-					SET_AMMO_IN_CLIP(pPlayer, PlayerWep, ClipMax);
-				//	GET_PED_BONE_POSITION(pPlayer,BONE_RIGHT_HAND,100000000.0,0.0,0.0,&rapid);
-					GET_PED_BONE_POSITION(pPlayer,BONE_RIGHT_HAND,0.0,0.0,0.0,&rapid);
-					FIRE_PED_WEAPON(pPlayer, rapid.x,rapid.y,rapid.z);
-					FIRE_PED_WEAPON(pPlayer, rapid.x,rapid.y,rapid.z);
+					rapidrpg();
 				}
 			}
 		}

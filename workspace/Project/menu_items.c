@@ -497,6 +497,7 @@ void menu_setup(void){
 						add_item("Speed Boost",true);
 						add_item("Speed Brake",true);
 						add_item("Remote Control",true);
+						add_item("Lock/Unlock Doors",true);
 						return;
 					}
 					if(last_selected[3] == 12){
