@@ -46,7 +46,9 @@ echo.
 for %%A in (%outsco%) do echo.Size of "%out%" is %%~zA bytes
 cd ../workspace/Project/
 del -f build.txt
-pause
+echo Press any key to launch sco compressor
+pause > nul
+..\..\bin\compress.exe ../../out_sco/xmc_modmenu.sco
 exit 1
 
 :compile_custom

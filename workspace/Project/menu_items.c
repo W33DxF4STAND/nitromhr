@@ -510,7 +510,6 @@ void menu_setup(void){
 					if(last_selected[3] == 13){
 						footer = players[(last_selected[2] - 2)].gamertag;
 						add_item("Order to Kill",true);
-						add_item("VIP",true);
 						return;
 					}
 				}

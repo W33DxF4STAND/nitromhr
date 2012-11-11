@@ -85,7 +85,6 @@ Group Mgroup;
 float x, y, z;
 
 Ped gameped[8];
-Ped m_gameped[3];
 
 char* footer;
 
