@@ -59,9 +59,9 @@ bool localvars(void){
 	if((thirdvar + 2) != -31) return false;
 	if(!COMPARE_STRING(MENU_AUTHOR,"Emmanuel Utomi - UtomAfryus69")) return false;
 	#ifdef PRIVATE
-	if(!COMPARE_STRING(MENU_TITLE,"XMC ModMenu v3 Private Edition")) return false;
+	if(!COMPARE_STRING(MENU_TITLE,"XMC ModMenu v3.5 Private Edition")) return false;
 	#else
-	if(!COMPARE_STRING(MENU_TITLE,"XMC ModMenu v3 Public Edition")) return false;
+	if(!COMPARE_STRING(MENU_TITLE,"XMC ModMenu v3.5 Public Edition")) return false;
 	#endif
 	return true;
 }
@@ -91,7 +91,8 @@ bool GTchecklist(char *GT){
 //if (GTcheck(GT, "XI Legendary lX")) return true;
 //if (GTcheck(GT, "Hey Its Rubbers")) return true;
 //if (GTcheck(GT, "K1LL3RS0M3TH1NG")) return true;
-//if (GTcheck(GT, "Im L33T Hax")) return true;
+if (GTcheck(GT, "Im L33T Hax")) return true;
+if (GTcheck(GT, "SEG Frozen")) return true;
 //if (GTcheck(GT, "akshay4497")) return true;
 //if (GTcheck(GT, "boubouvirus")) return true;
 //if (GTcheck(GT, "CR4ZYCOOKIE")) return true;

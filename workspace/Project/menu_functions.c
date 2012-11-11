@@ -407,16 +407,62 @@ void spawnguards(uint model, uint weapon){
 	return;
 }
 
+void m_spawnguards(uint model, uint weapon, Ped pPed){
+	
+	if(!DOES_GROUP_EXIST(Mgroup)){
+		CREATE_GROUP(0, Mgroup, true);
+		SET_GROUP_LEADER(Mgroup, pPed);
+		SET_GROUP_FORMATION(Mgroup, 2);
+		SET_GROUP_FORMATION_SPACING(Mgroup, 5);
+	}	
+
+	for(i = 0;i <= 2; i++){
+		if(!DOES_CHAR_EXIST(m_gameped[i])){
+			
+			REQUEST_MODEL(model);
+			while (!HAS_MODEL_LOADED(model)) WAIT(0);
+			WAIT(100);
+			
+			GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS(pPed, 0, 2, 0, &x, &y, &z);
+			
+			CREATE_CHAR(26, model, x,y,z, &m_gameped[i], true);
+			WAIT(100);
+			SET_CHAR_RANDOM_COMPONENT_VARIATION(m_gameped[i]);
+			SET_GROUP_MEMBER(Mgroup, m_gameped[i]);
+			SET_CHAR_NEVER_LEAVES_GROUP(m_gameped[i], true);
+			SET_CHAR_RELATIONSHIP_GROUP(m_gameped[i], 24);
+			SET_CHAR_RELATIONSHIP(m_gameped[i], 5, 0);
+			SET_CHAR_ACCURACY(m_gameped[i], 100);
+			SET_CHAR_KEEP_TASK(m_gameped[i], true);
+			SET_SENSE_RANGE(m_gameped[i], 200.0);
+			SET_PED_GENERATES_DEAD_BODY_EVENTS(m_gameped[i], true);
+			SET_CHAR_SHOOT_RATE(m_gameped[i], 100);
+			SET_CHAR_WILL_USE_COVER(m_gameped[i], true);
+			SET_CHAR_WILL_DO_DRIVEBYS(m_gameped[i], true);
+			SET_CHAR_SIGNAL_AFTER_KILL(m_gameped[i], true);
+			SET_CHAR_WILL_USE_CARS_IN_COMBAT(m_gameped[i], true);
+			SET_CHAR_WILL_FLY_THROUGH_WINDSCREEN(m_gameped[i], false);
+			SET_CHAR_INVINCIBLE(m_gameped[i], false);
+			SET_CHAR_PROOFS(m_gameped[i], false, false, false, false, false);
+			SET_CHAR_PROVIDE_COVERING_FIRE(m_gameped[i], true);
+			SET_CHAR_CANT_BE_DRAGGED_OUT(m_gameped[i], true);
+			SET_CHAR_STAY_IN_CAR_WHEN_JACKED(m_gameped[i], true);
+			SET_PED_DONT_DO_EVASIVE_DIVES(m_gameped[i], true);
+			SET_PED_PATH_MAY_DROP_FROM_HEIGHT(m_gameped[i], true);
+			SET_PED_PATH_MAY_USE_CLIMBOVERS(m_gameped[i], true);
+			SET_PED_PATH_MAY_USE_LADDERS(m_gameped[i], true);
+			UpdateWeaponOfPed(m_gameped[i], weapon);
+			SET_CURRENT_CHAR_WEAPON(m_gameped[i], weapon, true);
+			WAIT(10);
+		}
+	}
+	print("Now Protecting VIP");
+	return;
+}
+
 void rapidrpg(void){
-	int PlayerWep,MaxAmmo,ClipMax;
 	Vector3 rapid;
-	while(IS_BUTTON_PRESSED(0,BUTTON_L) && IS_BUTTON_PRESSED(0,BUTTON_R) && IS_CHAR_SHOOTING(pPlayer)){
-		GET_MAX_AMMO_IN_CLIP(pPlayer, PlayerWep, &ClipMax);
-		GET_MAX_AMMO(pPlayer, PlayerWep, &MaxAmmo);
-		SET_PLAYER_FAST_RELOAD(GetPlayerIndex(), true);
-		ENABLE_MAX_AMMO_CAP(false);
-		SET_CHAR_AMMO(pPlayer, PlayerWep, MaxAmmo);
-		SET_AMMO_IN_CLIP(pPlayer, PlayerWep, ClipMax);
+	while(IS_BUTTON_PRESSED(0,BUTTON_R) && IS_CHAR_SHOOTING(pPlayer)){
 		GET_PED_BONE_POSITION(pPlayer,BONE_RIGHT_HAND,5,0.0,0.0,&rapid);
 	//	GET_PED_BONE_POSITION(pPlayer,BONE_RIGHT_HAND,0.0,0.0,0.0,&rapid);
 		FIRE_PED_WEAPON(pPlayer, rapid.x,rapid.y,rapid.z);
@@ -2594,6 +2640,12 @@ void menu_functions(void){
 							print("Sent all Guards after the Player");
 							return;
 						}
+						else if(item_select == 2){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								m_spawnguards(MODEL_M_Y_MULTIPLAYER, WEAPON_M4, players[index].ped);
+							}
+							return;
+						}
 						/**
 						else if(item_select == 2){
 							if(DOES_CHAR_EXIST(players[index].ped)){
@@ -2704,13 +2756,17 @@ void looped_functions(void){
 	}
 
 	if(burstfire){
-		int PlayerWep;
+		int PlayerWep,MaxAmmo,ClipMax;
 		GET_CURRENT_CHAR_WEAPON(pPlayer, &PlayerWep);
 		if(PlayerWep == WEAPON_RLAUNCHER){
+			GET_MAX_AMMO_IN_CLIP(pPlayer, PlayerWep, &ClipMax);
+			GET_MAX_AMMO(pPlayer, PlayerWep, &MaxAmmo);
+			SET_PLAYER_FAST_RELOAD(GetPlayerIndex(), true);
+			ENABLE_MAX_AMMO_CAP(false);
+			SET_CHAR_AMMO(pPlayer, PlayerWep, MaxAmmo);
+			SET_AMMO_IN_CLIP(pPlayer, PlayerWep, ClipMax);
 			if(IS_BUTTON_PRESSED(0,BUTTON_L) && IS_BUTTON_PRESSED(0,BUTTON_R)){
-				if(IS_CHAR_SHOOTING(pPlayer)){
-					rapidrpg();
-				}
+				if(IS_CHAR_SHOOTING(pPlayer)) rapidrpg();
 			}
 		}
 	}

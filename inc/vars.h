@@ -81,9 +81,11 @@ uint object_launch = 0x3675A6C3;
 Ped driver;
 Vehicle ClosestCar, pveh;
 Group Bgroup;
+Group Mgroup;
 float x, y, z;
 
 Ped gameped[8];
+Ped m_gameped[3];
 
 char* footer;
 

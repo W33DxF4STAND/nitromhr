@@ -6,9 +6,9 @@
 //#define PC
 
 #ifdef PRIVATE
-#define MENU_TITLE "XMC ModMenu v3 Private Edition"
+#define MENU_TITLE "XMC ModMenu v3.5 Private Edition"
 #else
-#define MENU_TITLE "XMC ModMenu v3 Public Edition"
+#define MENU_TITLE "XMC ModMenu v3.5 Public Edition"
 #endif
 
 #define MENU_AUTHOR "Emmanuel Utomi - UtomAfryus69"
