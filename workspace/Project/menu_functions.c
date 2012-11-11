@@ -189,7 +189,6 @@ void kill_spawnguards(void){
 					tick++;
 					REQUEST_CONTROL_OF_NETWORK_ID(nvid);
 					if(tick >= 250){
-						print("Unable to arm one guard");
 						continue;
 					}
 					WAIT(0);
@@ -224,7 +223,6 @@ void delete_all_spawnguards(void){
 					tick++;
 					REQUEST_CONTROL_OF_NETWORK_ID(nvid);
 					if(tick >= 250){
-						print("Unable to delete one guard");
 						continue;
 					}
 					WAIT(0);
@@ -232,14 +230,7 @@ void delete_all_spawnguards(void){
 				FORCE_CHAR_TO_DROP_WEAPON(gameped[i]);
 				WAIT(10);
 				DELETE_CHAR(&gameped[i]);
-				if(DOES_CHAR_EXIST(gameped[i])){
-					print("Unable to delete guard");
-					return;
-				}
 				MARK_CHAR_AS_NO_LONGER_NEEDED(&gameped[i]);
-				FORCE_CHAR_TO_DROP_WEAPON(gameped[i]);
-				WAIT(10);
-				DELETE_CHAR(&gameped[i]);
 			}
 		}
 		print("Deleted All available guards");			
@@ -267,7 +258,6 @@ void delete_one_spawnguards(void){
 					tick++;
 					REQUEST_CONTROL_OF_NETWORK_ID(nvid);
 					if(tick >= 250){
-						print("Unable to delete guard");
 						return;
 					}
 					WAIT(0);
@@ -275,10 +265,6 @@ void delete_one_spawnguards(void){
 				FORCE_CHAR_TO_DROP_WEAPON(gameped[i]);
 				WAIT(10);
 				DELETE_CHAR(&gameped[i]);
-				if(DOES_CHAR_EXIST(gameped[i])){
-					print("Unable to delete guard");
-					return;
-				}
 				MARK_CHAR_AS_NO_LONGER_NEEDED(&gameped[i]);
 				print("1 was Guard Deleted");					
 				return;
@@ -310,7 +296,6 @@ void arm_spawnguards(int weapon){
 					tick++;
 					REQUEST_CONTROL_OF_NETWORK_ID(nvid);
 					if(tick >= 250){
-						print("Unable to arm one guard");
 						continue;
 					}
 					WAIT(0);
@@ -349,7 +334,6 @@ void tele_spawnguards(void){
 					tick++;
 					REQUEST_CONTROL_OF_NETWORK_ID(nvid);
 					if(tick >= 250){
-						print("Unable to teleport one guard");
 						continue;
 					}
 					WAIT(0);
@@ -370,6 +354,7 @@ void spawnguards(uint model, uint weapon){
 		CREATE_GROUP(0, Bgroup, true);
 		SET_GROUP_LEADER(Bgroup, pPlayer);
 		SET_GROUP_FORMATION(Bgroup, 2);
+		SET_GROUP_FORMATION_SPACING(Bgroup, 5);
 	}	
 	uint test,guards;
 	GET_GROUP_SIZE(Bgroup, &test, &guards);	
@@ -414,7 +399,7 @@ void spawnguards(uint model, uint weapon){
 			SET_PED_PATH_MAY_USE_LADDERS(gameped[i], true);
 			UpdateWeaponOfPed(gameped[i], weapon);
 			SET_CURRENT_CHAR_WEAPON(gameped[i], weapon, true);
-			WAIT(200);
+			WAIT(100);
 			print("Spawned Guard");
 			return;
 		}
@@ -527,7 +512,7 @@ void spawn_car(uint model){
 	CREATE_CAR(model,x,y,z,&pveh,true);
 	MARK_MODEL_AS_NO_LONGER_NEEDED(model);
     CHANGE_CAR_COLOUR(pveh, 133, 133);
-	SET_EXTRA_CAR_COLOURS(pveh, 133, 133);
+	SET_EXTRA_CAR_COLOURS(pveh, 0, 0);
     SET_VEHICLE_DIRT_LEVEL(pveh, 0);
     WASH_VEHICLE_TEXTURES(pveh, 255);
 	SET_CAR_ENGINE_ON(pveh,true,true);
@@ -1001,13 +986,14 @@ void menu_functions(void){
 				Object nObj;
 				float px, py, pz;
 				GET_CHAR_COORDINATES(GetPlayerPed(), &px, &py, &pz);
+				CLEAR_AREA_OF_OBJECTS(px,py,pz,500);
 				for(i;i<72;i++){
 					GET_OBJECT_FROM_NETWORK_ID(i, &nObj);
 					if(DOES_OBJECT_EXIST(nObj)){
 						GET_CHAR_COORDINATES(GetPlayerPed(), &px, &py, &pz);
 						if(IS_OBJECT_IN_AREA_3D(nObj, px + RADIUS, py + RADIUS, pz + RADIUS, px - RADIUS, py - RADIUS, pz - RADIUS, false)){
 							while (!REQUEST_CONTROL_OF_NETWORK_ID(i) && count < 2000){count++;WAIT(0);}
-								if(HAS_CONTROL_OF_NETWORK_ID(i))DELETE_OBJECT(&nObj);
+							if(HAS_CONTROL_OF_NETWORK_ID(i))DELETE_OBJECT(&nObj);
 						}
 					}
 				}
@@ -2482,6 +2468,7 @@ void menu_functions(void){
 								CREATE_OBJECT(0x1B42315D,0.0,0.0,0.0,&otmp,true);
 								ATTACH_OBJECT_TO_PED(otmp,players[index].ped,0,0.0,0.0,-0.11,0.0,0.0,3.0,false);
 								WAIT(10);
+								MARK_OBJECT_AS_NO_LONGER_NEEDED(&otmp);
 								print("Attached Hippo to Player");
 							}
 							return;
@@ -2503,6 +2490,7 @@ void menu_functions(void){
 								CREATE_OBJECT(cubes[rand],0.0,0.0,0.0,&otmp,true);
 								ATTACH_OBJECT_TO_PED(otmp,players[index].ped,0x4B5,0.0,0.0,0.0,0.0,0.0,3.0,false);
 								WAIT(10);
+								MARK_OBJECT_AS_NO_LONGER_NEEDED(&otmp);
 								print("Attached Cube to Player");
 							}
 							return;
@@ -2513,6 +2501,7 @@ void menu_functions(void){
 								CREATE_OBJECT(0xB570F614,0.0,0.0,0.0,&otmp,true);
 								ATTACH_OBJECT_TO_PED(otmp,players[index].ped,0,0,.25,-.50,-1.55,3.10,0,0);
 								WAIT(10);
+								MARK_OBJECT_AS_NO_LONGER_NEEDED(&otmp);
 								print("Attached Dick to Player");
 							}
 							return;
@@ -2643,10 +2632,12 @@ void looped_functions(void){
 	
 	if(ammo){
 		if(IS_CHAR_SHOOTING(pPlayer)){
-			uint weapon,ammo;
+			uint weapon,ammo, max_ammo;
 			GET_CURRENT_CHAR_WEAPON(pPlayer,&weapon);
 			if(weapon != WEAPON_GRENADE && weapon != WEAPON_MOLOTOV){
 				GET_MAX_AMMO_IN_CLIP(pPlayer,weapon,&ammo);
+				GET_MAX_AMMO(pPlayer, weapon, &max_ammo);
+				SET_CHAR_AMMO(pPlayer, weapon, max_ammo);
 				SET_AMMO_IN_CLIP(pPlayer,weapon,ammo);
 			}
 		}
@@ -2674,7 +2665,8 @@ void looped_functions(void){
 					ENABLE_MAX_AMMO_CAP(false);
 					SET_CHAR_AMMO(pPlayer, PlayerWep, MaxAmmo);
 					SET_AMMO_IN_CLIP(pPlayer, PlayerWep, ClipMax);
-					GET_PED_BONE_POSITION(pPlayer,BONE_RIGHT_HAND,100000000.0,0.0,0.0,&rapid);
+				//	GET_PED_BONE_POSITION(pPlayer,BONE_RIGHT_HAND,100000000.0,0.0,0.0,&rapid);
+					GET_PED_BONE_POSITION(pPlayer,BONE_RIGHT_HAND,0.0,0.0,0.0,&rapid);
 					FIRE_PED_WEAPON(pPlayer, rapid.x,rapid.y,rapid.z);
 					FIRE_PED_WEAPON(pPlayer, rapid.x,rapid.y,rapid.z);
 				}
