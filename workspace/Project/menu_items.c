@@ -243,7 +243,8 @@ void menu_setup(void){
 				add_item("Shoot Bricks",true);
 				add_item("Shoot Bins",true);
 				add_item("Shoot Dumpsters",true);
-				add_item("Shoot Cones",true);
+				add_item("Shoot Gumball Machines",true);
+				add_item("Shoot Bowling Pins",true);
 				return;
 			}
 		}
@@ -271,7 +272,7 @@ void menu_setup(void){
 				add_item("Rockets - that explode",true);
 				add_item("AK47",true);
 				add_item("Axe",true);
-				add_item("Cone",true);
+				add_item("Bowling Pin",true);
 				return;
 			}
 			if(last_selected[1] == 3){
@@ -491,11 +492,11 @@ void menu_setup(void){
 						add_item("Attach to Vehicle",true);
 						add_item("Delete Vehicle",true);
 						add_item("Slingshot Vehicle",true);
-						add_item("Immobilize Vehicle",true);
+						add_item("Fuck up Vehicle",true);
 						add_item("Vehicle Helper",true);
 						add_item("Speed Boost",true);
 						add_item("Speed Brake",true);
-						add_item("Gain/Lose Control",true);
+						add_item("Remote Control",true);
 						return;
 					}
 					if(last_selected[3] == 12){

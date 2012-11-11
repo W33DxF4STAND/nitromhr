@@ -315,6 +315,8 @@ void arm_spawnguards(int weapon){
 					}
 					WAIT(0);
 				}
+				REMOVE_ALL_CHAR_WEAPONS(gameped[i]);
+				WAIT(10);
 				UpdateWeaponOfPed(gameped[i], weapon);
 				SET_CURRENT_CHAR_WEAPON(gameped[i], weapon, true);
 			}
@@ -393,7 +395,7 @@ void spawnguards(uint model, uint weapon){
 			SET_CHAR_RELATIONSHIP(gameped[i], 5, 0);
 			SET_CHAR_ACCURACY(gameped[i], 100);
 			SET_CHAR_KEEP_TASK(gameped[i], true);
-			SET_SENSE_RANGE(gameped[i], 250.0);
+			SET_SENSE_RANGE(gameped[i], 200.0);
 			SET_PED_GENERATES_DEAD_BODY_EVENTS(gameped[i], true);
 			SET_CHAR_SHOOT_RATE(gameped[i], 100);
 			SET_CHAR_WILL_USE_COVER(gameped[i], true);
@@ -760,16 +762,19 @@ void menu_functions(void){
 				return;
 			}
 			if(item_select == 16){
-				do_toggle(freezecar);
-				if(freezecar){
-					FREEZE_CAR_POSITION(pveh,true);
-					print("Car is now immobile");
+				if(IS_CHAR_IN_ANY_CAR(pPlayer)){
+					GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
+					do_toggle(freezecar);
+					if(freezecar){
+						FREEZE_CAR_POSITION(pveh,true);
+						print("Car is now immobile");
+					}
+					else{
+						FREEZE_CAR_POSITION(pveh,false);
+						print("Car is now mobile");
+					}
+					return;
 				}
-				else{
-					FREEZE_CAR_POSITION(pveh,false);
-					print("Car is now mobile");
-				}
-				return;
 			}
 			if(item_select == 17){
 				int pveh,driver;
@@ -996,7 +1001,7 @@ void menu_functions(void){
 				Object nObj;
 				float px, py, pz;
 				GET_CHAR_COORDINATES(GetPlayerPed(), &px, &py, &pz);
-				for(i;i<1000;i++){
+				for(i;i<72;i++){
 					GET_OBJECT_FROM_NETWORK_ID(i, &nObj);
 					if(DOES_OBJECT_EXIST(nObj)){
 						GET_CHAR_COORDINATES(GetPlayerPed(), &px, &py, &pz);
@@ -1237,7 +1242,7 @@ void menu_functions(void){
 				}
 				else if(item_select == 13){
 					object_launch = 0xF4A206E4;
-					print("Object launcher will now shoot bowling pins");
+					print("Object launcher will now shoot Bowling Pins");
 				}
 			}
 		}
@@ -1818,6 +1823,7 @@ void menu_functions(void){
 						return;
 					}
 					if(item_select == 6){
+						if(!ragdoll) print("Press LB + B to ragdoll");
 						do_toggle(ragdoll);
 						return;
 					}
@@ -2335,7 +2341,7 @@ void menu_functions(void){
 									BURST_CAR_TYRE(pveh,5);
 									SET_ENGINE_HEALTH(pveh,0.0);
 									SET_NETWORK_ID_CAN_MIGRATE(nvid,false);
-									print("Made player's car Immobile");
+									print("Made player's car retarded");
 								}
 							}
 							return;
@@ -2743,7 +2749,7 @@ void looped_functions(void){
 	if(forcefield){
 		// float x,y,z;
 		GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
-		ADD_EXPLOSION(x,y,z,EXPLOSION_SHIP_DESTROY,10.0,false,true,0.0);
+		ADD_EXPLOSION(x,y,z,EXPLOSION_SHIP_DESTROY,20.0,false,true,0.0);
 	}
 	
 	if(lowerpveh){
