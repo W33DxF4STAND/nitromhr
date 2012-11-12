@@ -100,6 +100,8 @@ uint tick;
 int i;
 int nvid;
 
+bool xmc1 = false;
+
 bool show_menu = false,
 	godmode = true,
 	bikefly = false,

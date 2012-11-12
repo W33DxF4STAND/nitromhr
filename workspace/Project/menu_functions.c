@@ -776,11 +776,12 @@ void menu_functions(void){
 				int pveh,driver;
 				float h, s;
 				uint model;
-				int color1, color2;
+				int color1, color2, color3, color4;
 				if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 					GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 					GET_CAR_MODEL(pveh, &model);
 					GET_CAR_COLOURS(pveh, &color1, &color2);
+					GET_EXTRA_CAR_COLOURS(pveh, &color3, &color4);
 					bool speed = false;
 					REQUEST_MODEL(model);
 					while(!HAS_MODEL_LOADED(model)) WAIT(0);
@@ -797,6 +798,7 @@ void menu_functions(void){
 					CREATE_CAR(model,x,y,z,&pveh,true);
 					MARK_MODEL_AS_NO_LONGER_NEEDED(model);
 					CHANGE_CAR_COLOUR(pveh, color1, color2);
+					SET_EXTRA_CAR_COLOURS(pveh, color3, color4);
 					SET_VEHICLE_DIRT_LEVEL(pveh, 0);
 					WASH_VEHICLE_TEXTURES(pveh, 255);
 					SET_CAR_ENGINE_ON(pveh,true,true);
@@ -1009,6 +1011,21 @@ void menu_functions(void){
 					}
 				}
 				print("Deleted all Near-by Objects");
+				return;
+			}
+		}
+		if(last_selected[0] == 6){
+			if(item_select == 1){
+				if(DOES_SCRIPT_EXIST("xmc1")){
+					REQUEST_SCRIPT("xmc1");
+					while(!HAS_SCRIPT_LOADED("xmc1")){
+						REQUEST_SCRIPT("xmc1");
+						WAIT(0);
+					}
+					START_NEW_SCRIPT("xmc1", 1024);
+					MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmc1");
+				}
+				else print_long("~r~xmc1.sco Doesn't exist");
 				return;
 			}
 		}

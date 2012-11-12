@@ -48,6 +48,7 @@ void menu_setup(void){
 		add_item("Weapon Options",false);
 		add_item("Teleports",false);
 		add_item("Others",false);
+		add_item("Mod Slots",false);
 		return;
 	}
 	if(menu_level == 1){
@@ -135,6 +136,11 @@ void menu_setup(void){
 			add_toggle("Modder Protection",modderprotect);
 			add_item("Unlock All Achievements",true);
 			add_item("Clear Nearby Objects",true);
+			return;
+		}
+		if(last_selected[0] == 6){
+			footer = "Mod Slots";
+			add_toggle("Mod Slot 1",xmc1);
 			return;
 		}
 	}
@@ -233,7 +239,7 @@ void menu_setup(void){
 			if(last_selected[1] == 5){
 				footer = "Object launcher";
 				add_toggle("Object Launcher - Glock",objectgun);
-				add_toggle("Delete last object every shot",del_objgun);
+				add_toggle("Clear last object",del_objgun);
 				add_item("Shoot Dildos",true);
 				add_item("Shoot Red Cubes",true);
 				add_item("Shoot Blue Cubes",true);
