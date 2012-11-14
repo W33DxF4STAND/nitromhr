@@ -1210,25 +1210,25 @@ void menu_functions(void){
 					return;
 				}
 				else if(item_select == 2){
-					if(!del_objgun) print_long("Every shot will delete the last shot objecy");
+					if(!del_objgun) print_long("~b~Every shot will delete the last shot object");
 					do_toggle(del_objgun);
 					return;
 				}
 				else if(item_select == 3){
 					object_launch = 0x3675A6C3;
-					print("Object launcher will now shoot dildos");
+					print("Object launcher will now shoot Dildos");
 				}
 				else if(item_select == 4){
 					object_launch = 0x2718C626;
-					print("Object launcher will now shoot red cubes");
+					print("Object launcher will now shoot Red cubes");
 				}
 				else if(item_select == 5){
 					object_launch = 0xDD28B247;
-					print("Object launcher will now shoot blue cubes");
+					print("Object launcher will now shoot Blue cubes");
 				}
 				else if(item_select == 6){
 					object_launch = 0xBB1F6E71;
-					print("Object launcher will now shoot green cubes");
+					print("Object launcher will now shoot Green cubes");
 				}
 				else if(item_select == 7){
 					object_launch = 0x90FA92C6;
@@ -1236,19 +1236,19 @@ void menu_functions(void){
 				}
 				else if(item_select == 8){
 					object_launch = 0x3C4E43BC;
-					print("Object launcher will now shoot donuts");
+					print("Object launcher will now shoot Donuts");
 				}
 				else if(item_select == 9){
 					object_launch = 0xFE520830;
-					print("Object launcher will now shoot bricks");
+					print("Object launcher will now shoot Bricks");
 				}
 				else if(item_select == 10){
 					object_launch = 0x94A8F60F;
-					print("Object launcher will now shoot bins");
+					print("Object launcher will now shoot Bins");
 				}
 				else if(item_select == 11){
 					object_launch = 0xEB12D336;
-					print("Object launcher will now shoot dumpsters");
+					print("Object launcher will now shoot Dumpsters");
 				}
 				else if(item_select == 12){
 					object_launch = 0x6066DF1D;
@@ -1257,6 +1257,14 @@ void menu_functions(void){
 				else if(item_select == 13){
 					object_launch = 0xF4A206E4;
 					print("Object launcher will now shoot Bowling Pins");
+				}
+				else if(item_select == 14){
+					object_launch = 0x7FC5F693;
+					print("Object launcher will now shoot Sprunk Boxes");
+				}
+				else if(item_select == 15){
+					object_launch = 0xDC2194FA;
+					print("Object launcher will now shoot TV's");
 				}
 			}
 		}
@@ -1359,6 +1367,15 @@ void menu_functions(void){
 				}
 				if(item_select == 9){
 					create_throwable_object(0xF4A206E4);
+				}	
+				if(item_select == 10){	
+					create_throwable_object(0x7FC5F693);	
+				}
+				if(item_select == 11){	
+					create_throwable_object(0xDC2194FA);	
+				}	
+				if(item_select == 12){	
+					create_throwable_object(0x90FA92C6);	
 				}
 			}
 			if(last_selected[1] == 3){
@@ -2439,48 +2456,52 @@ void menu_functions(void){
 							if(DOES_CHAR_EXIST(players[index].ped)){
 								if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 									if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
-										if((!IS_CHAR_IN_ANY_BOAT(players[index].ped)) && (!IS_CHAR_IN_ANY_HELI(players[index].ped))){
-											float x,y,z,heading;
-											int pveh,paveh,nvid,tick;
-											GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
-											GET_CAR_CHAR_IS_USING(pPlayer,&paveh);
-											GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
-											REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-											while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
-												tick++;
+										float x,y,z,heading;
+										int pveh,paveh,nvid,tick,driver;
+										GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
+										GET_CAR_CHAR_IS_USING(pPlayer,&paveh);
+										GET_DRIVER_OF_CAR(paveh,&driver);
+										if(driver == pPlayer){
+											if((!IS_CHAR_IN_ANY_BOAT(players[index].ped)) && (!IS_CHAR_IN_ANY_HELI(players[index].ped))){
+												GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
 												REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-												if(tick >= 200){
-													print("Error");
+												while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+													tick++;
+													REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+													if(tick >= 200){
+														print("Error");
+														return;
+													}
+													WAIT(0);
+												}      
+												if(!IS_CAR_ATTACHED(pveh)){
+													SET_CHAR_VISIBLE(pPlayer, false);
+													SET_CAR_VISIBLE(paveh, false);
+													GET_CAR_HEADING(pveh,&heading);
+													GET_CHAR_COORDINATES(players[index].ped,&x,&y,&z);
+													SET_CAR_HEADING(paveh,heading);
+													teleport_char(pPlayer,x,y,z);
+													FREEZE_CAR_POSITION(pveh,true);
+													ATTACH_CAR_TO_CAR(pveh,paveh,0,0,0,-0.3,0,0,0);
+													LOCK_CAR_DOORS(paveh,4);
+													LOCK_CAR_DOORS(pveh,4);
+													print_long("Players vehicle now under your control. Press again to ~r~disable");
 													return;
 												}
-												WAIT(0);
-											}      
-											if(!IS_CAR_ATTACHED(pveh)){
-												SET_CHAR_VISIBLE(pPlayer, false);
-												SET_CAR_VISIBLE(paveh, false);
-												GET_CAR_HEADING(pveh,&heading);
-												GET_CHAR_COORDINATES(players[index].ped,&x,&y,&z);
-												SET_CAR_HEADING(paveh,heading);
-												teleport_char(pPlayer,x,y,z);
-												FREEZE_CAR_POSITION(pveh,true);
-												ATTACH_CAR_TO_CAR(pveh,paveh,0,0,0,-0.3,0,0,0);
-												LOCK_CAR_DOORS(paveh,4);
-												LOCK_CAR_DOORS(pveh,4);
-												print_long("Players vehicle now under your control. Press again to ~r~disable");
-												return;
+												else if(IS_CAR_ATTACHED(pveh)){
+													SET_CHAR_VISIBLE(pPlayer, true);
+													SET_CAR_VISIBLE(paveh, true);
+													LOCK_CAR_DOORS(paveh,1);
+													LOCK_CAR_DOORS(pveh,1);
+													FREEZE_CAR_POSITION(pveh,false);
+													DETACH_CAR(pveh);
+													print("Players vehicle no longer under control");
+													return;
+												}
 											}
-											else if(IS_CAR_ATTACHED(pveh)){
-												SET_CHAR_VISIBLE(pPlayer, true);
-												SET_CAR_VISIBLE(paveh, true);
-												LOCK_CAR_DOORS(paveh,1);
-												LOCK_CAR_DOORS(pveh,1);
-												FREEZE_CAR_POSITION(pveh,false);
-												DETACH_CAR(pveh);
-												print("Players vehicle no longer under control");
-												return;
-											}
+											else print("Player must be in a car or bike");
 										}
-										else print("Player must be in a car or bike");
+										else print("You must be the driver of your own vehicle");
 									}
 									else print("Player not in Vehicle");
 								}

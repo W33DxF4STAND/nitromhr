@@ -251,6 +251,8 @@ void menu_setup(void){
 				add_item("Shoot Dumpsters",true);
 				add_item("Shoot Gumball Machines",true);
 				add_item("Shoot Bowling Pins",true);
+				add_item("Shoot Sprunk Box",true);	
+				add_item("Shoot TVs",true);	
 				return;
 			}
 		}
@@ -279,6 +281,9 @@ void menu_setup(void){
 				add_item("AK47",true);
 				add_item("Axe",true);
 				add_item("Bowling Pin",true);
+				add_item("Sprunk Box",true);	
+				add_item("TV",true);	
+				add_item("Bowling Ball",true);
 				return;
 			}
 			if(last_selected[1] == 3){
