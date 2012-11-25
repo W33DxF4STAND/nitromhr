@@ -1295,6 +1295,17 @@ void menu_functions(void){
 					return;
 				}
 			}
+			if(last_selected[1] == 14){
+				if(item_select == 1){
+					REQUEST_MODEL(MODEL_M_O_HASID_01);
+					while(!HAS_MODEL_LOADED(MODEL_M_O_HASID_01)) WAIT(0);
+					WAIT(10);
+					CHANGE_PLAYER_MODEL(GetPlayerIndex(), MODEL_M_O_HASID_01);
+					MARK_MODEL_AS_NO_LONGER_NEEDED(MODEL_M_O_HASID_01);
+					print("Player changed to Jew");
+					return;
+				}
+			}
 		}
 		if(last_selected[0] == 3){
 			if(last_selected[1] == 1){

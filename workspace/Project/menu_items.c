@@ -48,7 +48,7 @@ void menu_setup(void){
 		add_item("Weapon Options",false);
 		add_item("Teleports",false);
 		add_item("Others",false);
-		add_item("Mod Slots",false);
+		add_item("Mod Loader",false);
 		return;
 	}
 	if(menu_level == 1){
@@ -67,6 +67,7 @@ void menu_setup(void){
 			add_toggle("Invisibility",invisible);
 			add_toggle("Burn",onfire);
 			add_item("Bodyguards",false);
+			add_item("Characters",false);
 			return;
 		}
 		if(last_selected[0] == 2){
@@ -139,7 +140,7 @@ void menu_setup(void){
 			return;
 		}
 		if(last_selected[0] == 6){
-			footer = "Mod Slots";
+			footer = "Mod Loader";
 			add_toggle("Mod Slot 1",xmc1);
 			add_toggle("Mod Slot 2",xmc2);
 			add_toggle("Mod Slot 3",xmc3);
@@ -210,6 +211,11 @@ void menu_setup(void){
 				add_item("Suited",true);
 				add_item("Thief",true);
 				add_item("Noose Sniper",true);
+				return;
+			}
+			if(last_selected[1] == 14){
+				footer = "Model Changer";
+				add_item("Jew",true);
 				return;
 			}
 		}
