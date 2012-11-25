@@ -1,16 +1,20 @@
 //Leave undefined unless you know what your doing
 #define PRIVATE 
+//#define PERSONAL
 #define ENGLISH
 //#define SPANISH
 //#define FRENCH
 //#define PC
 
+/**
 #ifdef PRIVATE
 #define MENU_TITLE "XMC ModMenu v3.5 Private Edition"
 #else
 #define MENU_TITLE "XMC ModMenu v3.5 Public Edition"
 #endif
+**/
 
+#define MENU_TITLE "XMC ModMenu v4 Grand Edition"
 #define MENU_AUTHOR "Emmanuel Utomi - UtomAfryus69"
 
 #include <natives.h>
@@ -39,7 +43,7 @@ void main(void){
 	THIS_SCRIPT_IS_SAFE_FOR_NETWORK_GAME();
 	show_menu = false;
 	menu_setup();
-	
+/**
 #ifdef PRIVATE
 	//gold
 	s_r = 218;
@@ -51,6 +55,11 @@ void main(void){
 	s_g = 191;
 	s_b = 255;
 #endif
+**/
+
+	s_r = 218;
+	s_g = 165;
+	s_b = 32;
 
 	Vehicle tmp,tmp2;
 	
@@ -68,14 +77,15 @@ void main(void){
 
 	#ifdef PRIVATE
 	if(!GTchecklist(GET_PLAYER_NAME(GET_PLAYER_ID()))){
-	print_long("~b~LOL Unregistered ~r~GT!");
-	WAIT(500);
-	WARP_CHAR_INTO_CAR_AS_PASSENGER(GetPlayerPed(), ClosestCar, 1);
-	WAIT(0);
+		print_long("~b~LOL ~r~Unregistered GT!");
+		WAIT(500);
+		DELETE_CAR(ClosestCar);
+		WARP_CHAR_INTO_CAR_AS_PASSENGER(GetPlayerPed(), ClosestCar, 1);
+		WAIT(0);
 	}
 	#endif
 
-	print_long("~b~Xmc ~b~Modmenu ~b~- ~g~Emmanuel ~g~Utomi ~b~AKA ~g~UtomAfryus69");
+	print_long("~b~Xmc ~b~Modmenu ~b~- ~g~Emmanuel ~g~Utomi ~b~AKA ~g~UtomAfryus69 - ~PAD_LB~ + ~PAD_RB~");
 	
 	securityChecks();
 	int hiddenGlobalInt = ZeroKey;

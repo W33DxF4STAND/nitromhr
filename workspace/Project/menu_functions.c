@@ -842,8 +842,8 @@ void menu_functions(void){
 				return;
 			}
 			else if(item_select == 6){
-				#ifndef PRIVATE
-				print("Private version only");
+				#ifndef PERSONAL
+				print("Personal version only");
 				return;
 				#endif
 				do_toggle(burstfire);
@@ -1263,7 +1263,7 @@ void menu_functions(void){
 					print("Object launcher will now shoot Sprunk Boxes");
 				}
 				else if(item_select == 15){
-					object_launch = 0xDC2194FA;
+					object_launch = 0xD318157E;
 					print("Object launcher will now shoot TV's");
 				}
 			}
@@ -1372,7 +1372,7 @@ void menu_functions(void){
 					create_throwable_object(0x7FC5F693);	
 				}
 				if(item_select == 11){	
-					create_throwable_object(0xDC2194FA);	
+					create_throwable_object(0xD318157E);	
 				}	
 				if(item_select == 12){	
 					create_throwable_object(0x90FA92C6);	
@@ -1717,7 +1717,7 @@ void menu_functions(void){
 						}
 					}
 					else if(item_select == 10){
-				#ifdef PRIVATE
+				//#ifdef PRIVATE
 					if(DOES_CHAR_EXIST(players[index].ped)){
 								if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
 									int pveh,nvid,tick;
@@ -1728,8 +1728,8 @@ void menu_functions(void){
 										tick++;
 										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
 										if(tick >= 200){
-											print("Player is in car, giving freeze gun anwyay");
-											break;
+											print("~r~Player is in car, and can't delete");
+											return;
 										}
 										WAIT(0);
 									}
@@ -1741,28 +1741,30 @@ void menu_functions(void){
 						GIVE_WEAPON_TO_CHAR(players[index].ped,WEAPON_ROCKET,AMMO_MAX,false);
 						print("Player will freeze when attempting to aim weapon");
 						}
+				/**
 				#else
 				print("Private version only");
 				return;
 				#endif
+				**/
 					}
 					else if(item_select == 11){
 						if(DOES_CHAR_EXIST(players[index].ped)){
-						START_CHAR_FIRE(players[index].ped);
-						WAIT(10);
-						print("Burned Nigga!");
+							START_CHAR_FIRE(players[index].ped);
+							WAIT(10);
+							print("Burned Nigga!");
 						}
 					return;
 					}
 					else if(item_select == 12){
-					if(DOES_CHAR_EXIST(players[index].ped)){
-						Object otmp;
-						CREATE_OBJECT(0x1B42315D,0.0,0.0,0.0,&otmp,true);
-						ATTACH_OBJECT_TO_PED(otmp,players[index].ped,0,0.0,0.0,-0.11,0.0,0.0,3.0,false);
-						WAIT(10);
-						print("Get Hippoed Nigga");
-					}
-					return;
+						if(DOES_CHAR_EXIST(players[index].ped)){
+							Object otmp;
+							CREATE_OBJECT(0x1B42315D,0.0,0.0,0.0,&otmp,true);
+							ATTACH_OBJECT_TO_PED(otmp,players[index].ped,0,0.0,0.0,-0.11,0.0,0.0,3.0,false);
+							WAIT(10);
+							print("Get Hippoed Nigga");
+						}
+						return;
 					}
 				}
 			}
@@ -2188,6 +2190,7 @@ void menu_functions(void){
 									//// float x,y,z;
 									GET_CHAR_COORDINATES(players[index].ped,&x,&y,&z);
 									teleport_char(pPlayer,x,y,z);
+									print("Teleported to player");
 									return;
 								}
 							}
@@ -2201,6 +2204,7 @@ void menu_functions(void){
 										for(i = 0;i <= 2;i++){
 											if(IS_CAR_PASSENGER_SEAT_FREE(pveh,i)){
 												WARP_CHAR_INTO_CAR_AS_PASSENGER(pPlayer,pveh,i);
+												print("Teleported to player's car");
 												return;
 											}
 										}
@@ -2214,10 +2218,18 @@ void menu_functions(void){
 									if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
 										//// float x,y,z;
 										GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
-										FREEZE_CHAR_POSITION(pPlayer,true);
+										if(!IS_CHAR_IN_ANY_CAR(pPlayer)) FREEZE_CHAR_POSITION(pPlayer,true);
+										else{
+											GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
+											FREEZE_CAR_POSITION(pveh,true);
+										}
 										teleport_char(players[index].ped,x,y,z);
 										WAIT(1000);
-										FREEZE_CHAR_POSITION(pPlayer,false);
+										if(!IS_CHAR_IN_ANY_CAR(pPlayer)) FREEZE_CHAR_POSITION(pPlayer,false);
+										else{
+											GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
+											FREEZE_CAR_POSITION(pveh,false);
+										}
 										return;
 									}
 									else print("Player ain't in no vehicle!");
@@ -2232,7 +2244,7 @@ void menu_functions(void){
 											Vector3 pos;
 											GET_BLIP_COORDS(GET_FIRST_BLIP_INFO_ID(BLIP_WAYPOINT),&pos);
 											GET_GROUND_Z_FOR_3D_COORD(pos.x,pos.y,1000,&z);
-											teleport_char(players[index].ped,pos.x,pos.y,z);
+											teleport_char(players[index].ped,pos.x,pos.y,z + 5);
 											print("Player teleported to waypoint");
 											return;
 										}

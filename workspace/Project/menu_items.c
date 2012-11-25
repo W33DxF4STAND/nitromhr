@@ -166,7 +166,7 @@ void menu_setup(void){
 					add_item("All Players",false);
 					for(i = 0;i <= player_count;i++){
 						if(players[i].connected)
-							#ifndef PRIVATE
+							#ifndef PERSONAL
 							if(!is_whitelisted(i))
 							#endif
 							add_item(players[i].gamertag,false);
@@ -301,10 +301,12 @@ void menu_setup(void){
 		if(last_selected[0] == 1){
 			if(last_selected[1] == 1){
 				if(last_selected[2] == 1){
+					/**
 					#ifndef PRIVATE
 					print("Private version only");
 					return;
 					#endif
+					**/
 					footer = "All Players";
 					add_item("Give Weapons & Armor",true);
 					add_item("Remove Weapons",true);
@@ -352,8 +354,8 @@ void menu_setup(void){
 					return;
 				}
 				if(last_selected[2] == 2){
-					#ifndef PRIVATE
-					print("Private version only");
+					#ifndef PERSONAL
+					print("Personal version only");
 					return;
 					#endif
 					footer = "Speech";
@@ -452,9 +454,9 @@ void menu_setup(void){
 				if(last_selected[2] == 4){
 					footer = "Neons";
 					add_item("Blue",true);
-					add_item("Green",true);
+					add_item("Yellow",true);
 					add_item("Red",true);
-					add_item("Purple",true);
+					add_item("Pink",true);
 					return;
 				}
 
