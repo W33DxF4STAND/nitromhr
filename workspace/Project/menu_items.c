@@ -141,6 +141,15 @@ void menu_setup(void){
 		if(last_selected[0] == 6){
 			footer = "Mod Slots";
 			add_toggle("Mod Slot 1",xmc1);
+			add_toggle("Mod Slot 2",xmc2);
+			add_toggle("Mod Slot 3",xmc3);
+			add_toggle("Mod Slot 4",xmc4);
+			add_toggle("Mod Slot 5",xmc5);
+			add_toggle("Mod Slot 6",xmc6);
+			add_toggle("Mod Slot 7",xmc7);
+			add_toggle("Mod Slot 8",xmc8);
+			add_toggle("Mod Slot 9",xmc9);
+			add_toggle("Mod Slot 10",xmc10);
 			return;
 		}
 	}

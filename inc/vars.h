@@ -100,7 +100,17 @@ uint tick;
 int i;
 int nvid;
 
-bool xmc1 = false;
+bool xmc1 = false,
+	xmc2 = false,
+	xmc3 = false,
+	xmc4 = false,
+	xmc5 = false,
+	xmc6 = false,
+	xmc7 = false,
+	xmc8 = false,
+	xmc9 = false,
+	xmc10 = false;
+
 
 bool show_menu = false,
 	godmode = true,

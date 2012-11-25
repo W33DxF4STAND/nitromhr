@@ -1017,15 +1017,212 @@ void menu_functions(void){
 		if(last_selected[0] == 6){
 			if(item_select == 1){
 				if(DOES_SCRIPT_EXIST("xmc1")){
-					REQUEST_SCRIPT("xmc1");
-					while(!HAS_SCRIPT_LOADED("xmc1")){
+					do_toggle(xmc1);
+					if(xmc1){
 						REQUEST_SCRIPT("xmc1");
-						WAIT(0);
+						while(!HAS_SCRIPT_LOADED("xmc1")){
+							REQUEST_SCRIPT("xmc1");
+							WAIT(0);
+						}
+						START_NEW_SCRIPT("xmc1", 1024);
+						MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmc1");
+						print_long("~g~Launched xmc1.sco");
 					}
-					START_NEW_SCRIPT("xmc1", 1024);
-					MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmc1");
+					else{
+						TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmc1");
+						print_long("~r~Killed xmc1.sco");
+					}
 				}
 				else print_long("~r~xmc1.sco Doesn't exist");
+				return;
+			}
+			if(item_select == 2){
+				if(DOES_SCRIPT_EXIST("xmc2")){
+					do_toggle(xmc2);
+					if(xmc2){
+						REQUEST_SCRIPT("xmc2");
+						while(!HAS_SCRIPT_LOADED("xmc2")){
+							REQUEST_SCRIPT("xmc2");
+							WAIT(0);
+						}
+						START_NEW_SCRIPT("xmc2", 1024);
+						MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmc2");
+						print_long("~g~Launched xmc2.sco");
+					}
+					else{
+						TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmc2");
+						print_long("~r~Killed xmc2.sco");
+					}
+				}
+				else print_long("~r~xmc2.sco Doesn't exist");
+				return;
+			}
+			if(item_select == 3){
+				if(DOES_SCRIPT_EXIST("xmc3")){
+					do_toggle(xmc3);
+					if(xmc3){
+						REQUEST_SCRIPT("xmc3");
+						while(!HAS_SCRIPT_LOADED("xmc3")){
+							REQUEST_SCRIPT("xmc3");
+							WAIT(0);
+						}
+						START_NEW_SCRIPT("xmc3", 1024);
+						MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmc3");
+						print_long("~g~Launched xmc3.sco");
+					}
+					else{
+						TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmc3");
+						print_long("~r~Killed xmc3.sco");
+					}
+				}
+				else print_long("~r~xmc3.sco Doesn't exist");
+				return;
+			}
+			if(item_select == 4){
+				if(DOES_SCRIPT_EXIST("xmc4")){
+					do_toggle(xmc4);
+					if(xmc4){
+						REQUEST_SCRIPT("xmc4");
+						while(!HAS_SCRIPT_LOADED("xmc4")){
+							REQUEST_SCRIPT("xmc4");
+							WAIT(0);
+						}
+						START_NEW_SCRIPT("xmc4", 1024);
+						MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmc4");
+						print_long("~g~Launched xmc4.sco");
+					}
+					else{
+						TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmc4");
+						print_long("~r~Killed xmc4.sco");
+					}
+				}
+				else print_long("~r~xmc4.sco Doesn't exist");
+				return;
+			}
+			if(item_select == 5){
+				if(DOES_SCRIPT_EXIST("xmc5")){
+					do_toggle(xmc5);
+					if(xmc5){
+						REQUEST_SCRIPT("xmc5");
+						while(!HAS_SCRIPT_LOADED("xmc5")){
+							REQUEST_SCRIPT("xmc5");
+							WAIT(0);
+						}
+						START_NEW_SCRIPT("xmc5", 1024);
+						MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmc5");
+						print_long("~g~Launched xmc5.sco");
+					}
+					else{
+						TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmc5");
+						print_long("~r~Killed xmc5.sco");
+					}
+				}
+				else print_long("~r~xmc5.sco Doesn't exist");
+				return;
+			}
+			if(item_select == 6){
+				if(DOES_SCRIPT_EXIST("xmc6")){
+					do_toggle(xmc6);
+					if(xmc6){
+						REQUEST_SCRIPT("xmc6");
+						while(!HAS_SCRIPT_LOADED("xmc6")){
+							REQUEST_SCRIPT("xmc6");
+							WAIT(0);
+						}
+						START_NEW_SCRIPT("xmc6", 1024);
+						MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmc6");
+						print_long("~g~Launched xmc6.sco");
+					}
+					else{
+						TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmc6");
+						print_long("~r~Killed xmc6.sco");
+					}
+				}
+				else print_long("~r~xmc6.sco Doesn't exist");
+				return;
+			}
+			if(item_select == 7){
+				if(DOES_SCRIPT_EXIST("xmc7")){
+					do_toggle(xmc7);
+					if(xmc7){
+						REQUEST_SCRIPT("xmc7");
+						while(!HAS_SCRIPT_LOADED("xmc7")){
+							REQUEST_SCRIPT("xmc7");
+							WAIT(0);
+						}
+						START_NEW_SCRIPT("xmc7", 1024);
+						MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmc7");
+						print_long("~g~Launched xmc7.sco");
+					}
+					else{
+						TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmc7");
+						print_long("~r~Killed xmc7.sco");
+					}
+				}
+				else print_long("~r~xmc7.sco Doesn't exist");
+				return;
+			}
+			if(item_select == 8){
+				if(DOES_SCRIPT_EXIST("xmc8")){
+					do_toggle(xmc8);
+					if(xmc8){
+						REQUEST_SCRIPT("xmc8");
+						while(!HAS_SCRIPT_LOADED("xmc8")){
+							REQUEST_SCRIPT("xmc8");
+							WAIT(0);
+						}
+						START_NEW_SCRIPT("xmc8", 1024);
+						MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmc8");
+						print_long("~g~Launched xmc8.sco");
+					}
+					else{
+						TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmc8");
+						print_long("~r~Killed xmc8.sco");
+					}
+				}
+				else print_long("~r~xmc8.sco Doesn't exist");
+				return;
+			}
+			if(item_select == 9){
+				if(DOES_SCRIPT_EXIST("xmc9")){
+					do_toggle(xmc9);
+					if(xmc9){
+						REQUEST_SCRIPT("xmc9");
+						while(!HAS_SCRIPT_LOADED("xmc9")){
+							REQUEST_SCRIPT("xmc9");
+							WAIT(0);
+						}
+						START_NEW_SCRIPT("xmc9", 1024);
+						MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmc9");
+						print_long("~g~Launched xmc9.sco");
+					}
+					else{
+						TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmc9");
+						print_long("~r~Killed xmc9.sco");
+					}
+				}
+				else print_long("~r~xmc9.sco Doesn't exist");
+				return;
+			}
+			if(item_select == 10){
+				if(DOES_SCRIPT_EXIST("xmc10")){
+					do_toggle(xmc10);
+					if(xmc10){
+						REQUEST_SCRIPT("xmc10");
+						while(!HAS_SCRIPT_LOADED("xmc10")){
+							REQUEST_SCRIPT("xmc10");
+							WAIT(0);
+						}
+						START_NEW_SCRIPT("xmc10", 1024);
+						MARK_SCRIPT_AS_NO_LONGER_NEEDED("xmc10");
+						print_long("~g~Launched xmc10.sco");
+					}
+					else{
+						TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("xmc10");
+						print_long("~r~Killed xmc10.sco");
+					}
+				}
+				else print_long("~r~xmc10.sco Doesn't exist");
 				return;
 			}
 		}
@@ -2721,6 +2918,7 @@ void menu_functions(void){
 void looped_functions(void){
 	//player options
 	SET_CHAR_INVINCIBLE(pPlayer,godmode);
+	GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 	
 	if(ammo){
 		if(IS_CHAR_SHOOTING(pPlayer)){
@@ -2766,7 +2964,6 @@ void looped_functions(void){
 	if(lowerpveh){
 		int tick,nvid;
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
-			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))&& (!IS_CHAR_ON_ANY_BIKE(pPlayer)) && (IS_VEHICLE_ON_ALL_WHEELS(pveh)))
 				APPLY_FORCE_TO_CAR(pveh,true,0.0,0,-0.3,0.0,0.0,0.0,true,true,true,true);
 		}
@@ -2785,7 +2982,6 @@ void looped_functions(void){
 	if(lowerpveh){
 		int tick,nvid;
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
-			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))&& (!IS_CHAR_ON_ANY_BIKE(pPlayer)) && (IS_VEHICLE_ON_ALL_WHEELS(pveh)))
 				APPLY_FORCE_TO_CAR(pveh,true,0.0,0,-0.3,0.0,0.0,0.0,true,true,true,true);
 		}
@@ -2794,19 +2990,16 @@ void looped_functions(void){
 	if(collision){
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))){
-				GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 				SET_CAR_ON_GROUND_PROPERLY(pveh);
 				SET_CAR_COLLISION(pveh, false);
 			}
 			else{
-				GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 				SET_CAR_COLLISION(pveh, false);
 			}
 		}
 	}
 	else{
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
-			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 			SET_CAR_COLLISION(pveh, true);
 		}
 	}
@@ -2829,13 +3022,17 @@ void looped_functions(void){
 	if(forcefield){
 		// float x,y,z;
 		GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
-		ADD_EXPLOSION(x,y,z,EXPLOSION_SHIP_DESTROY,20.0,false,true,0.0);
+		ADD_EXPLOSION(x,y,z,EXPLOSION_SHIP_DESTROY,35.0,false,true,0.0);
+		ADD_EXPLOSION(x,y,z + 5,EXPLOSION_SHIP_DESTROY,35.0,false,true,0.0);
+		ADD_EXPLOSION(x + 5,y,z,EXPLOSION_SHIP_DESTROY,35.0,false,true,0.0);
+		ADD_EXPLOSION(x - 5,y,z,EXPLOSION_SHIP_DESTROY,35.0,false,true,0.0);
+		ADD_EXPLOSION(x,y + 5,z,EXPLOSION_SHIP_DESTROY,35.0,false,true,0.0);
+		ADD_EXPLOSION(x,y - 5,z,EXPLOSION_SHIP_DESTROY,35.0,false,true,0.0);
 	}
 	
 	if(lowerpveh){
 		int tick,nvid;
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
-			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))&& (!IS_CHAR_ON_ANY_BIKE(pPlayer)) && (IS_VEHICLE_ON_ALL_WHEELS(pveh)))
 				APPLY_FORCE_TO_CAR(pveh,true,0.0,0,-0.3,0.0,0.0,0.0,true,true,true,true);
 		}
@@ -2844,7 +3041,6 @@ void looped_functions(void){
 	if(hydrolics){
 		if(IS_BUTTON_PRESSED(0,BUTTON_X)){
 			if (IS_CHAR_IN_ANY_CAR(pPlayer)){
-				GET_CAR_CHAR_IS_USING(pPlayer, &pveh);	
 				if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))){
 					if (IS_VEHICLE_ON_ALL_WHEELS(pveh)){
 						APPLY_FORCE_TO_CAR(pveh, 0.0f, 0.0f, 0.0f, 70.0f , 0.0f,0.0f,-70.0f, 0, 1, 1, 1 );
@@ -2901,7 +3097,6 @@ void looped_functions(void){
 	
 	if(vhelper){
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
-			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 			SET_CAR_CAN_BE_DAMAGED(pveh,false);
 			SET_CAR_CAN_BE_VISIBLY_DAMAGED(pveh,false);
 			SET_CAN_BURST_CAR_TYRES(pveh,false);
@@ -2909,9 +3104,17 @@ void looped_functions(void){
 			SET_CAR_PROOFS(pveh, true, true, true, true, true);
 		}
 	}
+	else{
+		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
+			SET_CAR_CAN_BE_DAMAGED(pveh,true);
+			SET_CAR_CAN_BE_VISIBLY_DAMAGED(pveh,true);
+			SET_CAN_BURST_CAR_TYRES(pveh,true);
+			SET_CAR_PROOFS(pveh, false, false, false, false, false);
+		}
+	}
+	
 	if(carsonground){
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
-			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 			SET_CAR_ON_GROUND_PROPERLY(pveh);
 		}
 	}
@@ -2919,13 +3122,11 @@ void looped_functions(void){
 	if(bikefly){
 		if((IS_CHAR_ON_ANY_BIKE(pPlayer)) && IS_BUTTON_PRESSED(0,BUTTON_R)){
 			float speed;
-			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 			GET_CAR_SPEED(pveh,&speed);
 			SET_CAR_FORWARD_SPEED(pveh,(speed * 1.05));
 		}
 		if(IS_CHAR_ON_ANY_BIKE(pPlayer) && IS_BUTTON_PRESSED(0,BUTTON_L)){
 			float speed;
-			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 			if (!IS_VEHICLE_ON_ALL_WHEELS(pveh)){
 				GET_CAR_SPEED(pveh,&speed);
 				SET_CAR_FORWARD_SPEED(pveh,(speed / 1.05));
@@ -2936,7 +3137,6 @@ void looped_functions(void){
 	if(nfs){
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 			float speed;
-			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))){
 				SET_CAR_ON_GROUND_PROPERLY(pveh);
 				if(IS_BUTTON_PRESSED(0,BUTTON_R)){
