@@ -593,8 +593,10 @@ void menu_setup(void){
 						add_gxt_hash(MODEL_FUTO);
 						add_gxt_hash(MODEL_SENTINEL);
 						add_gxt_hash(MODEL_URANUS);
-						if(episode == 2)
+						if(episode == 2){
 							add_gxt_hash(MODEL_SUPERD);
+							add_gxt_hash(MODEL_SUPERD2);
+						}
 						return;
 					}
 					if(last_selected[3] == 4){
@@ -631,8 +633,8 @@ void menu_setup(void){
 						add_gxt_hash(MODEL_WASHINGTON);
 						add_gxt_hash(MODEL_WILLARD);
 						if(episode == 2){
-							add_gxt_hash(MODEL_SERRANO);
 							add_gxt_hash(MODEL_SCHAFTER2);
+							add_gxt_hash(MODEL_SCHAFTER3);
 						}
 						return;
 					}
@@ -658,8 +660,12 @@ void menu_setup(void){
 						add_gxt_hash(MODEL_PERENNIAL);
 						add_gxt_hash(MODEL_RANCHER);
 						add_gxt_hash(MODEL_REBLA);
-						if(episode == 2)
+						if(episode == 2){
+							add_gxt_hash(MODEL_SERRANO);
+							add_gxt_hash(MODEL_SERRANO2);
 							add_gxt_hash(MODEL_CAVALCADE2);
+							add_gxt_hash(MODEL_SLAMVAN);
+						}
 						return;
 					}
 					if(last_selected[3] == 8){
@@ -690,6 +696,7 @@ void menu_setup(void){
 						add_gxt_hash(MODEL_YANKEE);
 						if(episode == 2)
 							add_gxt_hash(MODEL_CADDY);
+							add_gxt_hash(MODEL_AVAN);
 						return;
 					}
 					if(last_selected[3] == 10){
