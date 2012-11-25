@@ -1409,6 +1409,14 @@ void menu_functions(void){
 					GIVE_WEAPON_TO_CHAR(pPlayer,WEAPON_POOLCUE,1,false);
 					print("You have been given a pool stick");			
 				}
+				else if(item_select == 17){
+					GIVE_WEAPON_TO_CHAR(pPlayer,WEAPON_KNIFE,1,false);
+					print("You have been given a knife");			
+				}
+				else if(item_select == 18){
+					GIVE_WEAPON_TO_CHAR(pPlayer,WEAPON_MOLOTOV,AMMO_MAX,false);
+					print("You have been given a molotov");			
+				}
 				return;
 			}
 			if(last_selected[1] == 5){

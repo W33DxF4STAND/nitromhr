@@ -249,6 +249,8 @@ void menu_setup(void){
 				add_item("Rocket Launcher",true);
 				add_item("Baseball Bat",true);
 				add_item("Pool Stick",true);
+				add_item("Knife",true);
+				add_item("Molotovs",true);
 				return;
 			}
 			if(last_selected[1] == 5){
