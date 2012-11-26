@@ -120,7 +120,7 @@ void menu_setup(void){
 			add_item("Construction Site",true);
 			add_item("Subway",true);
 			add_item("Sprunk Factory",true);
-			add_item("10ft in front",true);
+			add_item("In front",true);
 			add_item("In Nearest Car",true);
 			return;
 		}
@@ -130,7 +130,7 @@ void menu_setup(void){
 			add_item("Throwable Objects",false);
 			add_item("Air Strikes",false);
 			add_toggle("Chat name popup",chat_thingy);
-			add_toggle("Remove runway planes",drive_free);
+			add_toggle("Drive Free",drive_free);
 			add_item("Start New Freemode",true);
 			add_item("Return to Single Player",true);
 			add_item("Get name of host",true);
@@ -211,11 +211,6 @@ void menu_setup(void){
 				add_item("Suited",true);
 				add_item("Thief",true);
 				add_item("Noose Sniper",true);
-				return;
-			}
-			if(last_selected[1] == 14){
-				footer = "Model Changer";
-				add_item("Jew",true);
 				return;
 			}
 		}
@@ -528,6 +523,7 @@ void menu_setup(void){
 						add_item("Speed Brake",true);
 						add_item("Remote Control",true);
 						add_item("Lock/Unlock Doors",true);
+						add_item("Skylift Attach",true);
 						return;
 					}
 					if(last_selected[3] == 12){

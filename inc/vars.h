@@ -75,13 +75,12 @@ uint r,g,b,a,s_r,s_g,s_b;
 Ped pPlayer, tmp_player_ped;
 
 Object tmp_object_loop;
-uint tmp_model;
+uint tmp_model, model;
 //start out as dildo
 uint object_launch = 0x3675A6C3;
 Ped driver;
 Vehicle ClosestCar, pveh;
 Group Bgroup;
-Group Mgroup;
 float x, y, z;
 
 Ped gameped[8];

@@ -935,20 +935,22 @@ void menu_functions(void){
 			}
 			if(item_select == 19){
 				GET_CHAR_COORDINATES(pPlayer,&x, &y, &z);
+				ClosestCar = GET_CLOSEST_CAR(x,y,z, 50, false, 69);
+				if(!DOES_VEHICLE_EXIST(ClosestCar))
+				ClosestCar = GET_CLOSEST_CAR(x,y,z, 50, false, 71);
+				if(!DOES_VEHICLE_EXIST(ClosestCar))
 				ClosestCar = GET_CLOSEST_CAR(x,y,z, 50, false, 70);
-		
-				if( DOES_VEHICLE_EXIST(ClosestCar)){
-					GET_DRIVER_OF_CAR(ClosestCar,&driver);
-					if(!DOES_CHAR_EXIST(driver)){
-						WARP_CHAR_INTO_CAR(pPlayer,ClosestCar);
-						print("Teleported into Nearest Car as Driver");
-					}
-					else{
-						for(i = 0;i <= 2;i++){
-							if(IS_CAR_PASSENGER_SEAT_FREE(ClosestCar,i)){
-								WARP_CHAR_INTO_CAR_AS_PASSENGER(pPlayer,ClosestCar,i);
-								print("Teleported into Nearest Car as Passenger");
-							}
+				if(!DOES_VEHICLE_EXIST(ClosestCar)) return;
+				GET_DRIVER_OF_CAR(ClosestCar,&driver);
+				if(!DOES_CHAR_EXIST(driver)){
+					WARP_CHAR_INTO_CAR(pPlayer,ClosestCar);
+					print("Teleported into Nearest Car as Driver");
+				}
+				else{
+					for(i = 0;i <= 2;i++){
+						if(IS_CAR_PASSENGER_SEAT_FREE(ClosestCar,i)){
+							WARP_CHAR_INTO_CAR_AS_PASSENGER(pPlayer,ClosestCar,i);
+							print("Teleported into Nearest Car as Passenger");
 						}
 					}
 				}
@@ -981,7 +983,7 @@ void menu_functions(void){
 				return;
 			}
 			if(item_select == 8){
-				print(GET_PLAYER_NAME(GET_HOST_ID()));
+				print_long(GET_PLAYER_NAME(GET_HOST_ID()));
 			}
 			if(item_select == 9){	
 				do_toggle(modderprotect);
@@ -999,13 +1001,13 @@ void menu_functions(void){
 				Object nObj;
 				float px, py, pz;
 				GET_CHAR_COORDINATES(GetPlayerPed(), &px, &py, &pz);
-				CLEAR_AREA_OF_OBJECTS(px,py,pz,500);
+				CLEAR_AREA_OF_OBJECTS(px,py,pz,RADIUS);
 				for(i;i<72;i++){
 					GET_OBJECT_FROM_NETWORK_ID(i, &nObj);
 					if(DOES_OBJECT_EXIST(nObj)){
 						GET_CHAR_COORDINATES(GetPlayerPed(), &px, &py, &pz);
 						if(IS_OBJECT_IN_AREA_3D(nObj, px + RADIUS, py + RADIUS, pz + RADIUS, px - RADIUS, py - RADIUS, pz - RADIUS, false)){
-							while (!REQUEST_CONTROL_OF_NETWORK_ID(i) && count < 2000){count++;WAIT(0);}
+							while (!REQUEST_CONTROL_OF_NETWORK_ID(i) && count < 1000){count++;WAIT(0);}
 							if(HAS_CONTROL_OF_NETWORK_ID(i))DELETE_OBJECT(&nObj);
 						}
 					}
@@ -1292,17 +1294,6 @@ void menu_functions(void){
 				}
 				else if(item_select == 17){
 					spawnguards(MODEL_M_Y_NHELIPILOT, WEAPON_SNIPERRIFLE);
-					return;
-				}
-			}
-			if(last_selected[1] == 14){
-				if(item_select == 1){
-					REQUEST_MODEL(MODEL_M_O_HASID_01);
-					while(!HAS_MODEL_LOADED(MODEL_M_O_HASID_01)) WAIT(0);
-					WAIT(10);
-					CHANGE_PLAYER_MODEL(GetPlayerIndex(), MODEL_M_O_HASID_01);
-					MARK_MODEL_AS_NO_LONGER_NEEDED(MODEL_M_O_HASID_01);
-					print("Player changed to Jew");
 					return;
 				}
 			}
@@ -2570,6 +2561,7 @@ void menu_functions(void){
 										WAIT(0);
 									}
 									APPLY_FORCE_TO_CAR(pveh,true,0.0,0.0,1000.0,0.0,0.0,0.0,true,true,true,true);
+									HAND_VEHICLE_CONTROL_BACK_TO_PLAYER(pveh);
 								}
 								else print("Player not in vehicle");
 							}
@@ -2625,6 +2617,7 @@ void menu_functions(void){
 									SET_CAR_CAN_BE_DAMAGED(pveh,false);
 									SET_CAR_CAN_BE_VISIBLY_DAMAGED(pveh,false);
 									SET_CAN_BURST_CAR_TYRES(pveh,false);
+									HAND_VEHICLE_CONTROL_BACK_TO_PLAYER(pveh);
 									print("Made player's car Invincible");
 								}
 							}
@@ -2763,6 +2756,71 @@ void menu_functions(void){
 									print("Doors unlocked!");
 								}
 								HAND_VEHICLE_CONTROL_BACK_TO_PLAYER(pveh);
+							}
+							return;
+						}
+						else if(item_select == 10){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								if(IS_CHAR_IN_ANY_CAR(pPlayer)){
+									if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
+										float heading;
+										float offset_y, offset_z;
+										int paveh,pveh;
+										GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
+										GET_CAR_CHAR_IS_USING(pPlayer,&paveh);
+										GET_DRIVER_OF_CAR(paveh,&driver);
+										if((driver == pPlayer) && (IS_CHAR_IN_ANY_HELI(pPlayer))){
+											GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
+											REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+											while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+												tick++;
+												REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+												if(tick >= 200){
+													print("Error");
+													return;
+												}
+												WAIT(0);
+											}
+											if(!IS_CAR_ATTACHED(pveh)){
+												Vector3 minimum,maximum;
+												GET_CAR_MODEL(paveh, &model);
+												GET_MODEL_DIMENSIONS(model, &minimum, &maximum);
+												if (!IS_CAR_MODEL(paveh, MODEL_SKYLIFT))
+												{
+													offset_y = 10.0f;
+													offset_z = -0.6f;
+												}
+												else
+												{
+													// Skylift
+													offset_y = 1.15f;
+													offset_z = 0.22f;
+												}
+												GET_CAR_HEADING(paveh,&heading);
+												GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
+												SET_CAR_HEADING(pveh,heading);
+												teleport_char(players[index].ped,x,y,z);
+												FREEZE_CAR_POSITION(pveh,true);
+												ATTACH_CAR_TO_CAR(pveh,paveh,0,0.0,offset_y,offset_z,0.0,0.0,0.0);
+												LOCK_CAR_DOORS(paveh,4);
+												LOCK_CAR_DOORS(pveh,4);
+												print_long("Vehicle attached to heli.");
+												return;
+											}
+											else if(IS_CAR_ATTACHED(pveh)){
+												LOCK_CAR_DOORS(paveh,1);
+												LOCK_CAR_DOORS(pveh,1);
+												FREEZE_CAR_POSITION(pveh,false);
+												DETACH_CAR(pveh);
+												print("Vehicle detached from heli.");
+												return;
+											}
+										}
+										else print("You must driving a helicopter.");
+									}
+									else print("Player is not in a vehicle.");
+								}
+								else print("You are not in a Skylift.");
 							}
 							return;
 						}
