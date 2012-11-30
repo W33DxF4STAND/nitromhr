@@ -60,8 +60,8 @@ void menu_setup(void){
 			add_toggle("God Mode",godmode);
 			add_toggle("Never Wanted",neverwanted);
 			add_toggle("Smart protection",pprotection);
-			add_toggle("Super Run",superrun);
-			add_toggle("Super Hops",superjump);
+			add_toggle("Super Run ~PAD_LB~ + ~PAD_A~",superrun);
+			add_toggle("Super Hops ~PAD_LB~ + ~PAD_X~",superjump);
 			add_toggle("Chronicle",forcefield);
 			add_toggle("Chaos mode",chaos);
 			add_toggle("Invisibility",invisible);
@@ -176,9 +176,6 @@ void menu_setup(void){
 					add_item("All Players",false);
 					for(i = 0;i <= player_count;i++){
 						if(players[i].connected)
-							#ifndef PERSONAL
-							if(!is_whitelisted(i))
-							#endif
 							add_item(players[i].gamertag,false);
 					}
 					return;
@@ -517,13 +514,14 @@ void menu_setup(void){
 						add_item("Attach to Vehicle",true);
 						add_item("Delete Vehicle",true);
 						add_item("Slingshot Vehicle",true);
-						add_item("Fuck up Vehicle",true);
+						add_item("Retard-ify Vehicle",true);
 						add_item("Vehicle Helper",true);
 						add_item("Speed Boost",true);
 						add_item("Speed Brake",true);
 						add_item("Remote Control",true);
 						add_item("Lock/Unlock Doors",true);
-						add_item("Skylift Attach",true);
+						add_item("Heli Pickup",true);
+						add_item("Kidnap",true);
 						return;
 					}
 					if(last_selected[3] == 12){

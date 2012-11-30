@@ -84,6 +84,7 @@ Group Bgroup;
 float x, y, z;
 
 Ped gameped[8];
+Ped group_onlineped;
 
 char* footer;
 
@@ -113,6 +114,7 @@ bool xmc1 = false,
 
 bool show_menu = false,
 	godmode = true,
+	group_loop = false,
 	bikefly = false,
 	collision = false,
 	neverwanted = false,

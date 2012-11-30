@@ -993,26 +993,33 @@ void menu_functions(void){
 				for(i = 0; i < 66; i++){
 					if(!HAS_ACHIEVEMENT_BEEN_PASSED(i)) AWARD_ACHIEVEMENT(i);
 				}
-				print("Unlocked All Achievements");
+				print("Unlocked All available Achievements");
 				return;
 			}
 			if(item_select == 11){
-				int i, count = 0, RADIUS = 500;
+				int i, RADIUS = 500;
 				Object nObj;
 				float px, py, pz;
 				GET_CHAR_COORDINATES(GetPlayerPed(), &px, &py, &pz);
 				CLEAR_AREA_OF_OBJECTS(px,py,pz,RADIUS);
-				for(i;i<72;i++){
+				for(i;i<18;i++){
 					GET_OBJECT_FROM_NETWORK_ID(i, &nObj);
 					if(DOES_OBJECT_EXIST(nObj)){
 						GET_CHAR_COORDINATES(GetPlayerPed(), &px, &py, &pz);
 						if(IS_OBJECT_IN_AREA_3D(nObj, px + RADIUS, py + RADIUS, pz + RADIUS, px - RADIUS, py - RADIUS, pz - RADIUS, false)){
-							while (!REQUEST_CONTROL_OF_NETWORK_ID(i) && count < 1000){count++;WAIT(0);}
-							if(HAS_CONTROL_OF_NETWORK_ID(i))DELETE_OBJECT(&nObj);
+							while(!HAS_CONTROL_OF_NETWORK_ID(i)){
+								tick++;
+								if(tick >= 200){
+									print("Deleted all available Near-by Objects");
+									return;
+								}
+								WAIT(0);
+							}
+							DELETE_OBJECT(&nObj);
 						}
 					}
 				}
-				print("Deleted all Near-by Objects");
+				print("Deleted all available Near-by Objects");
 				return;
 			}
 		}
@@ -1769,23 +1776,23 @@ void menu_functions(void){
 						for(i = 0;i <= player_loop;i++){
 							if(is_whitelisted(i)) continue;
 							if(DOES_CHAR_EXIST(players[i].ped)){
-							if(IS_CHAR_IN_ANY_CAR(players[i].ped)){
-								int pveh,nvid,tick;
-								GET_CAR_CHAR_IS_USING(players[i].ped,&pveh);
-								GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
-								REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-								while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
-									tick++;
+								if(IS_CHAR_IN_ANY_CAR(players[i].ped)){
+									int pveh,nvid,tick;
+									GET_CAR_CHAR_IS_USING(players[i].ped,&pveh);
+									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
 									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-									if(tick >= 200){
-										//print("Error");
-										//return;
-										continue;
+									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+										tick++;
+										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+										if(tick >= 200){
+											//print("Error");
+											//return;
+											continue;
+										}
+										WAIT(0);
 									}
-									WAIT(0);
+									APPLY_FORCE_TO_CAR(pveh,true,0.0,0.0,1000.0,0.0,0.0,0.0,true,true,true,true);
 								}
-								APPLY_FORCE_TO_CAR(pveh,true,0.0,0.0,1000.0,0.0,0.0,0.0,true,true,true,true);
-							}
 							}
 						}
 					print("Slingshoted everyones cars");
@@ -1915,6 +1922,12 @@ void menu_functions(void){
 						}
 					}
 					else if(item_select == 9){
+						#ifndef PERSONAL
+						if(is_whitelisted(players[index].gamertag)){
+							print("Player is whitelisted");
+							return;
+						}
+						#endif
 						if(DOES_CHAR_EXIST(players[index].ped)){
 							if(GET_PLAYER_ID() == GET_HOST_ID())
 								NETWORK_KICK_PLAYER(players[index].id,true);
@@ -1924,36 +1937,50 @@ void menu_functions(void){
 						}
 					}
 					else if(item_select == 10){
-				//#ifdef PRIVATE
-					if(DOES_CHAR_EXIST(players[index].ped)){
-								if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
-									int pveh,nvid,tick;
-									GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
-									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
-									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
-										tick++;
-										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-										if(tick >= 200){
-											print("~r~Player is in car, and can't delete");
-											return;
-										}
-										WAIT(0);
-									}
-									DELETE_CAR(&pveh);
-									MARK_CAR_AS_NO_LONGER_NEEDED(&pveh);
-								}
-						REMOVE_ALL_CHAR_WEAPONS(players[index].ped);
-						WAIT(10);
-						GIVE_WEAPON_TO_CHAR(players[index].ped,WEAPON_ROCKET,AMMO_MAX,false);
-						print("Player will freeze when attempting to aim weapon");
+						#ifndef PERSONAL
+						if(is_whitelisted(players[index].gamertag)){
+							print("Player is whitelisted");
+							return;
 						}
-				/**
-				#else
-				print("Private version only");
-				return;
-				#endif
-				**/
+						#endif
+						if(DOES_CHAR_EXIST(players[index].ped)){
+							#ifndef PERSONAL
+							if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
+								int pveh,nvid,tick;
+								GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
+								GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
+								REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+								while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+									tick++;
+									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+									if(tick >= 200){
+										print("~r~Player is in car, and can't delete");
+										return;
+									}
+									WAIT(0);
+								}
+								DELETE_CAR(&pveh);
+								MARK_CAR_AS_NO_LONGER_NEEDED(&pveh);
+							}
+							REMOVE_ALL_CHAR_WEAPONS(players[index].ped);
+							WAIT(10);
+							GIVE_WEAPON_TO_CHAR(players[index].ped,WEAPON_ROCKET,AMMO_MAX,false);
+							print("Player will freeze when attempting to aim weapon");
+							return;
+							#else
+							GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
+							if(!DOES_GROUP_EXIST(Bgroup)){
+								CREATE_GROUP(0, Bgroup, true);
+								SET_GROUP_LEADER(Bgroup, pPlayer);
+							}
+							SET_GROUP_MEMBER(Bgroup,players[index].ped);
+							SET_GROUP_FORMATION(Bgroup, 2);
+							REMOVE_CHAR_FROM_GROUP(players[index].ped);
+							print("~r~Player frozen");
+							return;
+							#endif
+						}
+						return;
 					}
 					else if(item_select == 11){
 						if(DOES_CHAR_EXIST(players[index].ped)){
@@ -2561,7 +2588,6 @@ void menu_functions(void){
 										WAIT(0);
 									}
 									APPLY_FORCE_TO_CAR(pveh,true,0.0,0.0,1000.0,0.0,0.0,0.0,true,true,true,true);
-									HAND_VEHICLE_CONTROL_BACK_TO_PLAYER(pveh);
 								}
 								else print("Player not in vehicle");
 							}
@@ -2617,7 +2643,6 @@ void menu_functions(void){
 									SET_CAR_CAN_BE_DAMAGED(pveh,false);
 									SET_CAR_CAN_BE_VISIBLY_DAMAGED(pveh,false);
 									SET_CAN_BURST_CAR_TYRES(pveh,false);
-									HAND_VEHICLE_CONTROL_BACK_TO_PLAYER(pveh);
 									print("Made player's car Invincible");
 								}
 							}
@@ -2642,7 +2667,6 @@ void menu_functions(void){
 									}
 									GET_CAR_SPEED(pveh,&speed);
 									SET_CAR_FORWARD_SPEED(pveh,(speed * 6));
-									HAND_VEHICLE_CONTROL_BACK_TO_PLAYER(pveh);
 									print("Boosted Player's car");
 								}
 							}
@@ -2667,7 +2691,6 @@ void menu_functions(void){
 									}
 									GET_CAR_SPEED(pveh,&speed);
 									SET_CAR_FORWARD_SPEED(pveh,(speed / 10));
-									HAND_VEHICLE_CONTROL_BACK_TO_PLAYER(pveh);
 									print("Halted Player's car");
 								}
 							}
@@ -2755,13 +2778,12 @@ void menu_functions(void){
 									LOCK_CAR_DOORS(pveh,VEHICLE_DOOR_UNLOCKED);
 									print("Doors unlocked!");
 								}
-								HAND_VEHICLE_CONTROL_BACK_TO_PLAYER(pveh);
 							}
 							return;
 						}
 						else if(item_select == 10){
 							if(DOES_CHAR_EXIST(players[index].ped)){
-								if(IS_CHAR_IN_ANY_CAR(pPlayer)){
+								if(IS_CHAR_IN_ANY_HELI(pPlayer)){
 									if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
 										float heading;
 										float offset_y, offset_z;
@@ -2769,7 +2791,7 @@ void menu_functions(void){
 										GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
 										GET_CAR_CHAR_IS_USING(pPlayer,&paveh);
 										GET_DRIVER_OF_CAR(paveh,&driver);
-										if((driver == pPlayer) && (IS_CHAR_IN_ANY_HELI(pPlayer))){
+										if(driver == pPlayer){
 											GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
 											REQUEST_CONTROL_OF_NETWORK_ID(nvid);
 											while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
@@ -2816,12 +2838,34 @@ void menu_functions(void){
 												return;
 											}
 										}
-										else print("You must driving a helicopter.");
+										else print("You must be the driver.");
 									}
 									else print("Player is not in a vehicle.");
 								}
-								else print("You are not in a Skylift.");
+								else print("You are not in a helicopter.");
 							}
+							return;
+						}
+						else if(item_select == 11){
+							if((DOES_CHAR_EXIST(players[index].ped)) && (IS_CHAR_IN_ANY_CAR(pPlayer))){
+								GET_CAR_CHAR_IS_USING(pPlayer, &pveh);
+								GET_DRIVER_OF_CAR(pveh,&driver);
+								if(pPlayer == driver){
+									GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
+									if(!DOES_GROUP_EXIST(Bgroup)){
+										CREATE_GROUP(0, Bgroup, true);
+										SET_GROUP_LEADER(Bgroup, pPlayer);
+									}
+									SET_GROUP_MEMBER(Bgroup,players[index].ped);
+									SET_GROUP_FORMATION(Bgroup, 2);
+									group_onlineped = players[index].ped;
+									group_loop = true;
+									print("~r~Forcing player into car");
+									return;
+								}
+								else print("You must be driver");
+							}
+							else print("You must be in a car");
 							return;
 						}
 						return;
@@ -3119,9 +3163,10 @@ void looped_functions(void){
 		if(IS_BUTTON_PRESSED(0,BUTTON_X)){
 			if (IS_CHAR_IN_ANY_CAR(pPlayer)){
 				if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))){
-					if (IS_VEHICLE_ON_ALL_WHEELS(pveh)){
-						APPLY_FORCE_TO_CAR(pveh, 0.0f, 0.0f, 0.0f, 70.0f , 0.0f,0.0f,-70.0f, 0, 1, 1, 1 );
-					}
+					RESET_CAR_WHEELS(pveh, true);
+				//	if (IS_VEHICLE_ON_ALL_WHEELS(pveh)){
+					//	APPLY_FORCE_TO_CAR(pveh, 0.0f, 0.0f, 0.0f, 70.0f , 0.0f,0.0f,-70.0f, 0, 1, 1, 1 );
+				//	}
 				}
 			}
 		}
@@ -3257,6 +3302,18 @@ void looped_functions(void){
 			set_up_draw(3,0.3,0.3,r,g,b,255);
 			draw_text("STRING",0.70,pos_y,GET_PLAYER_NAME(i));
 			pos_y -= 0.03;			
+		}
+	}
+	
+	if(group_loop){
+		if((DOES_CHAR_EXIST(group_onlineped)) && (IS_CHAR_IN_ANY_CAR(group_onlineped))){
+			GET_CAR_CHAR_IS_USING(group_onlineped,&pveh);
+			GET_DRIVER_OF_CAR(pveh,&driver);
+			if(pPlayer == driver){
+				print_long("~b~Player sucessfully Kidnapped");
+				REMOVE_CHAR_FROM_GROUP(pPlayer);
+				group_loop = false;
+			}
 		}
 	}
 
