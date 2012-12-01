@@ -437,7 +437,7 @@ extern void GET_GROUP_LEADER(Group group, Ped *pPed);
 extern void GET_GROUP_MEMBER(Group group, uint index, Ped *pPed);
 extern void GET_GROUP_SIZE(Group group, uint *pStartIndex, uint *pCount);
 extern boolean IS_GROUP_LEADER(Ped ped, Group group);
-extern boolean IS_GROUP_MEMBER(Ped ped, Group g);
+extern boolean IS_GROUP_MEMBER(Ped ped, Group group);
 extern void REMOVE_GROUP(Group group);
 extern void SET_GROUP_FOLLOW_STATUS(Group group, uint status);
 extern void SET_GROUP_FORMATION(Group group, uint formation);

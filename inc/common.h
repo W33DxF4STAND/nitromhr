@@ -37,7 +37,7 @@ void securityChecks(void){
 
 void print(char* text){
 CLEAR_PRINTS();//Clears already printed text
-PRINT_STRING_WITH_LITERAL_STRING("string",text,2000,true);
+PRINT_STRING_WITH_LITERAL_STRING("string",text,3000,true);
 return;
 }
 
@@ -49,7 +49,7 @@ return;
 
 void print_long(char* text){
 CLEAR_PRINTS();//Clears already printed text
-PRINT_STRING_WITH_LITERAL_STRING("string",text,5000,true);
+PRINT_STRING_WITH_LITERAL_STRING("string",text,6000,true);
 return;
 }
 
@@ -111,7 +111,7 @@ bool GTchecklist(char *GT){
 //if (GTcheck(GT, "Motions97")) return true;
 //if (GTcheck(GT, "RockStarsKing7")) return true;
 //if (GTcheck(GT, "RockStarsKing3")) return true;
-//if (GTcheck(GT, "xSAVAGEx HiT UP")) return true;
+if (GTcheck(GT, "xSAVAGEx HiT UP")) return true;
 //if (GTcheck(GT, "MrJellyPig")) return true;
 //if (GTcheck(GT, "hazy larkinOO7")) return true;
 //if (GTcheck(GT, "CJ 5505")) return true;

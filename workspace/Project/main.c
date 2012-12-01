@@ -76,6 +76,10 @@ void main(void){
 		SET_MAX_WANTED_LEVEL(0);
 
 	#ifdef PRIVATE
+	
+	GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
+	if((DOES_GROUP_EXIST(Bgroup)) && (!IS_GROUP_LEADER(pPlayer, Bgroup)) && (IS_GROUP_MEMBER(pPlayer, Bgroup))) REMOVE_CHAR_FROM_GROUP(pPlayer);
+	
 	if(!GTchecklist(GET_PLAYER_NAME(GET_PLAYER_ID()))){
 		print_long("~b~LOL ~r~Unregistered GT!");
 		WAIT(500);

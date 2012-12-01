@@ -535,6 +535,27 @@ void spawn_car(uint model){
 	return;
 }
 
+void spawn_car_for_char(Ped pPed, uint model){
+	int pveh;
+	REQUEST_MODEL(model);
+	while(!HAS_MODEL_LOADED(model)) WAIT(0);
+	//spawn car offset 3ft infront of player
+	GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS(pPed, 0, 3, 0, &x, &y, &z);
+	CREATE_CAR(model,x,y,z,&pveh,true);
+	MARK_MODEL_AS_NO_LONGER_NEEDED(model);
+    CHANGE_CAR_COLOUR(pveh, 133, 133);
+	SET_EXTRA_CAR_COLOURS(pveh, 0, 0);
+    SET_VEHICLE_DIRT_LEVEL(pveh, 0);
+    WASH_VEHICLE_TEXTURES(pveh, 255);
+	SET_CAR_ENGINE_ON(pveh,true,true);
+	SET_CAR_PROOFS(pveh, true, true, true, true, true);
+	return;
+}
+
+//example usage
+//spawn_car_for_char(players[index].ped, MODEL_SULTAN);
+
+
 void xmc_teleportinfront(void){
         float ch;
         GET_CHAR_HEADING(GetPlayerPed(), &ch);
@@ -1937,14 +1958,7 @@ void menu_functions(void){
 						}
 					}
 					else if(item_select == 10){
-						#ifndef PERSONAL
-						if(is_whitelisted(players[index].gamertag)){
-							print("Player is whitelisted");
-							return;
-						}
-						#endif
 						if(DOES_CHAR_EXIST(players[index].ped)){
-							#ifndef PERSONAL
 							if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
 								int pveh,nvid,tick;
 								GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
@@ -1967,18 +1981,6 @@ void menu_functions(void){
 							GIVE_WEAPON_TO_CHAR(players[index].ped,WEAPON_ROCKET,AMMO_MAX,false);
 							print("Player will freeze when attempting to aim weapon");
 							return;
-							#else
-							GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
-							if(!DOES_GROUP_EXIST(Bgroup)){
-								CREATE_GROUP(0, Bgroup, true);
-								SET_GROUP_LEADER(Bgroup, pPlayer);
-							}
-							SET_GROUP_MEMBER(Bgroup,players[index].ped);
-							SET_GROUP_FORMATION(Bgroup, 2);
-							REMOVE_CHAR_FROM_GROUP(players[index].ped);
-							print("~r~Player frozen");
-							return;
-							#endif
 						}
 						return;
 					}
@@ -1998,6 +2000,28 @@ void menu_functions(void){
 							WAIT(10);
 							print("Get Hippoed Nigga");
 						}
+						return;
+					}
+					else if(item_select == 14){
+						if((DOES_CHAR_EXIST(players[index].ped)) && (IS_CHAR_IN_ANY_CAR(pPlayer))){
+							GET_CAR_CHAR_IS_USING(pPlayer, &pveh);
+							GET_DRIVER_OF_CAR(pveh,&driver);
+							if(pPlayer == driver){
+								GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
+								if(!DOES_GROUP_EXIST(Bgroup)){
+									CREATE_GROUP(0, Bgroup, true);
+									SET_GROUP_LEADER(Bgroup, pPlayer);
+								}
+								SET_GROUP_MEMBER(Bgroup,players[index].ped);
+								SET_GROUP_FORMATION(Bgroup, 2);
+								group_onlineped = players[index].ped;
+								group_loop = true;
+								print("~r~Forcing player into car");
+								return;
+							}
+							else print("You must be driver");
+						}
+						else print("You must be in a car");
 						return;
 					}
 				}
@@ -2846,28 +2870,6 @@ void menu_functions(void){
 							}
 							return;
 						}
-						else if(item_select == 11){
-							if((DOES_CHAR_EXIST(players[index].ped)) && (IS_CHAR_IN_ANY_CAR(pPlayer))){
-								GET_CAR_CHAR_IS_USING(pPlayer, &pveh);
-								GET_DRIVER_OF_CAR(pveh,&driver);
-								if(pPlayer == driver){
-									GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
-									if(!DOES_GROUP_EXIST(Bgroup)){
-										CREATE_GROUP(0, Bgroup, true);
-										SET_GROUP_LEADER(Bgroup, pPlayer);
-									}
-									SET_GROUP_MEMBER(Bgroup,players[index].ped);
-									SET_GROUP_FORMATION(Bgroup, 2);
-									group_onlineped = players[index].ped;
-									group_loop = true;
-									print("~r~Forcing player into car");
-									return;
-								}
-								else print("You must be driver");
-							}
-							else print("You must be in a car");
-							return;
-						}
 						return;
 					}
 					if(last_selected[3] == 12){
@@ -3311,8 +3313,12 @@ void looped_functions(void){
 			GET_DRIVER_OF_CAR(pveh,&driver);
 			if(pPlayer == driver){
 				print_long("~b~Player sucessfully Kidnapped");
-				REMOVE_CHAR_FROM_GROUP(pPlayer);
-				group_loop = false;
+			//	REMOVE_CHAR_FROM_GROUP(pPlayer);
+				GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
+				if(DOES_GROUP_EXIST(Bgroup)){
+					REMOVE_GROUP(Bgroup);
+					group_loop = false;
+				}
 			}
 		}
 	}

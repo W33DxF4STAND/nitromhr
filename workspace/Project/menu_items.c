@@ -82,7 +82,7 @@ void menu_setup(void){
 			add_item("Lock/Unlock Doors",true);
 			add_item("Delete Vehicle",true);
 			add_item("Flip Vehicle",true);
-			add_toggle("Hydraulics",hydrolics);
+			add_toggle("Hydraulics ~PAD_X~",hydrolics);
 			add_item("Eject from Vehicle",true);
 			add_toggle("Flying Bikes",bikefly);
 			add_toggle("Translucent Vehicles",collision);
@@ -345,6 +345,8 @@ void menu_setup(void){
 					add_item("Burn",true);
 					add_item("Objects",false);
 					add_item("Bodyguards",false);
+					add_item("Kidnap",true);
+					add_item("Spawn a Car",false);
 					return;
 				}
 			}
@@ -356,7 +358,7 @@ void menu_setup(void){
 					add_number("Female Dance",3);
 					add_item("Pole Dance",true);
 					add_item("Stop Anim",true);
-					add_toggle("Ragdoll",ragdoll);
+					add_toggle("Ragdoll ~PAD_LB~ + ~PAD_B~",ragdoll);
 					add_item("Zohan",true);
 					add_item("Busted",true);
 					add_item("Smoking",true);	
@@ -521,7 +523,6 @@ void menu_setup(void){
 						add_item("Remote Control",true);
 						add_item("Lock/Unlock Doors",true);
 						add_item("Heli Pickup",true);
-						add_item("Kidnap",true);
 						return;
 					}
 					if(last_selected[3] == 12){
