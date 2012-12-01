@@ -537,6 +537,13 @@ void menu_setup(void){
 						add_item("Order to Kill",true);
 						return;
 					}
+					if(last_selected[3] == 15){
+						footer = players[(last_selected[2] - 2)].gamertag;
+						add_item("Infernus",true);
+						add_item("Sultan RS",true);
+						add_item("Banshee",true);
+						return;
+					}
 				}
 			}
 			if(last_selected[1] == 13){

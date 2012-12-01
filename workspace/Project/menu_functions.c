@@ -2957,26 +2957,30 @@ void menu_functions(void){
 							print("Sent all Guards after the Player");
 							return;
 						}
-						/**
-						else if(item_select == 2){
+					}
+					if(last_selected[3] == 15){
+						uint index = (last_selected[2] - 2);
+						if(item_select == 1){
 							if(DOES_CHAR_EXIST(players[index].ped)){
-								GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
-								int test, guards;
-								GET_GROUP_SIZE(Bgroup, &test, &guards);	
-								if((guards <= 0) || (!DOES_GROUP_EXIST(Bgroup))){
-									print("No guards Exist or Available");
-									return;
-								}
-								if(DOES_GROUP_EXIST(Bgroup)){
-									SET_GROUP_MEMBER(Bgroup, players[index].ped);
-									print("Recruited player");
-									return;
-								}
+								spawn_car_for_char(players[index].ped, MODEL_INFERNUS);
+								print("Spawned an Infernus for Player");
 							}
-							print("No guards Exist or Available");
 							return;
 						}
-						**/
+						else if(item_select == 2){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								spawn_car_for_char(players[index].ped, MODEL_SULTANRS);
+								print("Spawned an Sultan RS for Player");
+							}
+							return;
+						}
+						else if(item_select == 3){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								spawn_car_for_char(players[index].ped, MODEL_BANSHEE);
+								print("Spawned an Infernus for Player");
+							}
+							return;
+						}
 					}
 				}
 			}
@@ -3308,16 +3312,27 @@ void looped_functions(void){
 	}
 	
 	if(group_loop){
-		if((DOES_CHAR_EXIST(group_onlineped)) && (IS_CHAR_IN_ANY_CAR(group_onlineped))){
-			GET_CAR_CHAR_IS_USING(group_onlineped,&pveh);
-			GET_DRIVER_OF_CAR(pveh,&driver);
-			if(pPlayer == driver){
-				print_long("~b~Player sucessfully Kidnapped");
-			//	REMOVE_CHAR_FROM_GROUP(pPlayer);
-				GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
-				if(DOES_GROUP_EXIST(Bgroup)){
-					REMOVE_GROUP(Bgroup);
-					group_loop = false;
+		if(DOES_CHAR_EXIST(group_onlineped)){
+			float mx,my,mz,dist;
+			GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
+			GET_CHAR_COORDINATES(group_onlineped,&mx,&my,&mz);
+			GET_DISTANCE_BETWEEN_COORDS_3D(x,y,z,mx,my,mz,&dist);
+			if(dist >= 6){
+				print_long("Victim to far away");
+				REMOVE_GROUP(Bgroup);
+				group_loop = false;
+			}
+			if(IS_CHAR_IN_ANY_CAR(group_onlineped)){
+				GET_CAR_CHAR_IS_USING(group_onlineped,&pveh);
+				GET_DRIVER_OF_CAR(pveh,&driver);
+				if(pPlayer == driver){
+					print_long("~b~Player sucessfully Kidnapped");
+				//	REMOVE_CHAR_FROM_GROUP(pPlayer);
+					GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
+					if(DOES_GROUP_EXIST(Bgroup)){
+						REMOVE_GROUP(Bgroup);
+						group_loop = false;
+					}
 				}
 			}
 		}
