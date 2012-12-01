@@ -542,6 +542,14 @@ void menu_setup(void){
 						add_item("Infernus",true);
 						add_item("Sultan RS",true);
 						add_item("Banshee",true);
+						add_item("Comet",true);
+						add_item("Dinghy",true);
+						add_item("Annihilator",true);
+						if(GET_CURRENT_EPISODE() == 2){
+							add_item("Bullet GT",true);
+							add_item("APC Tank",true);
+							add_item("Buzzard",true);
+						}
 						return;
 					}
 				}

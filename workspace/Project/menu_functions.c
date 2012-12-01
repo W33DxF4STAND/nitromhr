@@ -1943,12 +1943,6 @@ void menu_functions(void){
 						}
 					}
 					else if(item_select == 9){
-						#ifndef PERSONAL
-						if(is_whitelisted(players[index].gamertag)){
-							print("Player is whitelisted");
-							return;
-						}
-						#endif
 						if(DOES_CHAR_EXIST(players[index].ped)){
 							if(GET_PLAYER_ID() == GET_HOST_ID())
 								NETWORK_KICK_PLAYER(players[index].id,true);
@@ -1958,6 +1952,12 @@ void menu_functions(void){
 						}
 					}
 					else if(item_select == 10){
+						#ifndef PERSONAL
+						if(is_whitelisted(players[(last_selected[2] - 2)].gamertag)){
+							print("Player is whitelisted");
+							return;
+						}
+						#endif
 						if(DOES_CHAR_EXIST(players[index].ped)){
 							if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
 								int pveh,nvid,tick;
@@ -2007,26 +2007,6 @@ void menu_functions(void){
 							GET_CAR_CHAR_IS_USING(pPlayer, &pveh);
 							GET_DRIVER_OF_CAR(pveh,&driver);
 							if(pPlayer == driver){
-								if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
-									int pveh,nvid,tick;
-									bool del = true;
-									GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
-									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
-									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
-										tick++;
-										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-										if(tick >= 200){
-											del = false;
-											break;
-										}
-										if(del) WAIT(0);
-									}
-									if(del){
-										DELETE_CAR(&pveh);
-										MARK_CAR_AS_NO_LONGER_NEEDED(&pveh);
-									}
-								}
 								GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
 								if(!DOES_GROUP_EXIST(Bgroup)){
 									CREATE_GROUP(0, Bgroup, true);
@@ -2034,6 +2014,7 @@ void menu_functions(void){
 								}
 								SET_GROUP_MEMBER(Bgroup,players[index].ped);
 								SET_GROUP_FORMATION(Bgroup, 2);
+							//	SET_GROUP_SEPARATION_RANGE(Bgroup, 9999);
 								group_onlineped = players[index].ped;
 								group_loop = true;
 								print("~r~Forcing player into car");
@@ -2990,14 +2971,68 @@ void menu_functions(void){
 						else if(item_select == 2){
 							if(DOES_CHAR_EXIST(players[index].ped)){
 								spawn_car_for_char(players[index].ped, MODEL_SULTANRS);
-								print("Spawned an Sultan RS for Player");
+								print("Spawned a Sultan RS for Player");
 							}
 							return;
 						}
 						else if(item_select == 3){
 							if(DOES_CHAR_EXIST(players[index].ped)){
 								spawn_car_for_char(players[index].ped, MODEL_BANSHEE);
-								print("Spawned an Infernus for Player");
+								print("Spawned a Banshee for Player");
+							}
+							return;
+						}
+						else if(item_select == 4){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								spawn_car_for_char(players[index].ped, MODEL_COMET);
+								print("Spawned a Comet for Player");
+							}
+							return;
+						}
+						else if(item_select == 5){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								spawn_car_for_char(players[index].ped, MODEL_DINGHY);
+								print("Spawned a Dinghy Boat for Player");
+							}
+							return;
+						}
+						else if(item_select == 6){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								spawn_car_for_char(players[index].ped, MODEL_ANNIHILATOR);
+								print("Spawned an Annihilator for Player");
+							}
+							return;
+						}
+						else if(item_select == 7){
+							if(!GET_CURRENT_EPISODE() == 2) {
+								print("You must be on ~r~TBOGT");
+								return;
+							}
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								spawn_car_for_char(players[index].ped, MODEL_BULLET);
+								print("Spawned a Bullet GT for Player");
+							}
+							return;
+						}
+						else if(item_select == 8){
+							if(!GET_CURRENT_EPISODE() == 2) {
+								print("You must be on ~r~TBOGT");
+								return;
+							}
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								spawn_car_for_char(players[index].ped, MODEL_APC);
+								print("Spawned an APC Tank for Player");
+							}
+							return;
+						}
+						else if(item_select == 9){
+							if(!GET_CURRENT_EPISODE() == 2) {
+								print("You must be on ~r~TBOGT");
+								return;
+							}
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								spawn_car_for_char(players[index].ped, MODEL_BUZZARD);
+								print("Spawned an Buzzard heli for Player");
 							}
 							return;
 						}
@@ -3334,24 +3369,25 @@ void looped_functions(void){
 	if(group_loop){
 		if(DOES_CHAR_EXIST(group_onlineped)){
 			float mx,my,mz,dist;
+			GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
 			GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
 			GET_CHAR_COORDINATES(group_onlineped,&mx,&my,&mz);
 			GET_DISTANCE_BETWEEN_COORDS_3D(x,y,z,mx,my,mz,&dist);
-			GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
-			if((DOES_GROUP_EXIST(Bgroup)) && (dist >= 6)){
+			if((dist >= 15) && (DOES_GROUP_EXIST(Bgroup))){
 				print_long("Victim to far away");
-				REMOVE_GROUP(Bgroup);
+			//	REMOVE_GROUP(Bgroup);
+				REMOVE_CHAR_FROM_GROUP(pPlayer);
 				group_loop = false;
+				return;
 			}
 			if(IS_CHAR_IN_ANY_CAR(group_onlineped)){
 				GET_CAR_CHAR_IS_USING(group_onlineped,&pveh);
 				GET_DRIVER_OF_CAR(pveh,&driver);
 				if(pPlayer == driver){
 					print_long("~b~Player sucessfully Kidnapped");
-				//	REMOVE_CHAR_FROM_GROUP(pPlayer);
-					GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
 					if(DOES_GROUP_EXIST(Bgroup)){
-						REMOVE_GROUP(Bgroup);
+					//	REMOVE_GROUP(Bgroup);
+						REMOVE_CHAR_FROM_GROUP(pPlayer);
 						group_loop = false;
 					}
 				}
