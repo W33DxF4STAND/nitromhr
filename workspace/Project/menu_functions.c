@@ -2007,6 +2007,26 @@ void menu_functions(void){
 							GET_CAR_CHAR_IS_USING(pPlayer, &pveh);
 							GET_DRIVER_OF_CAR(pveh,&driver);
 							if(pPlayer == driver){
+								if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
+									int pveh,nvid,tick;
+									bool del = true;
+									GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
+									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
+									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+										tick++;
+										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+										if(tick >= 200){
+											del = false;
+											break;
+										}
+										if(del) WAIT(0);
+									}
+									if(del){
+										DELETE_CAR(&pveh);
+										MARK_CAR_AS_NO_LONGER_NEEDED(&pveh);
+									}
+								}
 								GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
 								if(!DOES_GROUP_EXIST(Bgroup)){
 									CREATE_GROUP(0, Bgroup, true);
@@ -3317,7 +3337,8 @@ void looped_functions(void){
 			GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
 			GET_CHAR_COORDINATES(group_onlineped,&mx,&my,&mz);
 			GET_DISTANCE_BETWEEN_COORDS_3D(x,y,z,mx,my,mz,&dist);
-			if(dist >= 6){
+			GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
+			if((DOES_GROUP_EXIST(Bgroup)) && (dist >= 6)){
 				print_long("Victim to far away");
 				REMOVE_GROUP(Bgroup);
 				group_loop = false;
