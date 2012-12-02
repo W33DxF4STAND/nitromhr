@@ -136,7 +136,8 @@ void menu_setup(void){
 			add_item("Get name of host",true);
 			add_toggle("Modder Protection",modderprotect);
 			add_item("Unlock All Achievements",true);
-			add_item("Clear Nearby Objects",true);
+			add_item("Clear All available Objects",true);
+			add_item("Limo Escort",true);
 			return;
 		}
 		if(last_selected[0] == 6){

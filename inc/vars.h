@@ -81,11 +81,12 @@ uint object_launch = 0x3675A6C3;
 Ped driver;
 Vehicle ClosestCar, pveh;
 Group Bgroup;
-float x, y, z;
+float x, y, z, dist;
 
 Ped gameped[8];
 Ped group_onlineped;
-
+Ped limo_driver;
+Vehicle limo;
 char* footer;
 
 Object ObjectProjectile;
@@ -143,3 +144,6 @@ bool show_menu = false,
 	drive_free = true,
 	ragdoll = false;
  
+ bool escort = false,
+	escort_delete = false,
+	escort_driving = false;

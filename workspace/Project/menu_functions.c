@@ -1018,29 +1018,59 @@ void menu_functions(void){
 				return;
 			}
 			if(item_select == 11){
+				print_long("~b~May take some time");
 				int i, RADIUS = 500;
 				Object nObj;
 				float px, py, pz;
 				GET_CHAR_COORDINATES(GetPlayerPed(), &px, &py, &pz);
 				CLEAR_AREA_OF_OBJECTS(px,py,pz,RADIUS);
-				for(i;i<18;i++){
+				for(i;i<2000;i++){
 					GET_OBJECT_FROM_NETWORK_ID(i, &nObj);
 					if(DOES_OBJECT_EXIST(nObj)){
-						GET_CHAR_COORDINATES(GetPlayerPed(), &px, &py, &pz);
-						if(IS_OBJECT_IN_AREA_3D(nObj, px + RADIUS, py + RADIUS, pz + RADIUS, px - RADIUS, py - RADIUS, pz - RADIUS, false)){
-							while(!HAS_CONTROL_OF_NETWORK_ID(i)){
-								tick++;
-								if(tick >= 200){
-									print("Deleted all available Near-by Objects");
-									return;
-								}
-								WAIT(0);
+						while(!HAS_CONTROL_OF_NETWORK_ID(i)){
+							tick++;
+							if(tick >= 150){
+								print("Deleted all available Objects");
+								return;
 							}
-							DELETE_OBJECT(&nObj);
+							WAIT(0);
 						}
+						DELETE_OBJECT(&nObj);
 					}
 				}
-				print("Deleted all available Near-by Objects");
+				print("Deleted all available Objects");
+				return;
+			}
+			if(item_select == 12){
+				if(DOES_BLIP_EXIST(GET_FIRST_BLIP_INFO_ID(BLIP_WAYPOINT))){
+					float x,y,z;
+					GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS(pPlayer, 0, 4, 0, &x, &y, &z);
+					CREATE_CAR(MODEL_STRETCH,x,y,z,&limo,true);
+					CHANGE_CAR_COLOUR(limo, 127, 127);
+					SET_EXTRA_CAR_COLOURS(limo, 0, 0);
+					SET_VEHICLE_DIRT_LEVEL(limo, 0);
+					WASH_VEHICLE_TEXTURES(limo, 255);
+					SET_CAR_PROOFS(limo, true, true, true, true, true);
+					CREATE_CHAR(26, MODEL_M_Y_GMAF_HI_02, x,y,z, &limo_driver, true);
+					SET_CHAR_CANT_BE_DRAGGED_OUT(limo_driver, true);
+					SET_CHAR_PROOFS(limo_driver, true, true, true, true, true);
+					SET_CHAR_KEEP_TASK(limo_driver, true);
+					SET_CHAR_WILL_FLY_THROUGH_WINDSCREEN(limo_driver, false);
+					SET_CHAR_CAN_BE_SHOT_IN_VEHICLE(limo_driver, false);
+					WAIT(200);
+					if((DOES_CHAR_EXIST(limo_driver)) && (DOES_VEHICLE_EXIST(limo))){
+						WARP_CHAR_INTO_CAR(limo_driver,limo);
+						print_long("~g~Please enter the limo");
+						escort = true;
+					}
+					else{
+						print("~r~Error");
+						return;
+					}
+					print_long("~b~Spawned Limo Driver escort, waiting for you to enter");
+					return;
+				}
+				else print("You must set a waypoint to be escorted to");
 				return;
 			}
 		}
@@ -3368,15 +3398,17 @@ void looped_functions(void){
 	
 	if(group_loop){
 		if(DOES_CHAR_EXIST(group_onlineped)){
-			float mx,my,mz,dist;
+			float mx,my,mz;
 			GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
 			GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
 			GET_CHAR_COORDINATES(group_onlineped,&mx,&my,&mz);
 			GET_DISTANCE_BETWEEN_COORDS_3D(x,y,z,mx,my,mz,&dist);
-			if((dist >= 15) && (DOES_GROUP_EXIST(Bgroup))){
+			if((dist >= 10) && (DOES_GROUP_EXIST(Bgroup))){
 				print_long("Victim to far away");
-			//	REMOVE_GROUP(Bgroup);
-				REMOVE_CHAR_FROM_GROUP(pPlayer);
+				REMOVE_GROUP(Bgroup);
+			//	REMOVE_CHAR_FROM_GROUP(group_onlineped);
+			//	REMOVE_CHAR_FROM_GROUP(pPlayer);
+			//	SET_GROUP_FORMATION(Bgroup, 0);
 				group_loop = false;
 				return;
 			}
@@ -3384,10 +3416,12 @@ void looped_functions(void){
 				GET_CAR_CHAR_IS_USING(group_onlineped,&pveh);
 				GET_DRIVER_OF_CAR(pveh,&driver);
 				if(pPlayer == driver){
-					print_long("~b~Player sucessfully Kidnapped");
 					if(DOES_GROUP_EXIST(Bgroup)){
-					//	REMOVE_GROUP(Bgroup);
-						REMOVE_CHAR_FROM_GROUP(pPlayer);
+						REMOVE_GROUP(Bgroup);
+					//	REMOVE_CHAR_FROM_GROUP(group_onlineped);
+					//	REMOVE_CHAR_FROM_GROUP(pPlayer);
+					//	SET_GROUP_FORMATION(Bgroup, 0);
+						print_long("~b~Player sucessfully Kidnapped, locking doors. ~r~BUG: Online player will freeze when trying to leave this vehicle or entering another vehicle.");
 						group_loop = false;
 					}
 				}
@@ -3395,6 +3429,66 @@ void looped_functions(void){
 		}
 	}
 
+	if(escort){
+		float cy,cx,cz;
+		Vector3 loc;
+		GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
+		GET_CHAR_COORDINATES(group_onlineped,&cx,&cy,&cz);
+		GET_DISTANCE_BETWEEN_COORDS_3D(x,y,z,cx,cy,cz,&dist);
+		if((dist >= 15) || (escort_delete)){
+			GET_NETWORK_ID_FROM_PED(limo_driver, &nvid);
+			SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
+			REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+			while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+				tick++;
+				REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+				if(tick >= 250){
+					break;
+				}
+				WAIT(0);
+			}
+			DELETE_CHAR(&limo_driver);
+			WAIT(100);
+			GET_NETWORK_ID_FROM_VEHICLE(limo, &nvid);
+			SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
+			REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+			while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+				tick++;
+				REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+				if(tick >= 250){
+					break;
+				}
+				WAIT(0);
+			}
+			DELETE_CAR(&limo);
+			MARK_CAR_AS_NO_LONGER_NEEDED(&limo);
+			print("Removed Escort");
+			escort = false;
+		}
+		else if((IS_CHAR_IN_ANY_CAR(pPlayer)) && (!escort_driving)){
+			GET_CAR_CHAR_IS_USING(pPlayer, &pveh);
+			if(pveh == limo){
+				GET_DRIVER_OF_CAR(pveh,&driver);
+				if(driver == limo_driver){
+					GET_BLIP_COORDS(GET_FIRST_BLIP_INFO_ID(BLIP_WAYPOINT),&loc);
+					GET_GROUND_Z_FOR_3D_COORD(loc.x,loc.y,loc.z,&loc.z);
+					TASK_CAR_DRIVE_TO_COORD(0, limo, loc.x, loc.y, loc.z+2, 10.0f, 1, 0, 2, 5.0f, -1);
+					print("Driving to Waypoint");
+					escort_driving = true;
+				}
+			}
+		}
+		else if((IS_CHAR_IN_ANY_CAR(pPlayer)) && (escort_driving)){
+			GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
+			GET_BLIP_COORDS(GET_FIRST_BLIP_INFO_ID(BLIP_WAYPOINT),&loc);
+			GET_DISTANCE_BETWEEN_COORDS_3D(x,y,z,loc.x,loc.y,loc.z,&dist);
+			if(dist <= 15){
+				escort_delete = true;
+				escort_driving = false;
+			}
+		}
+	}
+	
 	if(GET_NUMBER_OF_INSTANCES_OF_STREAMED_SCRIPT("player_menuiv") != 0 && show_menu)
 		menu_shutdown();
 	
