@@ -20,6 +20,7 @@
 #include <natives.h>
 #include <vars.h>
 #include <common.h>
+#include <security.h>
 #include <consts.h>
 #include <types.h>
 #include <strings.h>
