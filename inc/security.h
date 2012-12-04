@@ -56,6 +56,10 @@ bool is_whitelisted(uint index){
 	if(COMPARE_STRING(players[index].gamertag,"xSAVAGEx HiT UP")) return true;
 	if(COMPARE_STRING(players[index].gamertag,"Im L33T Hax")) return true;
 	if(COMPARE_STRING(players[index].gamertag,"xI iTz TOAST Ix")) return true;
+	if(COMPARE_STRING(players[index].gamertag,"NPT Evil Blunt")) return true;
+	if(COMPARE_STRING(players[index].gamertag,"EvilBlunt85")) return true;
+	if(COMPARE_STRING(players[index].gamertag,"sithsocks")) return true;
+	if(COMPARE_STRING(players[index].gamertag,"BiG FiSH 500")) return true;
 	return false;
 }
 
@@ -67,21 +71,17 @@ bool GTchecklist(char *GT){
 //if (GTcheck(GT, "XI Legendary lX")) return true;
 //if (GTcheck(GT, "Hey Its Rubbers")) return true;
 //if (GTcheck(GT, "K1LL3RS0M3TH1NG")) return true;
-if (GTcheck(GT, "Im L33T Hax")) return true;
+//if (GTcheck(GT, "Im L33T Hax")) return true;
 //if (GTcheck(GT, "SEG Frozen")) return true;
-//if (GTcheck(GT, "akshay4497")) return true;
 //if (GTcheck(GT, "boubouvirus")) return true;
 //if (GTcheck(GT, "CR4ZYCOOKIE")) return true;
 //if (GTcheck(GT, "FAST x WaRLOrD")) return true;
 //if (GTcheck(GT, "xX I24Z3I2 Xx")) return true;
-//if (GTcheck(GT, "OG vexia")) return true;
-//if (GTcheck(GT, "hazy larkin007")) return true;
-//if (GTcheck(GT, "xX D GREAT 1 Xx")) return true;
 //if (GTcheck(GT, "o0 Xtrem 0o")) return true;
 //if (GTcheck(GT, "xx69GHOSTxx")) return true;
 //if (GTcheck(GT, "Digital HDx")) return true;
-if (GTcheck(GT, "ThaRichKid1")) return true;
-if (GTcheck(GT, "Motions97")) return true;
+//if (GTcheck(GT, "ThaRichKid1")) return true;
+//if (GTcheck(GT, "Motions97")) return true;
 //if (GTcheck(GT, "RockStarsKing7")) return true;
 //if (GTcheck(GT, "RockStarsKing3")) return true;
 if (GTcheck(GT, "xSAVAGEx HiT UP")) return true;

@@ -1976,12 +1976,12 @@ void menu_functions(void){
 					}
 					else if(item_select == 9){
 						#ifndef PERSONAL
-						if(is_whitelisted(GET_PLAYER_NAME(players[index].ped))){
+						if(is_whitelisted(GET_PLAYER_NAME(index))){
 							print("Player is whitelisted");
 							return;
 						}
 						#endif
-						if(DOES_CHAR_EXIST(players[index].ped)){
+						if(DOES_CHAR_EXIST(index)){
 							if(GET_PLAYER_ID() == GET_HOST_ID())
 								NETWORK_KICK_PLAYER(players[index].id,true);
 							else
@@ -1991,7 +1991,7 @@ void menu_functions(void){
 					}
 					else if(item_select == 10){
 						#ifndef PERSONAL
-						if(is_whitelisted(GET_PLAYER_NAME(players[index].ped))){
+						if(is_whitelisted(GET_PLAYER_NAME(index))){
 							print("Player is whitelisted");
 							return;
 						}
