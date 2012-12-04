@@ -85,8 +85,8 @@ float x, y, z, dist;
 
 Ped gameped[8];
 Ped group_onlineped;
-Ped limo_driver;
-Vehicle limo;
+Ped taxi_driver;
+Vehicle taxi;
 char* footer;
 
 Object ObjectProjectile;
@@ -116,6 +116,7 @@ bool xmc1 = false,
 bool show_menu = false,
 	godmode = true,
 	group_loop = false,
+	helistrike = false,
 	bikefly = false,
 	collision = false,
 	neverwanted = false,
@@ -133,7 +134,7 @@ bool show_menu = false,
 	del_objgun = true,
 	hydrolics = false,
 	superjump = false,
-	forcefield = false,
+	chronicle = false,
 	chaos = false,
 	ammo = true,
 	vhelper = true,
@@ -143,7 +144,3 @@ bool show_menu = false,
 	chat_thingy = true,
 	drive_free = true,
 	ragdoll = false;
- 
- bool escort = false,
-	escort_delete = false,
-	escort_driving = false;

@@ -62,7 +62,7 @@ void menu_setup(void){
 			add_toggle("Smart protection",pprotection);
 			add_toggle("Super Run ~PAD_LB~ + ~PAD_A~",superrun);
 			add_toggle("Super Hops ~PAD_LB~ + ~PAD_X~",superjump);
-			add_toggle("Chronicle",forcefield);
+			add_toggle("Chronicle",chronicle);
 			add_toggle("Chaos mode",chaos);
 			add_toggle("Invisibility",invisible);
 			add_toggle("Burn",onfire);
@@ -137,7 +137,6 @@ void menu_setup(void){
 			add_toggle("Modder Protection",modderprotect);
 			add_item("Unlock All Achievements",true);
 			add_item("Clear All available Objects",true);
-			add_item("Limo Escort",true);
 			return;
 		}
 		if(last_selected[0] == 6){
@@ -335,7 +334,7 @@ void menu_setup(void){
 					footer = players[(last_selected[2] - 2)].gamertag;
 					add_number("Give Weapons & Armor",3);
 					add_item("Remove Weapons",true);
-					add_toggle("Moddder Protection",players[tmp].mprotection);
+					add_toggle("Modder Protection",players[tmp].mprotection);
 					add_toggle("Chronicle",players[tmp].force);
 					add_item("Teleports",false);
 					add_item("Vehicles",false);

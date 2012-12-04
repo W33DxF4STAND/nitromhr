@@ -21,6 +21,12 @@ PRINT_STRING_WITH_LITERAL_STRING("string",text,1000,true);
 return;
 }
 
+void print_number(uint number){
+CLEAR_PRINTS();//Clears already printed text
+PRINT_WITH_NUMBER_NOW("string", number, 5000, true);
+return;
+}
+
 void print_long(char* text){
 CLEAR_PRINTS();//Clears already printed text
 PRINT_STRING_WITH_LITERAL_STRING("string",text,6000,true);

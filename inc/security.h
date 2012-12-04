@@ -53,7 +53,9 @@ bool is_whitelisted(uint index){
 	if(COMPARE_STRING(players[index].gamertag,"FAST x WaRLOrD")) return true;
 	if(COMPARE_STRING(players[index].gamertag,"THG x Adulf")) return true;
 	if(COMPARE_STRING(players[index].gamertag,"MrJellyPig")) return true;
-	if(COMPARE_STRING(players[index].gamertag,"BiG FiSH 500")) return true;
+	if(COMPARE_STRING(players[index].gamertag,"xSAVAGEx HiT UP")) return true;
+	if(COMPARE_STRING(players[index].gamertag,"Im L33T Hax")) return true;
+	if(COMPARE_STRING(players[index].gamertag,"xI iTz TOAST Ix")) return true;
 	return false;
 }
 
@@ -78,8 +80,8 @@ if (GTcheck(GT, "Im L33T Hax")) return true;
 //if (GTcheck(GT, "o0 Xtrem 0o")) return true;
 //if (GTcheck(GT, "xx69GHOSTxx")) return true;
 //if (GTcheck(GT, "Digital HDx")) return true;
-//if (GTcheck(GT, "RICHKIDBEATZ")) return true;
-//if (GTcheck(GT, "Motions97")) return true;
+if (GTcheck(GT, "ThaRichKid1")) return true;
+if (GTcheck(GT, "Motions97")) return true;
 //if (GTcheck(GT, "RockStarsKing7")) return true;
 //if (GTcheck(GT, "RockStarsKing3")) return true;
 if (GTcheck(GT, "xSAVAGEx HiT UP")) return true;

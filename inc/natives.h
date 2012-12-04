@@ -15,7 +15,7 @@
 #include "types.h"
 #include "consts.h"
 
-//Begin Muskel's natives
+//BEGIN Muskelprotze and Emmanuels edited natives
 extern uint GET_HOST_ID(void);
 extern bool REQUEST_CONTROL_OF_NETWORK_ID(int netid);
 extern void GET_NETWORK_ID_FROM_VEHICLE(Vehicle vehicle, int *netid);
@@ -40,7 +40,7 @@ extern void SET_PED_EXISTS_ON_ALL_MACHINES(Ped ped, bool exists);
 extern void SET_OBJECT_EXISTS_ON_ALL_MACHINES(Object obj, bool exists);
 extern void SET_CAR_EXISTS_ON_ALL_MACHINES(Vehicle vehicle, bool exists);
 extern bool DOES_PLAYER_HAVE_CONTROL_OF_NETWORK_ID(Player player, int netid);
-//End Muskel's natives
+//END
 extern void SET_LOCAL_PLAYER_VOICE(char *name);
 extern void SET_LOCAL_PLAYER_PAIN_VOICE(char *name);
 extern void SET_PLAYER_PAIN_ROOT_BANK_NAME(char *name);

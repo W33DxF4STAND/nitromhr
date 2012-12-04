@@ -122,23 +122,23 @@ void menu_shutdown(void){
 }
 	
 void create_big_explosion(float fX,float fY,float fZ){
-	ADD_EXPLOSION(fX,fY,fZ + 12.5,EXPLOSION_SHIP_DESTROY,10.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX,fY,fZ,EXPLOSION_SHIP_DESTROY,10.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX + 20.0,fY,fZ,EXPLOSION_SHIP_DESTROY,10.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX + 40.0,fY,fZ,EXPLOSION_SHIP_DESTROY,10.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX,fY,fZ + 12.5,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX,fY,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX + 20.0,fY,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX + 40.0,fY,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
 	WAIT(100);
-	ADD_EXPLOSION(fX,fY + 20.0,fZ,EXPLOSION_SHIP_DESTROY,10.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX,fY + 30.0,fZ,EXPLOSION_SHIP_DESTROY,10.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX - 20.0,fY,fZ,EXPLOSION_SHIP_DESTROY,10.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX - 40.0,fY,fZ,EXPLOSION_SHIP_DESTROY,10.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX,fY + 20.0,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX,fY + 30.0,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX - 20.0,fY,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX - 40.0,fY,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
 	WAIT(100);
-	ADD_EXPLOSION(fX,fY + 20.0,fZ,EXPLOSION_SHIP_DESTROY,10.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX,fY - 40.0,fZ,EXPLOSION_SHIP_DESTROY,10.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX + 12.5,fY + 12.5,fZ,EXPLOSION_SHIP_DESTROY,10.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX,fY + 20.0,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX,fY - 40.0,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX + 12.5,fY + 12.5,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
 	WAIT(100);
-	ADD_EXPLOSION(fX + 25.0,fY + 25.0,fZ,EXPLOSION_SHIP_DESTROY,10.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX - 12.5,fY - 12.5,fZ,EXPLOSION_SHIP_DESTROY,10.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX - 25.0,fY - 25.0,fZ,EXPLOSION_SHIP_DESTROY,10.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX + 25.0,fY + 25.0,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX - 12.5,fY - 12.5,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX - 25.0,fY - 25.0,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
 
 }
 
@@ -394,6 +394,7 @@ void spawnguards(uint model, uint weapon){
 			SET_CHAR_CANT_BE_DRAGGED_OUT(gameped[i], true);
 			SET_CHAR_STAY_IN_CAR_WHEN_JACKED(gameped[i], true);
 			SET_PED_DONT_DO_EVASIVE_DIVES(gameped[i], true);
+			SET_DONT_ACTIVATE_RAGDOLL_FROM_PLAYER_IMPACT(gameped[i], true);
 			SET_PED_PATH_MAY_DROP_FROM_HEIGHT(gameped[i], true);
 			SET_PED_PATH_MAY_USE_CLIMBOVERS(gameped[i], true);
 			SET_PED_PATH_MAY_USE_LADDERS(gameped[i], true);
@@ -535,6 +536,41 @@ void spawn_car(uint model){
 	return;
 }
 
+void helibomb(void){
+	uint heliBomb = 0x7E339194;
+	Object BOMB;
+	float zground, repeat, counter;
+	REQUEST_MODEL(heliBomb);
+	while (!HAS_MODEL_LOADED(heliBomb)) WAIT(0); 	
+	GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS(GetPlayerPed(), 0.5, -2.1, -2.1, &x, &y, &z);
+	CREATE_OBJECT(heliBomb, x, y, z, &BOMB, 1);
+	SET_OBJECT_HEALTH(BOMB, 100.0);
+	SET_OBJECT_ROTATION(BOMB, 90.0, 0.0, 0.0);
+	GET_GROUND_Z_FOR_3D_COORD(x, y, z, &zground);
+	repeat = z - zground;
+		//repeat
+	for (counter = 1; counter <= repeat; counter++) {
+		WAIT(27);
+		SLIDE_OBJECT(BOMB, x, y, zground, 0.0, 0.0, 1.3, 0);
+	}
+	
+		// repeat end!
+	WAIT(100);
+
+		//---------------- In Heli
+	//BombType(X, Y, Z, width, highness, spacing)
+	//BombType(x, y, zground, 7, 2, 2);
+	create_big_explosion(x,y,zground);
+	create_big_explosion(x + 5,y,zground + 5);
+	create_big_explosion(x + 5,y,zground);
+	create_big_explosion(x - 5,y,zground);
+	create_big_explosion(x,y + 5,zground);
+	create_big_explosion(x,y - 5,zground);
+	
+	DELETE_OBJECT(&BOMB);
+	MARK_MODEL_AS_NO_LONGER_NEEDED(heliBomb);
+}
+
 void spawn_car_for_char(Ped pPed, uint model){
 	int pveh;
 	REQUEST_MODEL(model);
@@ -554,7 +590,6 @@ void spawn_car_for_char(Ped pPed, uint model){
 
 //example usage
 //spawn_car_for_char(players[index].ped, MODEL_SULTAN);
-
 
 void xmc_teleportinfront(void){
         float ch;
@@ -618,7 +653,7 @@ void menu_functions(void){
 				return;
 			}
 			if(item_select == 9){
-				do_toggle(forcefield);
+				do_toggle(chronicle);
 				return;
 			}
 			if(item_select == 10){
@@ -794,7 +829,6 @@ void menu_functions(void){
 				}
 			}
 			if(item_select == 17){
-				int pveh,driver;
 				float h, s;
 				uint model;
 				int color1, color2, color3, color4;
@@ -956,11 +990,11 @@ void menu_functions(void){
 			}
 			if(item_select == 19){
 				GET_CHAR_COORDINATES(pPlayer,&x, &y, &z);
-				ClosestCar = GET_CLOSEST_CAR(x,y,z, 50, false, 69);
+				ClosestCar = GET_CLOSEST_CAR(x,y,z, 50, false, 70);
 				if(!DOES_VEHICLE_EXIST(ClosestCar))
 				ClosestCar = GET_CLOSEST_CAR(x,y,z, 50, false, 71);
 				if(!DOES_VEHICLE_EXIST(ClosestCar))
-				ClosestCar = GET_CLOSEST_CAR(x,y,z, 50, false, 70);
+				ClosestCar = GET_CLOSEST_CAR(x,y,z, 50, false, 69);
 				if(!DOES_VEHICLE_EXIST(ClosestCar)) return;
 				GET_DRIVER_OF_CAR(ClosestCar,&driver);
 				if(!DOES_CHAR_EXIST(driver)){
@@ -1039,38 +1073,6 @@ void menu_functions(void){
 					}
 				}
 				print("Deleted all available Objects");
-				return;
-			}
-			if(item_select == 12){
-				if(DOES_BLIP_EXIST(GET_FIRST_BLIP_INFO_ID(BLIP_WAYPOINT))){
-					float x,y,z;
-					GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS(pPlayer, 0, 4, 0, &x, &y, &z);
-					CREATE_CAR(MODEL_STRETCH,x,y,z,&limo,true);
-					CHANGE_CAR_COLOUR(limo, 127, 127);
-					SET_EXTRA_CAR_COLOURS(limo, 0, 0);
-					SET_VEHICLE_DIRT_LEVEL(limo, 0);
-					WASH_VEHICLE_TEXTURES(limo, 255);
-					SET_CAR_PROOFS(limo, true, true, true, true, true);
-					CREATE_CHAR(26, MODEL_M_Y_GMAF_HI_02, x,y,z, &limo_driver, true);
-					SET_CHAR_CANT_BE_DRAGGED_OUT(limo_driver, true);
-					SET_CHAR_PROOFS(limo_driver, true, true, true, true, true);
-					SET_CHAR_KEEP_TASK(limo_driver, true);
-					SET_CHAR_WILL_FLY_THROUGH_WINDSCREEN(limo_driver, false);
-					SET_CHAR_CAN_BE_SHOT_IN_VEHICLE(limo_driver, false);
-					WAIT(200);
-					if((DOES_CHAR_EXIST(limo_driver)) && (DOES_VEHICLE_EXIST(limo))){
-						WARP_CHAR_INTO_CAR(limo_driver,limo);
-						print_long("~g~Please enter the limo");
-						escort = true;
-					}
-					else{
-						print("~r~Error");
-						return;
-					}
-					print_long("~b~Spawned Limo Driver escort, waiting for you to enter");
-					return;
-				}
-				else print("You must set a waypoint to be escorted to");
 				return;
 			}
 		}
@@ -2018,7 +2020,7 @@ void menu_functions(void){
 						if(DOES_CHAR_EXIST(players[index].ped)){
 							START_CHAR_FIRE(players[index].ped);
 							WAIT(10);
-							print("Burned Nigga!");
+							print("Player was set on Fire.");
 						}
 					return;
 					}
@@ -2730,7 +2732,6 @@ void menu_functions(void){
 						else if(item_select == 7){
 							if(DOES_CHAR_EXIST(players[index].ped)){
 								if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
-									int pveh,nvid,tick;
 									float speed;
 									GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
 									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
@@ -3231,7 +3232,7 @@ void looped_functions(void){
 		}	
 	}
 
-	if(forcefield){
+	if(chronicle){
 		// float x,y,z;
 		GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
 		ADD_EXPLOSION(x,y,z,EXPLOSION_SHIP_DESTROY,35.0,false,true,0.0);
@@ -3254,10 +3255,11 @@ void looped_functions(void){
 		if(IS_BUTTON_PRESSED(0,BUTTON_X)){
 			if (IS_CHAR_IN_ANY_CAR(pPlayer)){
 				if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))){
-					RESET_CAR_WHEELS(pveh, true);
-				//	if (IS_VEHICLE_ON_ALL_WHEELS(pveh)){
-					//	APPLY_FORCE_TO_CAR(pveh, 0.0f, 0.0f, 0.0f, 70.0f , 0.0f,0.0f,-70.0f, 0, 1, 1, 1 );
-				//	}
+				//	RESET_CAR_WHEELS(pveh, true);
+					if((!IS_CHAR_ON_ANY_BIKE) && (IS_VEHICLE_ON_ALL_WHEELS(pveh))){ 
+						APPLY_FORCE_TO_CAR(pveh, 0.0f, 0.0f, 0.0f, 70.0f , 0.0f,0.0f,-70.0f, 0, 1, 1, 1 );
+					}
+					else APPLY_FORCE_TO_CAR(pveh, 0.0f, 0.0f, 0.0f, 100.0f , 0.0f,0.0f,-100.0f, 0, 1, 1, 1 );
 				}
 			}
 		}
@@ -3333,13 +3335,12 @@ void looped_functions(void){
 	}
 	
 	if(bikefly){
+		float speed;
 		if((IS_CHAR_ON_ANY_BIKE(pPlayer)) && IS_BUTTON_PRESSED(0,BUTTON_R)){
-			float speed;
 			GET_CAR_SPEED(pveh,&speed);
 			SET_CAR_FORWARD_SPEED(pveh,(speed * 1.05));
 		}
 		if(IS_CHAR_ON_ANY_BIKE(pPlayer) && IS_BUTTON_PRESSED(0,BUTTON_L)){
-			float speed;
 			if (!IS_VEHICLE_ON_ALL_WHEELS(pveh)){
 				GET_CAR_SPEED(pveh,&speed);
 				SET_CAR_FORWARD_SPEED(pveh,(speed / 1.05));
@@ -3418,6 +3419,7 @@ void looped_functions(void){
 				if(pPlayer == driver){
 					if(DOES_GROUP_EXIST(Bgroup)){
 						REMOVE_GROUP(Bgroup);
+						LOCK_CAR_DOORS(pveh,4);
 					//	REMOVE_CHAR_FROM_GROUP(group_onlineped);
 					//	REMOVE_CHAR_FROM_GROUP(pPlayer);
 					//	SET_GROUP_FORMATION(Bgroup, 0);
@@ -3425,66 +3427,6 @@ void looped_functions(void){
 						group_loop = false;
 					}
 				}
-			}
-		}
-	}
-
-	if(escort){
-		float cy,cx,cz;
-		Vector3 loc;
-		GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
-		GET_CHAR_COORDINATES(group_onlineped,&cx,&cy,&cz);
-		GET_DISTANCE_BETWEEN_COORDS_3D(x,y,z,cx,cy,cz,&dist);
-		if((dist >= 15) || (escort_delete)){
-			GET_NETWORK_ID_FROM_PED(limo_driver, &nvid);
-			SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
-			REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-			while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
-				tick++;
-				REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-				if(tick >= 250){
-					break;
-				}
-				WAIT(0);
-			}
-			DELETE_CHAR(&limo_driver);
-			WAIT(100);
-			GET_NETWORK_ID_FROM_VEHICLE(limo, &nvid);
-			SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
-			REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-			while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
-				tick++;
-				REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-				if(tick >= 250){
-					break;
-				}
-				WAIT(0);
-			}
-			DELETE_CAR(&limo);
-			MARK_CAR_AS_NO_LONGER_NEEDED(&limo);
-			print("Removed Escort");
-			escort = false;
-		}
-		else if((IS_CHAR_IN_ANY_CAR(pPlayer)) && (!escort_driving)){
-			GET_CAR_CHAR_IS_USING(pPlayer, &pveh);
-			if(pveh == limo){
-				GET_DRIVER_OF_CAR(pveh,&driver);
-				if(driver == limo_driver){
-					GET_BLIP_COORDS(GET_FIRST_BLIP_INFO_ID(BLIP_WAYPOINT),&loc);
-					GET_GROUND_Z_FOR_3D_COORD(loc.x,loc.y,loc.z,&loc.z);
-					TASK_CAR_DRIVE_TO_COORD(0, limo, loc.x, loc.y, loc.z+2, 10.0f, 1, 0, 2, 5.0f, -1);
-					print("Driving to Waypoint");
-					escort_driving = true;
-				}
-			}
-		}
-		else if((IS_CHAR_IN_ANY_CAR(pPlayer)) && (escort_driving)){
-			GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
-			GET_BLIP_COORDS(GET_FIRST_BLIP_INFO_ID(BLIP_WAYPOINT),&loc);
-			GET_DISTANCE_BETWEEN_COORDS_3D(x,y,z,loc.x,loc.y,loc.z,&dist);
-			if(dist <= 15){
-				escort_delete = true;
-				escort_driving = false;
 			}
 		}
 	}

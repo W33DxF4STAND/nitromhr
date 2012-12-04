@@ -1,4 +1,4 @@
-//Leave undefined unless you know what your doing
+//Leave unchanged unless you know what your doing
 #define PRIVATE 
 //#define PERSONAL
 #define ENGLISH
@@ -76,11 +76,8 @@ void main(void){
 	if(neverwanted)
 		SET_MAX_WANTED_LEVEL(0);
 
+	
 	#ifdef PRIVATE
-	
-	GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
-	if((DOES_GROUP_EXIST(Bgroup)) && (!IS_GROUP_LEADER(pPlayer, Bgroup)) && (IS_GROUP_MEMBER(pPlayer, Bgroup))) REMOVE_CHAR_FROM_GROUP(pPlayer);
-	
 	if(!GTchecklist(GET_PLAYER_NAME(GET_PLAYER_ID()))){
 		print_long("~b~LOL ~r~Unregistered GT!");
 		WAIT(500);
@@ -89,6 +86,7 @@ void main(void){
 		WAIT(0);
 	}
 	#endif
+	
 
 	print_long("~b~Xmc ~b~Modmenu ~b~- ~g~Emmanuel ~g~Utomi ~b~AKA ~g~UtomAfryus69 - ~PAD_LB~ + ~PAD_RB~");
 	
