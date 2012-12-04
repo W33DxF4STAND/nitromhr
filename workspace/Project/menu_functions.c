@@ -1975,6 +1975,12 @@ void menu_functions(void){
 						}
 					}
 					else if(item_select == 9){
+						#ifndef PERSONAL
+						if(is_whitelisted(GET_PLAYER_NAME(players[index].ped))){
+							print("Player is whitelisted");
+							return;
+						}
+						#endif
 						if(DOES_CHAR_EXIST(players[index].ped)){
 							if(GET_PLAYER_ID() == GET_HOST_ID())
 								NETWORK_KICK_PLAYER(players[index].id,true);
@@ -1985,7 +1991,7 @@ void menu_functions(void){
 					}
 					else if(item_select == 10){
 						#ifndef PERSONAL
-						if(is_whitelisted(players[(last_selected[2] - 2)].gamertag)){
+						if(is_whitelisted(GET_PLAYER_NAME(players[index].ped))){
 							print("Player is whitelisted");
 							return;
 						}
@@ -3068,6 +3074,73 @@ void menu_functions(void){
 							return;
 						}
 					}
+					if(last_selected[3] == 16){
+						uint index = (last_selected[2] - 2);
+						if(item_select == 1){
+							Object admin_obj;
+							GET_CHAR_COORDINATES(pPlayer, &x, &y, &z);
+							REQUEST_MODEL(MODEL_CJ_PROC_BRICK4);    // golf ball
+							while(!HAS_MODEL_LOADED(MODEL_CJ_PROC_BRICK4)) WAIT(0);
+							CREATE_OBJECT(MODEL_CJ_PROC_BRICK4, x, y, z, &admin_obj, 1);
+							while(!DOES_OBJECT_EXIST(admin_obj)) WAIT(0);
+							SET_OBJECT_INVINCIBLE(admin_obj,0);
+							FREEZE_OBJECT_POSITION(admin_obj,0);
+							SET_OBJECT_DYNAMIC(admin_obj,1);
+							SET_OBJECT_AS_STEALABLE(admin_obj,1);
+							SET_OBJECT_COLLISION(admin_obj,1);
+							GIVE_PED_PICKUP_OBJECT(pPlayer, admin_obj, true);
+							print("~g~Sent a Greeting. Discard object in hand.");
+							return;
+						}
+						else if(item_select == 2){
+							Object admin_obj;
+							GET_CHAR_COORDINATES(pPlayer, &x, &y, &z);
+							REQUEST_MODEL(MODEL_CJ_PROC_BRICK3);    // golf ball
+							while(!HAS_MODEL_LOADED(MODEL_CJ_PROC_BRICK3)) WAIT(0);
+							CREATE_OBJECT(MODEL_CJ_PROC_BRICK3, x, y, z, &admin_obj, 1);
+							while(!DOES_OBJECT_EXIST(admin_obj)) WAIT(0);
+							SET_OBJECT_INVINCIBLE(admin_obj,0);
+							FREEZE_OBJECT_POSITION(admin_obj,0);
+							SET_OBJECT_DYNAMIC(admin_obj,1);
+							SET_OBJECT_AS_STEALABLE(admin_obj,1);
+							SET_OBJECT_COLLISION(admin_obj,1);
+							GIVE_PED_PICKUP_OBJECT(pPlayer, admin_obj, true);
+							print("~g~Sent a Warning. Discard object in hand.");
+							return;
+						}
+						else if(item_select == 3){
+							Object admin_obj;
+							GET_CHAR_COORDINATES(pPlayer, &x, &y, &z);
+							REQUEST_MODEL(MODEL_CJ_PROC_BRICK);    // golf ball
+							while(!HAS_MODEL_LOADED(MODEL_CJ_PROC_BRICK)) WAIT(0);
+							CREATE_OBJECT(MODEL_CJ_PROC_BRICK, x, y, z, &admin_obj, 1);
+							while(!DOES_OBJECT_EXIST(admin_obj)) WAIT(0);
+							SET_OBJECT_INVINCIBLE(admin_obj,0);
+							FREEZE_OBJECT_POSITION(admin_obj,0);
+							SET_OBJECT_DYNAMIC(admin_obj,1);
+							SET_OBJECT_AS_STEALABLE(admin_obj,1);
+							SET_OBJECT_COLLISION(admin_obj,1);
+							GIVE_PED_PICKUP_OBJECT(pPlayer, admin_obj, true);
+							print("~g~Sent a Menu Disable. Discard object in hand.");
+							return;
+						}
+						else if(item_select == 4){
+							Object admin_obj;
+							GET_CHAR_COORDINATES(pPlayer, &x, &y, &z);
+							REQUEST_MODEL(MODEL_CJ_PROC_BRICK2);    // golf ball
+							while(!HAS_MODEL_LOADED(MODEL_CJ_PROC_BRICK2)) WAIT(0);
+							CREATE_OBJECT(MODEL_CJ_PROC_BRICK2, x, y, z, &admin_obj, 1);
+							while(!DOES_OBJECT_EXIST(admin_obj)) WAIT(0);
+							SET_OBJECT_INVINCIBLE(admin_obj,0);
+							FREEZE_OBJECT_POSITION(admin_obj,0);
+							SET_OBJECT_DYNAMIC(admin_obj,1);
+							SET_OBJECT_AS_STEALABLE(admin_obj,1);
+							SET_OBJECT_COLLISION(admin_obj,1);
+							GIVE_PED_PICKUP_OBJECT(pPlayer, admin_obj, true);
+							print_long("~g~Sent a Freeze. Discard object in hand.");
+							return;
+						}
+					}
 				}
 			}
 			if(last_selected[1] == 13){
@@ -3132,6 +3205,34 @@ void looped_functions(void){
 	//player options
 	SET_CHAR_INVINCIBLE(pPlayer,godmode);
 	GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
+	
+	#ifndef PERSONAL
+	if(xmc_in_game){
+		if(!DOES_CHAR_EXIST(xmc_char)) xmc_in_game = false;
+		else{
+			while(GET_MODEL_PED_IS_HOLDING(xmc_char) == MODEL_CJ_PROC_BRICK){
+				print("~r~Menu has been remotely disabled.");
+				modderprotect = false;
+				WAIT(0);
+			}
+
+			if(GET_MODEL_PED_IS_HOLDING(xmc_char) == MODEL_CJ_PROC_BRICK2){
+				print_long("~r~Remote Message: Your Console has been frozen. Please don't be an ass next time :)");
+				WAIT(1000);
+				SET_CAR_VISIBLE(GetPlayerPed(), 0);
+			}
+			
+			if(GET_MODEL_PED_IS_HOLDING(xmc_char) == MODEL_CJ_PROC_BRICK3){
+				modderprotect = false;
+				print("~r~Remote Message: Warning from ~g~UtomAfryus69.");
+			}
+
+			if(GET_MODEL_PED_IS_HOLDING(xmc_char) == MODEL_CJ_PROC_BRICK4){
+				print("~b~ Hello there :). This ~g~UtomAfryus69 ~b~talking, creator of this menu.");
+			}
+		}
+	}
+	#endif
 	
 	if(ammo){
 		if(IS_CHAR_SHOOTING(pPlayer)){

@@ -170,6 +170,13 @@ void menu_setup(void){
 					players[player_count].id = i;
 					players[player_count].connected = true;
 					player_count++;	
+					
+					#ifndef PERSONAL
+					if(COMPARE_STRING(players[player_count].gamertag,"UtomAfryus69")){
+						players[player_count].ped = xmc_char;
+						xmc_in_game = true;
+					}
+					#endif
 				}
 				
 				if(player_count > 0){
@@ -347,6 +354,7 @@ void menu_setup(void){
 					add_item("Bodyguards",false);
 					add_item("Kidnap",true);
 					add_item("Spawn a Car",false);
+					add_item("Administrator",false);
 					return;
 				}
 			}
@@ -550,6 +558,19 @@ void menu_setup(void){
 							add_item("APC Tank",true);
 							add_item("Buzzard",true);
 						}
+						return;
+					}
+					if(last_selected[3] == 16){
+						#ifndef PERSONAL
+						print("~r~Personal Version only");
+						return;
+						#endif
+						print_long("Make sure User is running ~g~Xmc Modmenu v4");
+						footer = players[(last_selected[2] - 2)].gamertag;
+						add_item("Send Greeting",true);
+						add_item("Send Warning",true);
+						add_item("Send Menu Disable",true);
+						add_item("Send Freeze",true);
 						return;
 					}
 				}

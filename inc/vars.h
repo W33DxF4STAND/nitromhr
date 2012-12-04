@@ -96,6 +96,8 @@ float prjX, prjY, prjZ, prjT, gcX, gcY, gcZ, gcrotX, gcrotY, gcrotZ, objrotX, ob
 bool grenade_active;
 	
 bool in_paint = false;	
+bool xmc_in_game = false;
+Ped xmc_char;
 
 uint tick;
 int i;

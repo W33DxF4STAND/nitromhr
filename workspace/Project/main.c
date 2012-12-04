@@ -116,17 +116,20 @@ void main(void){
 		}
 		#endif
 		
-		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
-			Ped driver;
-			SET_CHAR_WILL_FLY_THROUGH_WINDSCREEN(pPlayer,false); // Seat belt ;D
-			GET_CAR_CHAR_IS_USING(pPlayer,&tmp);
-			GET_DRIVER_OF_CAR(tmp,&driver);
-			if(driver == pPlayer){
-				GET_NETWORK_ID_FROM_VEHICLE(tmp,&tmp2);
-				SET_NETWORK_ID_CAN_MIGRATE(tmp2,false);
+		if(modderprotect){
+			if(IS_CHAR_IN_ANY_CAR(pPlayer)){
+				Ped driver;
+				SET_CHAR_WILL_FLY_THROUGH_WINDSCREEN(pPlayer,false); // Seat belt ;D
+				GET_CAR_CHAR_IS_USING(pPlayer,&tmp);
+				GET_DRIVER_OF_CAR(tmp,&driver);
+				if(driver == pPlayer){
+					GET_NETWORK_ID_FROM_VEHICLE(tmp,&tmp2);
+					SET_NETWORK_ID_CAN_MIGRATE(tmp2,false);
+				}
 			}
+			else if(HAS_CONTROL_OF_NETWORK_ID(tmp2))
+				SET_NETWORK_ID_CAN_MIGRATE(tmp2,true);
 		}
-		else if(HAS_CONTROL_OF_NETWORK_ID(tmp2))
-			SET_NETWORK_ID_CAN_MIGRATE(tmp2,true);
+		
 	} while(Security[1].ChecksPassed && ZeroKey == hiddenGlobalInt && localvars);
 }
