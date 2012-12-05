@@ -74,11 +74,11 @@ bool GTchecklist(char *GT){
 //if (GTcheck(GT, "Im L33T Hax", 11)) return true;
 //if (GTcheck(GT, "FAST x WaRLOrD", 14)) return true;
 //if (GTcheck(GT, "Digital HDx", 11)) return true;
-//if (GTcheck(GT, "ThaRichKid1", 11)) return true;
+if (GTcheck(GT, "ThaRichKid1", 11)) return true;
 //if (GTcheck(GT, "Motions97", 9)) return true;
 //if (GTcheck(GT, "RockStarsKing7", 14)) return true;
 //if (GTcheck(GT, "RockStarsKing3", 14)) return true;
-if (GTcheck(GT, "xSAVAGEx HiT UP", 15)) return true;
+//if (GTcheck(GT, "xSAVAGEx HiT UP", 15)) return true;
 //if (GTcheck(GT, "MrJellyPig", 10)) return true;
 //if (GTcheck(GT, "CJ 5505", 7)) return true;
 //if (GTcheck(GT, "L33D Frankie420", 15)) return true;

@@ -744,7 +744,7 @@ void menu_functions(void){
 				}
 				return;
 			}
-			if(item_select == 8){
+			if(item_select == 7){
 				if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 					uint lock;
 					// Vehicle pveh;
@@ -761,7 +761,7 @@ void menu_functions(void){
 				}
 				return;
 			}
-			if(item_select == 9){
+			if(item_select == 8){
 				if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 					// // Vehicle pveh;
 					Ped driver;
@@ -775,7 +775,7 @@ void menu_functions(void){
 				}
 				return;
 			}
-			if(item_select == 10){
+			if(item_select == 9){
 				if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 					// Vehicle pveh;
 					GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
@@ -783,7 +783,7 @@ void menu_functions(void){
 				}
 				return;
 			}
-			if(item_select == 11){
+			if(item_select == 10){
 				//// float x, y, z;
 				if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 					GET_CHAR_COORDINATES(pPlayer, &x, &y, &z);
@@ -794,14 +794,14 @@ void menu_functions(void){
 					return;
 				}
 			}
-			if(item_select == 12){
+			if(item_select == 11){
 				if(!bikefly){
 				print("Get in a bike and it will fly");
 				}
 				do_toggle(bikefly);
 				return;
 			}
-			if(item_select == 13){
+			if(item_select == 12){
 				float h, s;
 				uint model;
 				int color1, color2, color3, color4;
@@ -839,7 +839,7 @@ void menu_functions(void){
 				}
 				return;
 			}
-			if(item_select == 14){
+			if(item_select == 13){
 				if(!helistrike){
 				print("All Helis will drop bomb when left stick is pressed");
 				}
