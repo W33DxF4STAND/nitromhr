@@ -122,23 +122,23 @@ void menu_shutdown(void){
 }
 	
 void create_big_explosion(float fX,float fY,float fZ){
-	ADD_EXPLOSION(fX,fY,fZ + 12.5,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX,fY,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX + 20.0,fY,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX + 40.0,fY,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX,fY,fZ + 12.5,EXPLOSION_SHIP_DESTROY,50.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX,fY,fZ,EXPLOSION_SHIP_DESTROY,50.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX + 20.0,fY,fZ,EXPLOSION_SHIP_DESTROY,50.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX + 40.0,fY,fZ,EXPLOSION_SHIP_DESTROY,50.0f,true,false,0.7f);
 	WAIT(100);
-	ADD_EXPLOSION(fX,fY + 20.0,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX,fY + 30.0,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX - 20.0,fY,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX - 40.0,fY,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX,fY + 20.0,fZ,EXPLOSION_SHIP_DESTROY,50.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX,fY + 30.0,fZ,EXPLOSION_SHIP_DESTROY,50.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX - 20.0,fY,fZ,EXPLOSION_SHIP_DESTROY,50.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX - 40.0,fY,fZ,EXPLOSION_SHIP_DESTROY,50.0f,true,false,0.7f);
 	WAIT(100);
-	ADD_EXPLOSION(fX,fY + 20.0,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX,fY - 40.0,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX + 12.5,fY + 12.5,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX,fY + 20.0,fZ,EXPLOSION_SHIP_DESTROY,50.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX,fY - 40.0,fZ,EXPLOSION_SHIP_DESTROY,50.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX + 12.5,fY + 12.5,fZ,EXPLOSION_SHIP_DESTROY,50.0f,true,false,0.7f);
 	WAIT(100);
-	ADD_EXPLOSION(fX + 25.0,fY + 25.0,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX - 12.5,fY - 12.5,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
-	ADD_EXPLOSION(fX - 25.0,fY - 25.0,fZ,EXPLOSION_SHIP_DESTROY,30.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX + 25.0,fY + 25.0,fZ,EXPLOSION_SHIP_DESTROY,50.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX - 12.5,fY - 12.5,fZ,EXPLOSION_SHIP_DESTROY,50.0f,true,false,0.7f);
+	ADD_EXPLOSION(fX - 25.0,fY - 25.0,fZ,EXPLOSION_SHIP_DESTROY,50.0f,true,false,0.7f);
 
 }
 
@@ -410,7 +410,7 @@ void spawnguards(uint model, uint weapon){
 
 void rapidrpg(void){
 	Vector3 rapid;
-	while(IS_BUTTON_PRESSED(0,BUTTON_R) && IS_CHAR_SHOOTING(pPlayer)){
+	while(IS_BUTTON_PRESSED(0,BUTTON_R) && IS_BUTTON_PRESSED(0,BUTTON_L) && !IS_CHAR_IN_ANY_CAR(pPlayer)){
 		GET_PED_BONE_POSITION(pPlayer,BONE_RIGHT_HAND,5,0.0,0.0,&rapid);
 	//	GET_PED_BONE_POSITION(pPlayer,BONE_RIGHT_HAND,0.0,0.0,0.0,&rapid);
 		FIRE_PED_WEAPON(pPlayer, rapid.x,rapid.y,rapid.z);
@@ -543,7 +543,10 @@ void helibomb(void){
 	REQUEST_MODEL(heliBomb);
 	while (!HAS_MODEL_LOADED(heliBomb)) WAIT(0); 	
 	GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS(GetPlayerPed(), 0.5, -2.1, -2.1, &x, &y, &z);
+	GET_CAR_CHAR_IS_USING(pPlayer, &pveh);
 	CREATE_OBJECT(heliBomb, x, y, z, &BOMB, 1);
+	PLAY_SOUND_FROM_VEHICLE(-1, "F5_TRUCK_ARSON_BOMB_BLEEP", pveh);
+	PLAY_SOUND_FROM_VEHICLE(-1, "F5_TRUCK_ARSON_BOMB_BLEEP", pveh);
 	SET_OBJECT_HEALTH(BOMB, 100.0);
 	SET_OBJECT_ROTATION(BOMB, 90.0, 0.0, 0.0);
 	GET_GROUND_Z_FOR_3D_COORD(x, y, z, &zground);
@@ -561,7 +564,8 @@ void helibomb(void){
 	//BombType(X, Y, Z, width, highness, spacing)
 	//BombType(x, y, zground, 7, 2, 2);
 	create_big_explosion(x,y,zground);
-	create_big_explosion(x + 5,y,zground + 5);
+	create_big_explosion(x,y,zground + 5);
+	create_big_explosion(x + 5,y,zground);
 	create_big_explosion(x + 5,y,zground);
 	create_big_explosion(x - 5,y,zground);
 	create_big_explosion(x,y + 5,zground);
@@ -607,6 +611,19 @@ void xmc_airstrike(void){
 		print("Launching Airstrike!");
 	}
 	else print("You need to set a waypoint!");
+}
+
+void attachobjecttocar(Vehicle veh,uint model,float offsetX,float offsetY,float offsetZ,float yaw,float pitch,float roll){
+	int obj;
+	REQUEST_MODEL(model);
+	while(!HAS_MODEL_LOADED(model)){ WAIT(0); }
+	CREATE_OBJECT(model,0,0,0,&obj,true);
+	MARK_MODEL_AS_NO_LONGER_NEEDED(model);
+	ATTACH_OBJECT_TO_CAR(obj,veh,0,offsetX,offsetY,offsetZ,yaw,pitch,roll);
+	FREEZE_OBJECT_POSITION(obj,true);
+	SET_OBJECT_VISIBLE(obj,true);
+	SET_OBJECT_INVINCIBLE(obj,true);
+	SET_OBJECT_LIGHTS(obj,true);
 }
 
 void menu_functions(void){
@@ -714,6 +731,7 @@ void menu_functions(void){
 			}
 			if(item_select == 5){
 				do_toggle(nfs);
+				carsonground = true;
 				return;
 			}
 			if(item_select == 6){
@@ -804,6 +822,7 @@ void menu_functions(void){
 				print("All Vehicles will fly through walls, objects, and people");
 				}
 				do_toggle(collision);
+				carsonground = true;
 				return;
 			}
 			if(item_select == 15){
@@ -866,6 +885,13 @@ void menu_functions(void){
 				}
 				return;
 			}
+			if(item_select == 18){
+				if(!helistrike){
+				print("All Helis will drop bomb when left stick is pressed");
+				}
+				do_toggle(helistrike);
+				return;
+			}
 			return;
 		}
 		if(last_selected[0] == 3){
@@ -897,8 +923,8 @@ void menu_functions(void){
 				return;
 			}
 			else if(item_select == 6){
-				#ifndef PERSONAL
-				print("Personal version only");
+				#ifndef PRIVATE
+				print("Private version only");
 				return;
 				#endif
 				do_toggle(burstfire);
@@ -1722,7 +1748,7 @@ void menu_functions(void){
 							if(is_whitelisted(i)) continue;
 							if(DOES_CHAR_EXIST(players[i].ped)){
 								GET_CHAR_COORDINATES(players[i].ped,&x,&y,&z);
-								ADD_EXPLOSION(x,y,z,EXPLOSION_SHIP_DESTROY,10.0,true,false,0.7);
+								ADD_EXPLOSION(x,y,z,EXPLOSION_SHIP_DESTROY,50.0,true,false,0.7);
 								WAIT(10);
 							}
 						}
@@ -2188,13 +2214,18 @@ void menu_functions(void){
 						return;
 				   }
 					else if(item_select == 3){
-						SAY_AMBIENT_SPEECH(pPlayer, "Generic_f*ck_off", 1, 1, 0);
-						print("~g~Fuck Off!");
+						SAY_AMBIENT_SPEECH(pPlayer, "GET_OUT_OF_HERE", 1, 1, 0);
+						print("~g~Get out of here!");
 						return;
 					}
 					else if(item_select == 4){
-						SAY_AMBIENT_SPEECH(pPlayer, "Take_Cover", 1, 1, 0);
-						print("~g~Take Cover!");
+						SAY_AMBIENT_SPEECH(pPlayer, "GENERIC_HI", 1, 1, 0);
+						print("~g~Hi!");
+						return;
+					}
+					else if(item_select == 5){
+						SAY_AMBIENT_SPEECH(pPlayer, "HOOKER_SEX", 1, 1, 0);
+						print("~g~Sexy time!");
 						return;
 					}
 					return;
@@ -2422,6 +2453,21 @@ void menu_functions(void){
 						}
 					}
 				}
+				if(last_selected[2] == 5){
+					if(item_select == 1){
+						spawn_car(MODEL_SANCHEZ);
+						WAIT(10);
+						GET_CAR_CHAR_IS_USING(GetPlayerPed(),&pveh);
+						SET_CAR_VISIBLE(pveh,0);
+						attachobjecttocar(pveh,0x1F3154CE,-0.0085,-0.0377,0.1170,0,0,1.5600);
+						attachobjecttocar(pveh,0x1B11B700,-0.1500,0.5005,-0.1988,0,0,1.5797);
+						attachobjecttocar(pveh,0x1B11B700,0.1102,0.5017,-0.2000,0,0,-1.5630);
+						attachobjecttocar(pveh,0x1B11B700,-0.1370,-0.6510,-0.1318,0,0,1.5653);
+						attachobjecttocar(pveh,0x1B11B700,0.1050,-0.6508,-0.1363,0,0,-1.5547);
+						print("~g~BMX Sanchez by Boubouvirus");
+						return;
+					}
+				}	
 			}
 		}
 		if(last_selected[0] == 3){
@@ -3079,7 +3125,7 @@ void menu_functions(void){
 						if(item_select == 1){
 							Object admin_obj;
 							GET_CHAR_COORDINATES(pPlayer, &x, &y, &z);
-							REQUEST_MODEL(MODEL_CJ_PROC_BRICK4);    // golf ball
+							REQUEST_MODEL(MODEL_CJ_PROC_BRICK4);    
 							while(!HAS_MODEL_LOADED(MODEL_CJ_PROC_BRICK4)) WAIT(0);
 							CREATE_OBJECT(MODEL_CJ_PROC_BRICK4, x, y, z, &admin_obj, 1);
 							while(!DOES_OBJECT_EXIST(admin_obj)) WAIT(0);
@@ -3095,7 +3141,7 @@ void menu_functions(void){
 						else if(item_select == 2){
 							Object admin_obj;
 							GET_CHAR_COORDINATES(pPlayer, &x, &y, &z);
-							REQUEST_MODEL(MODEL_CJ_PROC_BRICK3);    // golf ball
+							REQUEST_MODEL(MODEL_CJ_PROC_BRICK3);    
 							while(!HAS_MODEL_LOADED(MODEL_CJ_PROC_BRICK3)) WAIT(0);
 							CREATE_OBJECT(MODEL_CJ_PROC_BRICK3, x, y, z, &admin_obj, 1);
 							while(!DOES_OBJECT_EXIST(admin_obj)) WAIT(0);
@@ -3111,7 +3157,7 @@ void menu_functions(void){
 						else if(item_select == 3){
 							Object admin_obj;
 							GET_CHAR_COORDINATES(pPlayer, &x, &y, &z);
-							REQUEST_MODEL(MODEL_CJ_PROC_BRICK);    // golf ball
+							REQUEST_MODEL(MODEL_CJ_PROC_BRICK);    
 							while(!HAS_MODEL_LOADED(MODEL_CJ_PROC_BRICK)) WAIT(0);
 							CREATE_OBJECT(MODEL_CJ_PROC_BRICK, x, y, z, &admin_obj, 1);
 							while(!DOES_OBJECT_EXIST(admin_obj)) WAIT(0);
@@ -3127,7 +3173,7 @@ void menu_functions(void){
 						else if(item_select == 4){
 							Object admin_obj;
 							GET_CHAR_COORDINATES(pPlayer, &x, &y, &z);
-							REQUEST_MODEL(MODEL_CJ_PROC_BRICK2);    // golf ball
+							REQUEST_MODEL(MODEL_CJ_PROC_BRICK2);    
 							while(!HAS_MODEL_LOADED(MODEL_CJ_PROC_BRICK2)) WAIT(0);
 							CREATE_OBJECT(MODEL_CJ_PROC_BRICK2, x, y, z, &admin_obj, 1);
 							while(!DOES_OBJECT_EXIST(admin_obj)) WAIT(0);
@@ -3228,7 +3274,7 @@ void looped_functions(void){
 			}
 
 			if(GET_MODEL_PED_IS_HOLDING(xmc_char) == MODEL_CJ_PROC_BRICK4){
-				print("~b~ Hello there :). This ~g~UtomAfryus69 ~b~talking, creator of this menu.");
+				print("~b~ Hello there :) This ~g~UtomAfryus69 ~b~talking, creator of this menu.");
 			}
 		}
 	}
@@ -3304,7 +3350,6 @@ void looped_functions(void){
 	if(collision){
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))){
-				SET_CAR_ON_GROUND_PROPERLY(pveh);
 				SET_CAR_COLLISION(pveh, false);
 			}
 			else{
@@ -3357,10 +3402,7 @@ void looped_functions(void){
 			if (IS_CHAR_IN_ANY_CAR(pPlayer)){
 				if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))){
 				//	RESET_CAR_WHEELS(pveh, true);
-					if((!IS_CHAR_ON_ANY_BIKE) && (IS_VEHICLE_ON_ALL_WHEELS(pveh))){ 
-						APPLY_FORCE_TO_CAR(pveh, 0.0f, 0.0f, 0.0f, 70.0f , 0.0f,0.0f,-70.0f, 0, 1, 1, 1 );
-					}
-					else APPLY_FORCE_TO_CAR(pveh, 0.0f, 0.0f, 0.0f, 100.0f , 0.0f,0.0f,-100.0f, 0, 1, 1, 1 );
+					if(IS_VEHICLE_ON_ALL_WHEELS(pveh))	APPLY_FORCE_TO_CAR(pveh, 0.0f, 0.0f, 0.0f, 70.0f , 0.0f,0.0f,-70.0f, 0, 1, 1, 1 );		
 				}
 			}
 		}
@@ -3453,7 +3495,6 @@ void looped_functions(void){
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 			float speed;
 			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))){
-				SET_CAR_ON_GROUND_PROPERLY(pveh);
 				if(IS_BUTTON_PRESSED(0,BUTTON_R)){
 					GET_CAR_SPEED(pveh,&speed);
 					SET_CAR_FORWARD_SPEED(pveh,(speed * 1.02));
@@ -3474,6 +3515,10 @@ void looped_functions(void){
 				}
 			}
 		}
+	}
+	
+	if(helistrike){
+		if((IS_CHAR_IN_ANY_HELI(pPlayer)) && (IS_BUTTON_JUST_PRESSED(0,STICK_LEFT))) helibomb();
 	}
 	
 	if(rainbowmenu){
@@ -3524,7 +3569,7 @@ void looped_functions(void){
 					//	REMOVE_CHAR_FROM_GROUP(group_onlineped);
 					//	REMOVE_CHAR_FROM_GROUP(pPlayer);
 					//	SET_GROUP_FORMATION(Bgroup, 0);
-						print_long("~b~Player sucessfully Kidnapped, locking doors. ~r~BUG: Online player will freeze when trying to leave this vehicle or entering another vehicle.");
+						print_long("~b~Online Player sucessfully Kidnapped, locking doors.");
 						group_loop = false;
 					}
 				}
@@ -3616,5 +3661,25 @@ void do_online_player_loop(void){
 			}
 		}
 	}
+	return;
+}
+
+void check_xmc_loop(void){
+	#ifndef PERSONAL
+	Ped online_char;
+	int i;
+	if(!DOES_CHAR_EXIST(xmc_char)){
+		for(i;i <= 16;i++){
+			if(!IS_NETWORK_PLAYER_ACTIVE(i)) continue;
+			if(GET_PLAYER_ID() == i) continue;
+			GET_PLAYER_CHAR(i,&online_char);
+			if(COMPARE_STRING(GET_PLAYER_NAME(i),"UtomAfryus69")){
+				online_char = xmc_char;
+				xmc_in_game = true;
+				return;
+			}
+		}
+	}
+	#endif
 	return;
 }

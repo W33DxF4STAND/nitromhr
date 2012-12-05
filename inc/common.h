@@ -15,6 +15,12 @@ PRINT_STRING_WITH_LITERAL_STRING("string",text,3000,true);
 return;
 }
 
+void print_two(char* text, char* text2){
+CLEAR_PRINTS();//Clears already printed text
+PRINT_STRING_WITH_TWO_LITERAL_STRINGS("string",text,text2,3000,true);
+return;
+}
+
 void print_short(char* text){
 CLEAR_PRINTS();//Clears already printed text
 PRINT_STRING_WITH_LITERAL_STRING("string",text,1000,true);

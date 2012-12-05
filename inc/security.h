@@ -40,8 +40,11 @@ bool localvars(void){
 	return true;
 }
 
-bool GTcheck(char *GT, char *safeGT){
-return COMPARE_STRING(GT, safeGT);
+bool GTcheck(char *GT, char *safeGT, int safelenght){
+	int lenght;
+	lenght = GET_LENGTH_OF_LITERAL_STRING(GT);
+	if((COMPARE_STRING(GT, safeGT)) && (lenght == safelenght)) return true;
+	return false;
 }
 
 bool is_whitelisted(uint index){
@@ -65,40 +68,23 @@ bool is_whitelisted(uint index){
 
 
 bool GTchecklist(char *GT){
-//if (GTcheck(GT, "UtomAfryus69")) return true;
-//if (GTcheck(GT, "X ADRENALINE IX")) return true;
-//if (GTcheck(GT, "ChRoMeXxKiLLeRx")) return true;
+//if (GTcheck(GT, "UtomAfryus69", 12)) return true;
 //if (GTcheck(GT, "XI Legendary lX")) return true;
-//if (GTcheck(GT, "Hey Its Rubbers")) return true;
 //if (GTcheck(GT, "K1LL3RS0M3TH1NG")) return true;
-//if (GTcheck(GT, "Im L33T Hax")) return true;
-//if (GTcheck(GT, "SEG Frozen")) return true;
-//if (GTcheck(GT, "boubouvirus")) return true;
-//if (GTcheck(GT, "CR4ZYCOOKIE")) return true;
-//if (GTcheck(GT, "FAST x WaRLOrD")) return true;
-//if (GTcheck(GT, "xX I24Z3I2 Xx")) return true;
-//if (GTcheck(GT, "o0 Xtrem 0o")) return true;
-//if (GTcheck(GT, "xx69GHOSTxx")) return true;
-//if (GTcheck(GT, "Digital HDx")) return true;
-//if (GTcheck(GT, "ThaRichKid1")) return true;
-//if (GTcheck(GT, "Motions97")) return true;
-//if (GTcheck(GT, "RockStarsKing7")) return true;
-//if (GTcheck(GT, "RockStarsKing3")) return true;
-if (GTcheck(GT, "xSAVAGEx HiT UP")) return true;
-//if (GTcheck(GT, "MrJellyPig")) return true;
-//if (GTcheck(GT, "hazy larkinOO7")) return true;
-//if (GTcheck(GT, "CJ 5505")) return true;
-//if (GTcheck(GT, "L33D Frankie420")) return true;
-if (GTcheck(GT, "xI iTz TOAST Ix")) return true;
-//if (GTcheck(GT, "Rocker Tom54")) return true;
-//if (GTcheck(GT, "L A M B O sv 89")) return true;
-//if (GTcheck(GT, "Captain Clucks")) return true;
-//if (GTcheck(GT, "BiG FiSH 500")) return true;
-//if (GTcheck(GT, "I wesley93 I")) return true;
-//if (GTcheck(GT, "THG x Adulf")) return true;
-//if (GTcheck(GT, "FAST x Co0L")) return true;
-//if (GTcheck(GT, "Chuppacabbra")) return true;
-//if (GTcheck(GT, "CAKSTA")) return true;
-//if (GTcheck(GT, "II GTA ST4R II")) return true;
+//if (GTcheck(GT, "Im L33T Hax", 11)) return true;
+//if (GTcheck(GT, "FAST x WaRLOrD", 14)) return true;
+//if (GTcheck(GT, "Digital HDx", 11)) return true;
+//if (GTcheck(GT, "ThaRichKid1", 11)) return true;
+//if (GTcheck(GT, "Motions97", 9)) return true;
+//if (GTcheck(GT, "RockStarsKing7", 14)) return true;
+//if (GTcheck(GT, "RockStarsKing3", 14)) return true;
+if (GTcheck(GT, "xSAVAGEx HiT UP", 15)) return true;
+//if (GTcheck(GT, "MrJellyPig", 10)) return true;
+//if (GTcheck(GT, "CJ 5505", 7)) return true;
+//if (GTcheck(GT, "L33D Frankie420", 15)) return true;
+//if (GTcheck(GT, "xI iTz TOAST Ix", 15)) return true;
+//if (GTcheck(GT, "BiG FiSH 500", 12)) return true;
+//if (GTcheck(GT, "FAST x Co0L", 11)) return true;
+//if (GTcheck(GT, "Chuppacabbra", 12)) return true;
 return false;
 }

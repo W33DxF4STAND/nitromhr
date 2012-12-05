@@ -18,6 +18,12 @@ void do_menu(void){
 		set_up_draw(3,0.35,0.35,255,255,255,255);
 		//draw_text("STRING",0.05,0.975,footer);
 		
+		//wip
+		//DRAW_RECT(0.5000, 0.5000, 1.0000, 1.0000, 0, 0, 0, 167);
+		INIT_FRONTEND_HELPER_TEXT();
+		DRAW_FRONTEND_HELPER_TEXT("LEAVE", "INPUT_F_CANCEL", 0);
+		DRAW_FRONTEND_HELPER_TEXT("CONFIRM", "INPUT_F_ACCEPT", 0);
+		
 		uint i = 1;
 		for(i;i <= item_count;i++){
 			r = 255;

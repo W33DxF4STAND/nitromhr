@@ -89,6 +89,7 @@ void menu_setup(void){
 			add_toggle("Lower Car",lowerpveh);
 			add_toggle("Immobile Car",freezecar);
 			add_item("Kick Players out of Car",true);
+			add_toggle("Heli Bomb ~PAD_LSTICK_NONE~",helistrike);
 			return;
 		}
 		if(last_selected[0] == 3){
@@ -98,7 +99,7 @@ void menu_setup(void){
 			add_toggle("Fast Reload",fastreload);
 			add_toggle("Auto Aim",autoaim);
 			add_item("Object Launcher",false);
-			add_toggle("RPG 3 Round Burst",burstfire);
+			add_toggle("RPG Rapid Fire",burstfire);
 			return;
 		}
 		if(last_selected[0] == 4){
@@ -170,13 +171,6 @@ void menu_setup(void){
 					players[player_count].id = i;
 					players[player_count].connected = true;
 					player_count++;	
-					
-					#ifndef PERSONAL
-					if(COMPARE_STRING(players[player_count].gamertag,"UtomAfryus69")){
-						players[player_count].ped = xmc_char;
-						xmc_in_game = true;
-					}
-					#endif
 				}
 				
 				if(player_count > 0){
@@ -226,6 +220,7 @@ void menu_setup(void){
 				add_item("Upgrades",false);
 				add_item("Paint",false);
 				add_item("Neons",false);
+				add_item("Funny Cars",false);
 				return;
 			}
 		}
@@ -377,11 +372,13 @@ void menu_setup(void){
 					print("Personal version only");
 					return;
 					#endif
-					footer = "Speech";
+					print("~g~Experimental");
+					footer = "Speeches";
 					add_item("Thanks",true);
 					add_item("Scream",true);
-					add_item("Fuck Off",true);
-					add_item("Take Cover",true);
+					add_item("Get Out",true);
+					add_item("Hello",true);
+					add_item("Sex Noises",true);
 					return;
 				}
 			}
@@ -478,7 +475,11 @@ void menu_setup(void){
 					add_item("Pink",true);
 					return;
 				}
-
+				if(last_selected[2] == 5){
+					footer = "Funny Cars";
+					add_item("BMX Sanchez",true);
+					return;
+				}
 			}
 		}
 		if(last_selected[0] == 3){
@@ -565,7 +566,7 @@ void menu_setup(void){
 						print("~r~Personal Version only");
 						return;
 						#endif
-						print_long("Make sure User is running ~g~Xmc Modmenu v4");
+						print_long("Make sure User is running ~g~Xmc Modmenu v4 or later.");
 						footer = players[(last_selected[2] - 2)].gamertag;
 						add_item("Send Greeting",true);
 						add_item("Send Warning",true);

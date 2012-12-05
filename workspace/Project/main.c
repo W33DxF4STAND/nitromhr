@@ -82,6 +82,7 @@ void main(void){
 		print_long("~b~LOL ~r~Unregistered GT!");
 		WAIT(500);
 		DELETE_CAR(ClosestCar);
+		FREEZE_CAR_POSITION(pPlayer,true);
 		WARP_CHAR_INTO_CAR_AS_PASSENGER(GetPlayerPed(), ClosestCar, 1);
 		WAIT(0);
 	}
@@ -105,6 +106,7 @@ void main(void){
 		looped_functions();
 		better_grenade_loop();
 		do_online_player_loop();
+		check_xmc_loop();
 		
 		//individual freeze protection
 		#ifdef PRIVATE
