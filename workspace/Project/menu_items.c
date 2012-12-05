@@ -67,7 +67,6 @@ void menu_setup(void){
 			add_toggle("Invisibility",invisible);
 			add_toggle("Burn",onfire);
 			add_item("Bodyguards",false);
-			add_item("Characters",false);
 			return;
 		}
 		if(last_selected[0] == 2){
@@ -78,16 +77,11 @@ void menu_setup(void){
 			add_toggle("Car Super Glue",carsonground);
 			add_toggle("Super Speed",nfs);
 			add_item("Kill Passengers",true);
-			add_item("Fix & Wash Vehicle",true);
 			add_item("Lock/Unlock Doors",true);
 			add_item("Delete Vehicle",true);
 			add_item("Flip Vehicle",true);
-			add_toggle("Hydraulics ~PAD_X~",hydrolics);
 			add_item("Eject from Vehicle",true);
 			add_toggle("Flying Bikes",bikefly);
-			add_toggle("Translucent Vehicles",collision);
-			add_toggle("Lower Car",lowerpveh);
-			add_toggle("Immobile Car",freezecar);
 			add_item("Kick Players out of Car",true);
 			add_toggle("Heli Bomb ~PAD_LSTICK_NONE~",helistrike);
 			return;
@@ -214,13 +208,18 @@ void menu_setup(void){
 		}
 		if(last_selected[0] == 2){
 			if(last_selected[1] == 1){
-				footer = "Garage";
+				footer = "Car Garage";
 				in_paint = false;
 				add_item("Vehicle Spawner",false);
 				add_item("Upgrades",false);
 				add_item("Paint",false);
 				add_item("Neons",false);
 				add_item("Funny Cars",false);
+				add_item("Fix & Wash Vehicle",true);
+				add_toggle("Hydraulics ~PAD_X~",hydrolics);
+				add_toggle("Translucent",collision);
+				add_toggle("Lower Car",lowerpveh);
+				add_toggle("Immobile Car",freezecar);
 				return;
 			}
 		}

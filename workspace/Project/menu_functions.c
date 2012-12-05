@@ -744,15 +744,6 @@ void menu_functions(void){
 				}
 				return;
 			}
-			if(item_select == 7){
-				if(IS_CHAR_IN_ANY_CAR(pPlayer)){
-					GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
-					FIX_CAR(pveh);
-					SET_VEHICLE_DIRT_LEVEL(pveh,0.0);
-					print("Vehicle fixed & washed!");
-				}
-				return;
-			}
 			if(item_select == 8){
 				if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 					uint lock;
@@ -793,13 +784,6 @@ void menu_functions(void){
 				return;
 			}
 			if(item_select == 11){
-				if(!hydrolics){
-					print("Hold X for hydrolics");
-				}
-				do_toggle(hydrolics);
-				return;
-			}
-			if(item_select == 12){
 				//// float x, y, z;
 				if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 					GET_CHAR_COORDINATES(pPlayer, &x, &y, &z);
@@ -810,44 +794,14 @@ void menu_functions(void){
 					return;
 				}
 			}
-			if(item_select == 13){
+			if(item_select == 12){
 				if(!bikefly){
 				print("Get in a bike and it will fly");
 				}
 				do_toggle(bikefly);
 				return;
 			}
-			if(item_select == 14){
-				if(!collision){
-				print("All Vehicles will fly through walls, objects, and people");
-				}
-				do_toggle(collision);
-				carsonground = true;
-				return;
-			}
-			if(item_select == 15){
-				if(!lowerpveh){
-				print("All Vehicles will now be lowered");
-				}
-				do_toggle(lowerpveh);
-				return;
-			}
-			if(item_select == 16){
-				if(IS_CHAR_IN_ANY_CAR(pPlayer)){
-					GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
-					do_toggle(freezecar);
-					if(freezecar){
-						FREEZE_CAR_POSITION(pveh,true);
-						print("Car is now immobile");
-					}
-					else{
-						FREEZE_CAR_POSITION(pveh,false);
-						print("Car is now mobile");
-					}
-					return;
-				}
-			}
-			if(item_select == 17){
+			if(item_select == 13){
 				float h, s;
 				uint model;
 				int color1, color2, color3, color4;
@@ -885,7 +839,7 @@ void menu_functions(void){
 				}
 				return;
 			}
-			if(item_select == 18){
+			if(item_select == 14){
 				if(!helistrike){
 				print("All Helis will drop bomb when left stick is pressed");
 				}
@@ -1381,6 +1335,56 @@ void menu_functions(void){
 				else if(item_select == 17){
 					spawnguards(MODEL_M_Y_NHELIPILOT, WEAPON_SNIPERRIFLE);
 					return;
+				}
+			}
+		}
+		if(last_selected[0] == 2){
+			if(last_selected[1] == 1){
+				if(item_select == 6){
+					if(IS_CHAR_IN_ANY_CAR(pPlayer)){
+						GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
+						FIX_CAR(pveh);
+						SET_VEHICLE_DIRT_LEVEL(pveh,0.0);
+						print("Vehicle fixed & washed!");
+					}
+					return;
+				}
+				if(item_select == 7){
+					if(!hydrolics){
+						print("Hold X for hydrolics");
+					}
+					do_toggle(hydrolics);
+					return;
+				}
+				if(item_select == 8){
+					if(!collision){
+					print("All Vehicles will fly through walls, objects, and people");
+					}
+					do_toggle(collision);
+					carsonground = true;
+					return;
+				}
+				if(item_select == 9){
+					if(!lowerpveh){
+					print("All Vehicles will now be lowered");
+					}
+					do_toggle(lowerpveh);
+					return;
+				}
+				if(item_select == 10){
+					if(IS_CHAR_IN_ANY_CAR(pPlayer)){
+						GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
+						do_toggle(freezecar);
+						if(freezecar){
+							FREEZE_CAR_POSITION(pveh,true);
+							print("Car is now immobile");
+						}
+						else{
+							FREEZE_CAR_POSITION(pveh,false);
+							print("Car is now mobile");
+						}
+						return;
+					}
 				}
 			}
 		}
@@ -2464,7 +2468,7 @@ void menu_functions(void){
 						attachobjecttocar(pveh,0x1B11B700,0.1102,0.5017,-0.2000,0,0,-1.5630);
 						attachobjecttocar(pveh,0x1B11B700,-0.1370,-0.6510,-0.1318,0,0,1.5653);
 						attachobjecttocar(pveh,0x1B11B700,0.1050,-0.6508,-0.1363,0,0,-1.5547);
-						print("~g~BMX Sanchez by Boubouvirus");
+						print("~g~BMX Sanchez by Big Fish 500 and Buffeting");
 						return;
 					}
 				}	
