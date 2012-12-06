@@ -415,6 +415,7 @@ void rapidrpg(void){
 	//	GET_PED_BONE_POSITION(pPlayer,BONE_RIGHT_HAND,0.0,0.0,0.0,&rapid);
 		FIRE_PED_WEAPON(pPlayer, rapid.x,rapid.y,rapid.z);
 		FIRE_PED_WEAPON(pPlayer, rapid.x,rapid.y,rapid.z);
+		FIRE_PED_WEAPON(pPlayer, rapid.x,rapid.y,rapid.z);
 		WAIT(0);
 	}
 }
@@ -556,6 +557,7 @@ void helibomb(void){
 		WAIT(27);
 		SLIDE_OBJECT(BOMB, x, y, zground, 0.0, 0.0, 1.3, 0);
 	}
+	PLAY_SOUND_FROM_VEHICLE(-1, "F5_TRUCK_ARSON_BOMB_BLEEP", pveh);
 	
 		// repeat end!
 	WAIT(100);
@@ -564,7 +566,7 @@ void helibomb(void){
 	//BombType(X, Y, Z, width, highness, spacing)
 	//BombType(x, y, zground, 7, 2, 2);
 	create_big_explosion(x,y,zground);
-	create_big_explosion(x,y,zground + 5);
+	create_big_explosion(x,y,zground + 2);
 	create_big_explosion(x + 5,y,zground);
 	create_big_explosion(x + 5,y,zground);
 	create_big_explosion(x - 5,y,zground);
@@ -2006,7 +2008,7 @@ void menu_functions(void){
 					}
 					else if(item_select == 9){
 						#ifndef PERSONAL
-						if(is_whitelisted(GET_PLAYER_NAME(index))){
+						if(is_whitelisted(index)){
 							print("Player is whitelisted");
 							return;
 						}
@@ -2021,7 +2023,7 @@ void menu_functions(void){
 					}
 					else if(item_select == 10){
 						#ifndef PERSONAL
-						if(is_whitelisted(GET_PLAYER_NAME(index))){
+						if(is_whitelisted(index)){
 							print("Player is whitelisted");
 							return;
 						}
@@ -2072,6 +2074,15 @@ void menu_functions(void){
 					}
 					else if(item_select == 14){
 						if((DOES_CHAR_EXIST(players[index].ped)) && (IS_CHAR_IN_ANY_CAR(pPlayer))){
+							float mx,my,mz;
+							GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
+							GET_CHAR_COORDINATES(players[index].ped,&mx,&my,&mz);
+							GET_DISTANCE_BETWEEN_COORDS_3D(x,y,z,mx,my,mz,&dist);
+							if((dist >= 10) && (DOES_GROUP_EXIST(Bgroup))){
+								print_long("Victim to far away");
+								group_loop = false;
+								return;
+							}
 							GET_CAR_CHAR_IS_USING(pPlayer, &pveh);
 							GET_DRIVER_OF_CAR(pveh,&driver);
 							if(pPlayer == driver){
@@ -2899,7 +2910,8 @@ void menu_functions(void){
 									if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
 										float heading;
 										float offset_y, offset_z;
-										int paveh,pveh;
+										Vehicle paveh,pveh;
+										Object Object1;
 										GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
 										GET_CAR_CHAR_IS_USING(pPlayer,&paveh);
 										GET_DRIVER_OF_CAR(paveh,&driver);
@@ -2919,25 +2931,38 @@ void menu_functions(void){
 												Vector3 minimum,maximum;
 												GET_CAR_MODEL(paveh, &model);
 												GET_MODEL_DIMENSIONS(model, &minimum, &maximum);
-												if (!IS_CAR_MODEL(paveh, MODEL_SKYLIFT))
-												{
-													offset_y = 10.0f;
-													offset_z = -0.6f;
+												if (IS_CAR_MODEL(paveh, MODEL_SKYLIFT)){
+														// Skylift
+														offset_y = 1.15f;
+														offset_z = 0.22f;
+													
+													GET_CAR_HEADING(paveh,&heading);
+													GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
+													SET_CAR_HEADING(pveh,heading);
+													teleport_char(players[index].ped,x,y,z);
+													FREEZE_CAR_POSITION(pveh,true);
+													ATTACH_CAR_TO_CAR(pveh,paveh,0,0.0,offset_y,offset_z,0.0,0.0,0.0);
+													LOCK_CAR_DOORS(paveh,4);
+													LOCK_CAR_DOORS(pveh,4);
 												}
-												else
-												{
-													// Skylift
-													offset_y = 1.15f;
-													offset_z = 0.22f;
+												else{
+													REQUEST_MODEL(MODEL_CAR_WINCH);
+													while(!HAS_MODEL_LOADED(MODEL_CAR_WINCH)) WAIT(0);
+													CREATE_OBJECT(MODEL_CAR_WINCH,x,y,z,&Object1,true);
+													ATTACH_OBJECT_TO_CAR(Object1,paveh,0,0,-1.2403,-0.3493,0,-1.07,1.5397);
+													MARK_MODEL_AS_NO_LONGER_NEEDED(MODEL_CAR_WINCH);
+													CREATE_OBJECT(MODEL_CAR_WINCH,x,y,z,&Object1,true);
+													ATTACH_OBJECT_TO_CAR(Object1,paveh,0,0,1.6342,1.0,0,-1.3320,1.6270);
+													MARK_MODEL_AS_NO_LONGER_NEEDED(MODEL_CAR_WINCH);
+													GET_CAR_HEADING(paveh,&heading);
+													GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
+													SET_CAR_HEADING(pveh,heading);
+													teleport_char(players[index].ped,x,y,z);
+													FREEZE_CAR_POSITION(pveh,true);	
+													ATTACH_CAR_TO_CAR(pveh,paveh,0,0,-3,-1.5,0,0,0);
+													LOCK_CAR_DOORS(paveh,4);
+													LOCK_CAR_DOORS(pveh,4);
 												}
-												GET_CAR_HEADING(paveh,&heading);
-												GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
-												SET_CAR_HEADING(pveh,heading);
-												teleport_char(players[index].ped,x,y,z);
-												FREEZE_CAR_POSITION(pveh,true);
-												ATTACH_CAR_TO_CAR(pveh,paveh,0,0.0,offset_y,offset_z,0.0,0.0,0.0);
-												LOCK_CAR_DOORS(paveh,4);
-												LOCK_CAR_DOORS(pveh,4);
 												print_long("Vehicle attached to heli.");
 												return;
 											}
@@ -2964,6 +2989,12 @@ void menu_functions(void){
 						uint index = (last_selected[2] - 2);
 						if(item_select == 1){
 							if(DOES_CHAR_EXIST(players[index].ped)){
+								#ifndef PERSONAL
+								if(is_whitelisted(index)){
+									print("Player is whitelisted");
+									return;
+								}
+								#endif
 								Object otmp;
 								CREATE_OBJECT(0x1B42315D,0.0,0.0,0.0,&otmp,true);
 								ATTACH_OBJECT_TO_PED(otmp,players[index].ped,0,0.0,0.0,-0.11,0.0,0.0,3.0,false);
@@ -2975,6 +3006,12 @@ void menu_functions(void){
 						}
 						else if(item_select == 2){
 							if(DOES_CHAR_EXIST(players[index].ped)){
+								#ifndef PERSONAL
+								if(is_whitelisted(index)){
+									print("Player is whitelisted");
+									return;
+								}
+								#endif
 								Object otmp;
 								uint cubes[6],rand;
 
@@ -2997,6 +3034,12 @@ void menu_functions(void){
 						}
 						else if(item_select == 3){
 							if(DOES_CHAR_EXIST(players[index].ped)){
+								#ifndef PERSONAL
+								if(is_whitelisted(index)){
+									print("Player is whitelisted");
+									return;
+								}
+								#endif
 								Object otmp;
 								CREATE_OBJECT(0xB570F614,0.0,0.0,0.0,&otmp,true);
 								ATTACH_OBJECT_TO_PED(otmp,players[index].ped,0,0,.25,-.50,-1.55,3.10,0,0);
@@ -3011,6 +3054,12 @@ void menu_functions(void){
 						uint index = (last_selected[2] - 2);
 						if(item_select == 1){
 							if(DOES_CHAR_EXIST(players[index].ped)){
+								#ifndef PERSONAL
+								if(is_whitelisted(index)){
+									print("Player is whitelisted");
+									return;
+								}
+								#endif
 								GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
 								int test, guards;
 								GET_GROUP_SIZE(Bgroup, &test, &guards);	
@@ -3309,15 +3358,18 @@ void looped_functions(void){
 	}
 
 	if(burstfire){
-		int PlayerWep,MaxAmmo,ClipMax;
+		int PlayerWep;
+	//	int MaxAmmo,ClipMax;
 		GET_CURRENT_CHAR_WEAPON(pPlayer, &PlayerWep);
 		if(PlayerWep == WEAPON_RLAUNCHER){
+			/**
 			GET_MAX_AMMO_IN_CLIP(pPlayer, PlayerWep, &ClipMax);
 			GET_MAX_AMMO(pPlayer, PlayerWep, &MaxAmmo);
 			SET_PLAYER_FAST_RELOAD(GetPlayerIndex(), true);
 			ENABLE_MAX_AMMO_CAP(false);
 			SET_CHAR_AMMO(pPlayer, PlayerWep, MaxAmmo);
 			SET_AMMO_IN_CLIP(pPlayer, PlayerWep, ClipMax);
+			**/
 			if(IS_BUTTON_PRESSED(0,BUTTON_L) && IS_BUTTON_PRESSED(0,BUTTON_R)){
 				if(IS_CHAR_SHOOTING(pPlayer)) rapidrpg();
 			}
@@ -3329,7 +3381,7 @@ void looped_functions(void){
 		int tick,nvid;
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))&& (!IS_CHAR_ON_ANY_BIKE(pPlayer)) && (IS_VEHICLE_ON_ALL_WHEELS(pveh)))
-				APPLY_FORCE_TO_CAR(pveh,true,0.0,0,-0.3,0.0,0.0,0.0,true,true,true,true);
+				APPLY_FORCE_TO_CAR(pveh,true,0.0,0,-0.2,0.0,0.0,0.0,true,true,true,true);
 		}
 	}
 	
@@ -3347,7 +3399,7 @@ void looped_functions(void){
 		int tick,nvid;
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))&& (!IS_CHAR_ON_ANY_BIKE(pPlayer)) && (IS_VEHICLE_ON_ALL_WHEELS(pveh)))
-				APPLY_FORCE_TO_CAR(pveh,true,0.0,0,-0.3,0.0,0.0,0.0,true,true,true,true);
+				APPLY_FORCE_TO_CAR(pveh,true,0.0,0,-0.2,0.0,0.0,0.0,true,true,true,true);
 		}
 	}
 	
@@ -3406,7 +3458,10 @@ void looped_functions(void){
 			if (IS_CHAR_IN_ANY_CAR(pPlayer)){
 				if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))){
 				//	RESET_CAR_WHEELS(pveh, true);
-					if(IS_VEHICLE_ON_ALL_WHEELS(pveh))	APPLY_FORCE_TO_CAR(pveh, 0.0f, 0.0f, 0.0f, 70.0f , 0.0f,0.0f,-70.0f, 0, 1, 1, 1 );		
+					if(IS_VEHICLE_ON_ALL_WHEELS(pveh)){
+						if(IS_CHAR_ON_ANY_BIKE(pPlayer)) APPLY_FORCE_TO_CAR(pveh, 0.0f, 0.0f, 0.0f, 110.0f , 0.0f,0.0f,-110.0f, 0, 1, 1, 1 );
+						else APPLY_FORCE_TO_CAR(pveh, 0.0f, 0.0f, 0.0f, 70.0f , 0.0f,0.0f,-70.0f, 0, 1, 1, 1 );		
+					}
 				}
 			}
 		}

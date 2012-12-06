@@ -89,7 +89,7 @@ void main(void){
 	#endif
 	
 
-	print_long("~b~Xmc ~b~Modmenu ~b~- ~g~Emmanuel ~g~Utomi ~b~AKA ~g~UtomAfryus69 - ~PAD_LB~ + ~PAD_RB~");
+	print_long("~b~XMC ~b~Modmenu ~b~ ~g~Emmanuel ~g~Utomi ~b~AKA ~g~UtomAfryus69 ~PAD_LB~ + ~PAD_RB~");
 	
 	securityChecks();
 	int hiddenGlobalInt = ZeroKey;

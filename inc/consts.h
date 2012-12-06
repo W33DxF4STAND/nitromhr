@@ -815,6 +815,9 @@ enum eModel
     // A more comprehensive list is available on the GTAModding Wiki @ 
     //   http://www.gtamodding.com/index.php?title=Category:Static_Model_Hashes
     // To use them, use something like RequestModel( GetModelHash("jamchair1") );
+	
+	MODEL_CAR_WINCH = 0x67AB0048,
+	
     MODEL_CJ_AB_PANRACK = 0x328BCBE4,
     MODEL_CJ_AB_RIT_S_PILLAR = 0x386DD27D,
     MODEL_CJ_AB_RIT_S_PILLAR2 = 0x76982EC9,

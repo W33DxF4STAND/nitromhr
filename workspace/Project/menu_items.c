@@ -60,8 +60,8 @@ void menu_setup(void){
 			add_toggle("God Mode",godmode);
 			add_toggle("Never Wanted",neverwanted);
 			add_toggle("Smart protection",pprotection);
-			add_toggle("Super Run ~PAD_LB~ + ~PAD_A~",superrun);
-			add_toggle("Super Hops ~PAD_LB~ + ~PAD_X~",superjump);
+			add_toggle("Super Run  ~PAD_LB~ + ~PAD_A~",superrun);
+			add_toggle("Super Hops  ~PAD_LB~ + ~PAD_X~",superjump);
 			add_toggle("Chronicle",chronicle);
 			add_toggle("Chaos mode",chaos);
 			add_toggle("Invisibility",invisible);
@@ -71,7 +71,7 @@ void menu_setup(void){
 		}
 		if(last_selected[0] == 2){
 			footer = "Vehicle Options";
-			add_item("Garage",false);
+			add_item("Car Garage",false);
 			add_toggle("Vehicle Helper",vhelper);
 			add_item("Slingshot",true);
 			add_toggle("Car Super Glue",carsonground);
@@ -83,7 +83,7 @@ void menu_setup(void){
 			add_item("Eject from Vehicle",true);
 			add_toggle("Flying Bikes",bikefly);
 			add_item("Kick Players out of Car",true);
-			add_toggle("Heli Bomb ~PAD_LSTICK_NONE~",helistrike);
+			add_toggle("Heli Bomb  ~PAD_LSTICK_NONE~",helistrike);
 			return;
 		}
 		if(last_selected[0] == 3){
@@ -216,7 +216,7 @@ void menu_setup(void){
 				add_item("Neons",false);
 				add_item("Funny Cars",false);
 				add_item("Fix & Wash Vehicle",true);
-				add_toggle("Hydraulics ~PAD_X~",hydrolics);
+				add_toggle("Hydraulics  ~PAD_X~",hydrolics);
 				add_toggle("Translucent",collision);
 				add_toggle("Lower Car",lowerpveh);
 				add_toggle("Immobile Car",freezecar);
@@ -360,7 +360,7 @@ void menu_setup(void){
 					add_number("Female Dance",3);
 					add_item("Pole Dance",true);
 					add_item("Stop Anim",true);
-					add_toggle("Ragdoll ~PAD_LB~ + ~PAD_B~",ragdoll);
+					add_toggle("Ragdoll  ~PAD_LB~ + ~PAD_B~",ragdoll);
 					add_item("Zohan",true);
 					add_item("Busted",true);
 					add_item("Smoking",true);	
