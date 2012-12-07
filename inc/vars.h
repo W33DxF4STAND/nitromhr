@@ -76,23 +76,21 @@ Ped pPlayer, tmp_player_ped;
 
 Object tmp_object_loop;
 uint tmp_model, model;
-//start out as dildo
 uint object_launch = 0x3675A6C3;
-Ped driver;
+uint car_launch = MODEL_SULTANRS;
+Ped driver, ClosestChar;
 Vehicle ClosestCar, pveh;
 Group Bgroup;
 float x, y, z, dist;
 
 Ped gameped[8];
 Ped group_onlineped;
-Ped taxi_driver;
-Vehicle taxi;
 char* footer;
 
 Object ObjectProjectile;
+Vehicle CarProjectile;
 Camera game_cam;
 float prjX, prjY, prjZ, prjT, gcX, gcY, gcZ, gcrotX, gcrotY, gcrotZ, objrotX, objrotZ;
-
 bool grenade_active;
 	
 bool in_paint = false;	
@@ -112,7 +110,12 @@ bool xmc1 = false,
 	xmc7 = false,
 	xmc8 = false,
 	xmc9 = false,
-	xmc10 = false;
+	xmc10 = false,
+	xmc11 = false,
+	xmc12 = false,
+	xmc13 = false,
+	xmc14 = false,
+	xmc15 = false;
 
 
 bool show_menu = false,
@@ -123,9 +126,13 @@ bool show_menu = false,
 	collision = false,
 	neverwanted = false,
 	objectgun = false,
+	exp_cargun = false,
+	del_cargun = false,
+	cargun = false,
 	invisible = false,
 	burstfire = false,
 	freezecar = false,
+	rainbowcar = false,
 	fastreload = true,
 	lowerpveh = false,
 	onfire = false,

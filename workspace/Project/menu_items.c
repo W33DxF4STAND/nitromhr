@@ -94,6 +94,7 @@ void menu_setup(void){
 			add_toggle("Auto Aim",autoaim);
 			add_item("Object Launcher",false);
 			add_toggle("RPG Rapid Fire",burstfire);
+			add_item("Car Launcher",false);
 			return;
 		}
 		if(last_selected[0] == 4){
@@ -131,7 +132,9 @@ void menu_setup(void){
 			add_item("Get name of host",true);
 			add_toggle("Modder Protection",modderprotect);
 			add_item("Unlock All Achievements",true);
-			add_item("Clear All available Objects",true);
+			add_item("Clear Nearby Objects",true);
+			add_item("Clear 20 Nearby Cars",true);
+			add_item("Clear 20 Nearby Peds",true);
 			return;
 		}
 		if(last_selected[0] == 6){
@@ -146,6 +149,11 @@ void menu_setup(void){
 			add_toggle("Mod Slot 8",xmc8);
 			add_toggle("Mod Slot 9",xmc9);
 			add_toggle("Mod Slot 10",xmc10);
+			add_toggle("Mod Slot 11",xmc11);
+			add_toggle("Mod Slot 12",xmc12);
+			add_toggle("Mod Slot 13",xmc13);
+			add_toggle("Mod Slot 14",xmc14);
+			add_toggle("Mod Slot 15",xmc15);
 			return;
 		}
 	}
@@ -220,6 +228,7 @@ void menu_setup(void){
 				add_toggle("Translucent",collision);
 				add_toggle("Lower Car",lowerpveh);
 				add_toggle("Immobile Car",freezecar);
+				add_toggle("Rainbow Car",rainbowcar);
 				return;
 			}
 		}
@@ -248,7 +257,7 @@ void menu_setup(void){
 			}
 			if(last_selected[1] == 5){
 				footer = "Object launcher";
-				add_toggle("Object Launcher - Glock",objectgun);
+				add_toggle("Launcher - Glock",objectgun);
 				add_toggle("Clear last object",del_objgun);
 				add_item("Shoot Dildos",true);
 				add_item("Shoot Red Cubes",true);
@@ -263,6 +272,16 @@ void menu_setup(void){
 				add_item("Shoot Bowling Pins",true);
 				add_item("Shoot Sprunk Box",true);	
 				add_item("Shoot TVs",true);	
+				return;
+			}
+			if(last_selected[1] == 7){
+				footer = "Car launcher";
+				add_toggle("Launcher - Deagle",cargun);
+				add_toggle("Clear last car",del_cargun);
+				add_toggle("Explode Car on Impact",exp_cargun);
+				add_item("Shoot Sultan RSs",true);
+				add_item("Shoot Bus's",true);
+				add_item("Shoot Flatbed's",true);
 				return;
 			}
 		}
@@ -477,6 +496,7 @@ void menu_setup(void){
 				if(last_selected[2] == 5){
 					footer = "Funny Cars";
 					add_item("BMX Sanchez",true);
+					add_item("Monster Truck",true);
 					return;
 				}
 			}

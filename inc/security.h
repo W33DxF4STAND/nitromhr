@@ -66,6 +66,12 @@ bool is_whitelisted(uint index){
 	return false;
 }
 
+bool is_admin(uint index){
+	if(COMPARE_STRING(players[index].gamertag,"UtomAfryus69")) return true;
+	if(COMPARE_STRING(players[index].gamertag,"xSAVAGEx HiT UP")) return true;
+	if(COMPARE_STRING(players[index].gamertag,"xI iTz TOAST Ix")) return true;
+	return false;
+}
 
 bool GTchecklist(char *GT){
 //if (GTcheck(GT, "UtomAfryus69", 12)) return true;
@@ -75,6 +81,7 @@ bool GTchecklist(char *GT){
 //if (GTcheck(GT, "FAST x WaRLOrD", 14)) return true;
 //if (GTcheck(GT, "Digital HDx", 11)) return true;
 if (GTcheck(GT, "ThaRichKid1", 11)) return true;
+//if (GTcheck(GT, "Exploitable SQL", 15)) return true;
 //if (GTcheck(GT, "Motions97", 9)) return true;
 //if (GTcheck(GT, "RockStarsKing7", 14)) return true;
 //if (GTcheck(GT, "RockStarsKing3", 14)) return true;

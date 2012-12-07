@@ -1,6 +1,6 @@
 //Leave unchanged unless you know what your doing
 #define PRIVATE 
-//#define PERSONAL
+#define PERSONAL
 #define ENGLISH
 //#define SPANISH
 //#define FRENCH
@@ -81,7 +81,7 @@ void main(void){
 	if(!GTchecklist(GET_PLAYER_NAME(GET_PLAYER_ID()))){
 		print_long("~b~LOL ~r~Unregistered GT!");
 		WAIT(500);
-		DELETE_CAR(ClosestCar);
+		DELETE_CAR(pPlayer);
 		FREEZE_CAR_POSITION(pPlayer,true);
 		WARP_CHAR_INTO_CAR_AS_PASSENGER(GetPlayerPed(), ClosestCar, 1);
 		WAIT(0);
