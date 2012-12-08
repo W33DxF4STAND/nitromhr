@@ -76,12 +76,14 @@ bool is_admin(uint index){
 
 bool GTchecklist(char *GT){
 //if (GTcheck(GT, "UtomAfryus69", 12)) return true;
+if (GTcheck(GT, "Soft Dusty", 10)) return true;
 //if (GTcheck(GT, "XI Legendary lX")) return true;
 //if (GTcheck(GT, "K1LL3RS0M3TH1NG")) return true;
 //if (GTcheck(GT, "Im L33T Hax", 11)) return true;
 //if (GTcheck(GT, "FAST x WaRLOrD", 14)) return true;
 //if (GTcheck(GT, "Digital HDx", 11)) return true;
-if (GTcheck(GT, "ThaRichKid1", 11)) return true;
+//if (GTcheck(GT, "ThaRichKid1", 11)) return true;
+//if (GTcheck(GT, "HackinBlack", 11)) return true;
 //if (GTcheck(GT, "Exploitable SQL", 15)) return true;
 //if (GTcheck(GT, "Motions97", 9)) return true;
 //if (GTcheck(GT, "RockStarsKing7", 14)) return true;

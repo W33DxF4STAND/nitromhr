@@ -85,6 +85,7 @@ void menu_setup(void){
 			add_toggle("Flying Bikes",bikefly);
 			add_item("Kick Players out of Car",true);
 			add_toggle("Heli Bomb  ~PAD_LSTICK_NONE~",helistrike);
+			add_item("Shuffle Car seats",true);
 			return;
 		}
 		if(last_selected[0] == 3){
@@ -230,6 +231,7 @@ void menu_setup(void){
 				add_toggle("Lower Car",lowerpveh);
 				add_toggle("Immobile Car",freezecar);
 				add_toggle("Rainbow Car",rainbowcar);
+				add_item("Ignite Engine",true);
 				return;
 			}
 		}
@@ -290,6 +292,8 @@ void menu_setup(void){
 				add_item("Shoot Phantom's",true);
 				add_item("Shoot Airtug's",true);
 				add_item("Shoot Tugboat's",true);
+				add_item("Shoot Trashmaster's",true);
+				add_item("Shoot Trains's",true);
 				return;
 			}
 		}

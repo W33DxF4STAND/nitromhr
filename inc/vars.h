@@ -78,13 +78,15 @@ Object tmp_object_loop;
 uint tmp_model, model;
 uint object_launch = 0x3675A6C3;
 uint car_launch = MODEL_SULTANRS;
-uint rocket_ship = 0x19AF4794;
+uint rocket_ship_model = 0x19AF4794;
+uint inferno_fire_model = 0xF3C45209;
+Object Inferno_obj;
 Ped driver, ClosestChar;
 Vehicle ClosestCar, pveh;
 Group Bgroup;
 float x, y, z, dist;
 
-Ped gameped[8];
+Ped gameped[12];
 Ped group_onlineped;
 char* footer;
 
@@ -129,7 +131,7 @@ bool show_menu = false,
 	neverwanted = false,
 	objectgun = false,
 	exp_cargun = false,
-	del_cargun = false,
+	del_cargun = true,
 	cargun = false,
 	invisible = false,
 	burstfire = false,

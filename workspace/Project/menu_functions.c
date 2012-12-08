@@ -20,11 +20,13 @@ void draw_title(float x, float y, float width, float height, uint r, uint g, uin
 	}
 	SET_TEXT_FONT(7);
 #else
+
 	if (!IS_FONT_LOADED(6))
 	{
 		LOAD_TEXT_FONT(6);
 	}
 	SET_TEXT_FONT(6);
+
 #endif
 	SET_TEXT_BACKGROUND(0);
 	SET_TEXT_DROPSHADOW(0, 0, 0, 0, 255);
@@ -179,7 +181,7 @@ void kill_spawnguards(void){
 		return;
 	}
 	if(DOES_GROUP_EXIST(Bgroup)){
-		for(i = 0;i <= 7; i++){
+		for(i = 0;i <= 11; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
 				int nvid;
 				GET_NETWORK_ID_FROM_PED(gameped[i], &nvid);
@@ -196,7 +198,7 @@ void kill_spawnguards(void){
 				SET_CHAR_INVINCIBLE(gameped[i], false);
 				SET_CHAR_PROOFS(gameped[i], false, false, false, false, false);
 			}
-			if((i >= 7) || (i > 6)) return;
+			if((i >= 11) || (i > 10)) return;
 		}
 		print("Gave all available guards specified weapon");			
 		return;
@@ -213,7 +215,7 @@ void delete_all_spawnguards(void){
 		return;
 	}
 	if(DOES_GROUP_EXIST(Bgroup)){
-		for(i = 0;i <= 7; i++){
+		for(i = 0;i <= 11; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
 				int nvid;
 				GET_NETWORK_ID_FROM_PED(gameped[i], &nvid);
@@ -248,7 +250,7 @@ void delete_one_spawnguards(void){
 		return;
 	}
 	if(DOES_GROUP_EXIST(Bgroup)){
-		for(i = 0;i <= 7; i++){
+		for(i = 0;i <= 11; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
 				int nvid;
 				GET_NETWORK_ID_FROM_PED(gameped[i], &nvid);
@@ -269,7 +271,7 @@ void delete_one_spawnguards(void){
 				print("1 was Guard Deleted");					
 				return;
 			}
-			if((i >= 7) || (i > 6)) return;
+			if((i >= 11) || (i > 10)) return;
 		}
 	print("No guards Exist or Available");			
 	return;
@@ -286,7 +288,7 @@ void arm_spawnguards(int weapon){
 		return;
 	}
 	if(DOES_GROUP_EXIST(Bgroup)){
-		for(i = 0;i <= 7; i++){
+		for(i = 0;i <= 11; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
 				int nvid;
 				GET_NETWORK_ID_FROM_PED(gameped[i], &nvid);
@@ -305,7 +307,7 @@ void arm_spawnguards(int weapon){
 				UpdateWeaponOfPed(gameped[i], weapon);
 				SET_CURRENT_CHAR_WEAPON(gameped[i], weapon, true);
 			}
-			if((i >= 7) || (i > 6)) return;
+			if((i >= 11) || (i > 10)) return;
 		}
 		print("Gave all available guards specified weapon");			
 		return;
@@ -324,7 +326,7 @@ void tele_spawnguards(void){
 	if(DOES_GROUP_EXIST(Bgroup)){
 		float x,y,z;
 		GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
-		for(i = 0;i <= 7; i++){
+		for(i = 0;i <= 11; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
 				int nvid;
 				GET_NETWORK_ID_FROM_PED(gameped[i], &nvid);
@@ -340,7 +342,7 @@ void tele_spawnguards(void){
 				}
 				teleport_char(gameped[i], x, y, z);
 			}
-			if((i >= 7) || (i > 6)) return;
+			if((i >= 11) || (i > 10)) return;
 		}
 	print("Teleported all available guards to you");			
 	return;
@@ -358,11 +360,11 @@ void spawnguards(uint model, uint weapon){
 	}	
 	uint test,guards;
 	GET_GROUP_SIZE(Bgroup, &test, &guards);	
-	if((guards >= 7) || (guards == 7) || (guards > 6)){
-		print("Max guards (7) exceeded");
+	if((guards >= 12) || (guards == 12) || (guards > 11)){
+		print("Max guards (12) exceeded");
 		return;
 	}
-	for(i = 0;i <= 7; i++){
+	for(i = 0;i <= 11; i++){
 		if(!DOES_CHAR_EXIST(gameped[i])){
 			
 			REQUEST_MODEL(model);
@@ -546,7 +548,6 @@ void inferno_shoot(void){
 	for(i = 1;i <= 6;i++){
 		GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS(pPlayer, 0, i, 0, &x, &y, &z);
 		ADD_EXPLOSION(x,y,z,EXPLOSION_MOLOTOV,35.0,false,true,0.0);
-		WAIT(100);
 	}
 }
 
@@ -919,6 +920,13 @@ void menu_functions(void){
 				do_toggle(helistrike);
 				return;
 			}
+			if(item_select == 14){
+				if(IS_CHAR_IN_ANY_CAR(pPlayer)){
+					GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
+					TASK_SHUFFLE_TO_NEXT_CAR_SEAT(pPlayer, pveh);
+				}
+				return;
+			}
 			return;
 		}
 		if(last_selected[0] == 3){
@@ -1132,9 +1140,9 @@ void menu_functions(void){
 				GET_CHAR_COORDINATES(pPlayer,&x, &y, &z);
 				CLEAR_AREA_OF_CARS(x,y,z,500);
 				for(i = 0; i <= 30; i++){
-					ClosestCar = GET_CLOSEST_CAR(x,y,z, 60, false, 70);
-					if(!DOES_VEHICLE_EXIST(ClosestCar)) ClosestCar = GET_CLOSEST_CAR(x,y,z, 60, false, 71);
-					if(!DOES_VEHICLE_EXIST(ClosestCar)) ClosestCar = GET_CLOSEST_CAR(x,y,z, 60, false, 69);
+					ClosestCar = GET_CLOSEST_CAR(x,y,z, 500, false, 70);
+					if(!DOES_VEHICLE_EXIST(ClosestCar)) ClosestCar = GET_CLOSEST_CAR(x,y,z, 500, false, 71);
+					if(!DOES_VEHICLE_EXIST(ClosestCar)) ClosestCar = GET_CLOSEST_CAR(x,y,z, 500, false, 69);
 					if(!DOES_VEHICLE_EXIST(ClosestCar)) return;
 						
 					GET_NETWORK_ID_FROM_VEHICLE(ClosestCar, &nvid);
@@ -1158,9 +1166,9 @@ void menu_functions(void){
 				GET_CHAR_COORDINATES(pPlayer,&x, &y, &z);
 				CLEAR_AREA_OF_CHARS(x,y,z,500);
 				for(i = 0; i <= 30; i++){
-					GET_CLOSEST_CHAR(x,y,z, 60, false, 70, &ClosestChar);
-					if(!DOES_CHAR_EXIST(ClosestChar)) GET_CLOSEST_CHAR(x,y,z, 60, false, 71, &ClosestChar);
-					if(!DOES_CHAR_EXIST(ClosestChar)) GET_CLOSEST_CHAR(x,y,z, 60, false, 69, &ClosestChar);
+					GET_CLOSEST_CHAR(x,y,z, 500, false, 70, &ClosestChar);
+					if(!DOES_CHAR_EXIST(ClosestChar)) GET_CLOSEST_CHAR(x,y,z, 500, false, 71, &ClosestChar);
+					if(!DOES_CHAR_EXIST(ClosestChar)) GET_CLOSEST_CHAR(x,y,z, 500, false, 69, &ClosestChar);
 					if(!DOES_CHAR_EXIST(ClosestChar)) return;
 					
 					GET_NETWORK_ID_FROM_PED(ClosestChar, &nvid);
@@ -1621,6 +1629,13 @@ void menu_functions(void){
 					do_toggle(rainbowcar);
 					return;
 				}
+				if(item_select == 12){
+					if(IS_CHAR_IN_ANY_CAR(pPlayer)){
+						GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
+						SET_PETROL_TANK_HEALTH(pveh, -1);
+						print("Vehicle Engine lit on fire");
+					}
+				}
 			}
 		}
 		if(last_selected[0] == 3){
@@ -1843,6 +1858,16 @@ void menu_functions(void){
 				else if(item_select == 9){
 					car_launch = MODEL_TUGA;
 					print("Car launcher will now shoot Tug's");
+					return;
+				}
+				else if(item_select == 10){
+					car_launch = MODEL_TRASH;
+					print("Car launcher will now shoot Trashmaster's");
+					return;
+				}
+				else if(item_select == 11){
+					car_launch = MODEL_SUBWAY_LO;
+					print("Car launcher will now shoot Trains's");
 					return;
 				}
 			}
@@ -2173,7 +2198,8 @@ void menu_functions(void){
 								GIVE_WEAPON_TO_CHAR(players[index].ped, WEAPON_UNARMED, AMMO_MAX, false);
 								GIVE_WEAPON_TO_CHAR(players[index].ped,WEAPON_POOLCUE,1,false);
 								GIVE_WEAPON_TO_CHAR(players[index].ped,WEAPON_DEAGLE,AMMO_MAX,false);
-								GIVE_WEAPON_TO_CHAR(players[index].ped,WEAPON_GRENADE,AMMO_MAX,false);
+								if(GET_CURRENT_EPISODE() != 2) GIVE_WEAPON_TO_CHAR(players[index].ped,WEAPON_GRENADE,AMMO_MAX,false);
+								else GIVE_WEAPON_TO_CHAR(players[index].ped,WEAPON_EPISODIC_16,AMMO_MAX,false);
 								GIVE_WEAPON_TO_CHAR(players[index].ped,WEAPON_RLAUNCHER,AMMO_MAX,false);
 								GIVE_WEAPON_TO_CHAR(players[index].ped,WEAPON_MP5,AMMO_MAX,false);
 								GIVE_WEAPON_TO_CHAR(players[index].ped,WEAPON_BARETTA,AMMO_MAX,false);
@@ -2480,6 +2506,13 @@ void menu_functions(void){
 						return;
 					}
 					if(item_select == 5){
+						if(IS_PED_ATTACHED_TO_ANY_CAR(pPlayer)) DETACH_PED(pPlayer);
+						if(IS_CHAR_IN_ANY_CAR(pPlayer)){
+							GET_CHAR_COORDINATES(pPlayer, &x, &y, &z);
+							z += 1;
+							WARP_CHAR_FROM_CAR_TO_COORD(pPlayer, x, y, z);
+						}
+						CLEAR_CHAR_TASKS_IMMEDIATELY(pPlayer);
 						SWITCH_PED_TO_RAGDOLL(pPlayer,20,30,false,false,false,false);
 						SWITCH_PED_TO_ANIMATED(pPlayer,true);
 						GIVE_PLAYER_RAGDOLL_CONTROL(GET_PLAYER_ID(),true);
@@ -3436,7 +3469,7 @@ void menu_functions(void){
 									return;
 								}
 								if(DOES_GROUP_EXIST(Bgroup)){
-									for(i = 0;i <= 7; i++){
+									for(i = 0;i <= 11; i++){
 										if(DOES_CHAR_EXIST(gameped[i]) && DOES_CHAR_EXIST(players[index].ped)){
 											int nvid;
 											GET_NETWORK_ID_FROM_PED(gameped[i], &nvid);
@@ -3451,7 +3484,7 @@ void menu_functions(void){
 												WAIT(0);
 											}
 											TASK_COMBAT(gameped[i], players[index].ped);
-											if((i >= 7) || (i == 7) || (i > 6)){
+											if((i >= 11) || (i == 11) || (i > 10)){
 												print("Sent all Guards after the Player");
 												return;
 											}
