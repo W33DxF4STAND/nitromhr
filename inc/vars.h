@@ -78,6 +78,7 @@ Object tmp_object_loop;
 uint tmp_model, model;
 uint object_launch = 0x3675A6C3;
 uint car_launch = MODEL_SULTANRS;
+uint rocket_ship = 0x19AF4794;
 Ped driver, ClosestChar;
 Vehicle ClosestCar, pveh;
 Group Bgroup;
@@ -87,7 +88,7 @@ Ped gameped[8];
 Ped group_onlineped;
 char* footer;
 
-Object ObjectProjectile;
+Object ObjectProjectile, InfernoRocket;
 Vehicle CarProjectile;
 Camera game_cam;
 float prjX, prjY, prjZ, prjT, gcX, gcY, gcZ, gcrotX, gcrotY, gcrotZ, objrotX, objrotZ;
@@ -124,6 +125,7 @@ bool show_menu = false,
 	helistrike = false,
 	bikefly = false,
 	collision = false,
+	inferno = false,
 	neverwanted = false,
 	objectgun = false,
 	exp_cargun = false,

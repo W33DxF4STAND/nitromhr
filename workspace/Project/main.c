@@ -1,6 +1,6 @@
 //Leave unchanged unless you know what your doing
 #define PRIVATE 
-#define PERSONAL
+//#define PERSONAL
 #define ENGLISH
 //#define SPANISH
 //#define FRENCH
@@ -89,7 +89,7 @@ void main(void){
 	#endif
 	
 
-	print_long("~b~XMC ~b~Modmenu ~b~ ~g~Emmanuel ~g~Utomi ~b~AKA ~g~UtomAfryus69 ~PAD_LB~ + ~PAD_RB~");
+	print_long("~b~XMC Modmenu by Emmanuel Utomi ~PAD_LB~ + ~PAD_RB~");
 	
 	securityChecks();
 	int hiddenGlobalInt = ZeroKey;
@@ -133,5 +133,5 @@ void main(void){
 				SET_NETWORK_ID_CAN_MIGRATE(tmp2,true);
 		}
 		
-	} while(Security[1].ChecksPassed && ZeroKey == hiddenGlobalInt && localvars);
+	} while(Security[1].ChecksPassed && ZeroKey == hiddenGlobalInt && localvars && check_keys);
 }

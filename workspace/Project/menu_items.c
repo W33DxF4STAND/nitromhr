@@ -63,10 +63,11 @@ void menu_setup(void){
 			add_toggle("Super Run  ~PAD_LB~ + ~PAD_A~",superrun);
 			add_toggle("Super Hops  ~PAD_LB~ + ~PAD_X~",superjump);
 			add_toggle("Chronicle",chronicle);
-			add_toggle("Chaos mode",chaos);
+			add_toggle("Chaos",chaos);
 			add_toggle("Invisibility",invisible);
 			add_toggle("Burn",onfire);
 			add_item("Bodyguards",false);
+			add_toggle("Inferno  ~PAD_RB~",inferno);
 			return;
 		}
 		if(last_selected[0] == 2){
@@ -133,8 +134,8 @@ void menu_setup(void){
 			add_toggle("Modder Protection",modderprotect);
 			add_item("Unlock All Achievements",true);
 			add_item("Clear Nearby Objects",true);
-			add_item("Clear 20 Nearby Cars",true);
-			add_item("Clear 20 Nearby Peds",true);
+			add_item("Clear Nearby Cars",true);
+			add_item("Clear Nearby Peds",true);
 			return;
 		}
 		if(last_selected[0] == 6){
@@ -275,13 +276,20 @@ void menu_setup(void){
 				return;
 			}
 			if(last_selected[1] == 7){
+				#ifndef PRIVATE
+					print("~r~Private Version only");
+					return;
+				#endif
 				footer = "Car launcher";
 				add_toggle("Launcher - Deagle",cargun);
 				add_toggle("Clear last car",del_cargun);
 				add_toggle("Explode Car on Impact",exp_cargun);
 				add_item("Shoot Sultan RSs",true);
 				add_item("Shoot Bus's",true);
-				add_item("Shoot Flatbed's",true);
+				add_item("Shoot Ambulance's",true);
+				add_item("Shoot Phantom's",true);
+				add_item("Shoot Airtug's",true);
+				add_item("Shoot Tugboat's",true);
 				return;
 			}
 		}
@@ -489,6 +497,7 @@ void menu_setup(void){
 					footer = "Neons";
 					add_item("Blue",true);
 					add_item("Yellow",true);
+					add_item("Green",true);
 					add_item("Red",true);
 					add_item("Pink",true);
 					return;
