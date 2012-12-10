@@ -95,8 +95,9 @@ void menu_setup(void){
 			add_toggle("Fast Reload",fastreload);
 			add_toggle("Auto Aim",autoaim);
 			add_item("Object Launcher",false);
-			add_toggle("RPG Rapid Fire",burstfire);
+			add_toggle("RPG Burst Fire",burstfire);
 			add_item("Car Launcher",false);
+			add_toggle("Deagle Taser",tazer);
 			return;
 		}
 		if(last_selected[0] == 4){
@@ -353,12 +354,15 @@ void menu_setup(void){
 					add_item("Remove Weapons",true);
 					add_item("Explode",true);
 					add_item("Burn",true);
-					add_item("Hippofy",true);
+					add_item("Attach a Hippo",true);
 					add_item("Delete Vehicles",true);
 					add_item("Teleport to You",true);
-					add_item("Prison Derby",true);
+					add_item("Teleport to Prison",true);
 					add_item("Freeze All Players",true);
 					add_item("Slingshot All Cars",true);
+					add_item("Attach a Cube",true);
+					add_item("Attach a Dick",true);
+					add_item("Retard-ify all cars",true);
 					return;
 				}
 				else{

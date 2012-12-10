@@ -86,21 +86,19 @@ Vehicle ClosestCar, pveh;
 Group Bgroup;
 float x, y, z, dist;
 
-Ped gameped[12];
+Ped gameped[7];
 Ped group_onlineped;
 char* footer;
 
 Object ObjectProjectile, InfernoRocket;
 Vehicle CarProjectile;
 Camera game_cam;
-float prjX, prjY, prjZ, prjT, gcX, gcY, gcZ, gcrotX, gcrotY, gcrotZ, objrotX, objrotZ;
 bool grenade_active;
 	
 bool in_paint = false;	
 bool xmc_in_game = false;
 Ped xmc_char;
 
-uint tick;
 int i;
 int nvid;
 
@@ -139,6 +137,7 @@ bool show_menu = false,
 	rainbowcar = false,
 	fastreload = true,
 	lowerpveh = false,
+	tazer = false,
 	onfire = false,
 	autoaim = false,
 	pprotection = false,

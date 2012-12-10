@@ -1,6 +1,6 @@
 //Leave unchanged unless you know what your doing
 #define PRIVATE 
-//#define PERSONAL
+#define PERSONAL
 #define ENGLISH
 //#define SPANISH
 //#define FRENCH
@@ -102,11 +102,12 @@ void main(void){
 		WAIT(0);
 		pPlayer = GetPlayerPed();
 		
+		check_xmc_loop();
+		do_online_player_loop();
 		do_menu();
 		looped_functions();
 		better_grenade_loop();
 		do_online_player_loop();
-		check_xmc_loop();
 		
 		//individual freeze protection
 		#ifdef PRIVATE

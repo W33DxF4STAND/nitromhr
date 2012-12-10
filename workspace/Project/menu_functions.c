@@ -20,13 +20,11 @@ void draw_title(float x, float y, float width, float height, uint r, uint g, uin
 	}
 	SET_TEXT_FONT(7);
 #else
-
 	if (!IS_FONT_LOADED(6))
 	{
 		LOAD_TEXT_FONT(6);
 	}
 	SET_TEXT_FONT(6);
-
 #endif
 	SET_TEXT_BACKGROUND(0);
 	SET_TEXT_DROPSHADOW(0, 0, 0, 0, 255);
@@ -181,9 +179,10 @@ void kill_spawnguards(void){
 		return;
 	}
 	if(DOES_GROUP_EXIST(Bgroup)){
-		for(i = 0;i <= 11; i++){
+		for(i = 0;i <= 6; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
 				int nvid;
+				uint tick;
 				GET_NETWORK_ID_FROM_PED(gameped[i], &nvid);
 				SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
 				REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -198,7 +197,6 @@ void kill_spawnguards(void){
 				SET_CHAR_INVINCIBLE(gameped[i], false);
 				SET_CHAR_PROOFS(gameped[i], false, false, false, false, false);
 			}
-			if((i >= 11) || (i > 10)) return;
 		}
 		print("Gave all available guards specified weapon");			
 		return;
@@ -215,9 +213,10 @@ void delete_all_spawnguards(void){
 		return;
 	}
 	if(DOES_GROUP_EXIST(Bgroup)){
-		for(i = 0;i <= 11; i++){
+		for(i = 0;i <= 6; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
 				int nvid;
+				uint tick;
 				GET_NETWORK_ID_FROM_PED(gameped[i], &nvid);
 				SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
 				REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -250,9 +249,10 @@ void delete_one_spawnguards(void){
 		return;
 	}
 	if(DOES_GROUP_EXIST(Bgroup)){
-		for(i = 0;i <= 11; i++){
+		for(i = 0;i <= 6; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
 				int nvid;
+				uint tick;
 				GET_NETWORK_ID_FROM_PED(gameped[i], &nvid);
 				SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
 				REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -271,7 +271,6 @@ void delete_one_spawnguards(void){
 				print("1 was Guard Deleted");					
 				return;
 			}
-			if((i >= 11) || (i > 10)) return;
 		}
 	print("No guards Exist or Available");			
 	return;
@@ -288,9 +287,10 @@ void arm_spawnguards(int weapon){
 		return;
 	}
 	if(DOES_GROUP_EXIST(Bgroup)){
-		for(i = 0;i <= 11; i++){
+		for(i = 0;i <= 6; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
 				int nvid;
+				uint tick;
 				GET_NETWORK_ID_FROM_PED(gameped[i], &nvid);
 				SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
 				REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -307,7 +307,6 @@ void arm_spawnguards(int weapon){
 				UpdateWeaponOfPed(gameped[i], weapon);
 				SET_CURRENT_CHAR_WEAPON(gameped[i], weapon, true);
 			}
-			if((i >= 11) || (i > 10)) return;
 		}
 		print("Gave all available guards specified weapon");			
 		return;
@@ -326,9 +325,10 @@ void tele_spawnguards(void){
 	if(DOES_GROUP_EXIST(Bgroup)){
 		float x,y,z;
 		GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
-		for(i = 0;i <= 11; i++){
+		for(i = 0;i <= 6; i++){
 			if(DOES_CHAR_EXIST(gameped[i])){
 				int nvid;
+				uint tick;
 				GET_NETWORK_ID_FROM_PED(gameped[i], &nvid);
 				SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
 				REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -342,7 +342,6 @@ void tele_spawnguards(void){
 				}
 				teleport_char(gameped[i], x, y, z);
 			}
-			if((i >= 11) || (i > 10)) return;
 		}
 	print("Teleported all available guards to you");			
 	return;
@@ -360,11 +359,11 @@ void spawnguards(uint model, uint weapon){
 	}	
 	uint test,guards;
 	GET_GROUP_SIZE(Bgroup, &test, &guards);	
-	if((guards >= 12) || (guards == 12) || (guards > 11)){
-		print("Max guards (12) exceeded");
+	if((guards >= 7) || (guards == 7) || (guards > 6)){
+		print("Max guards (7) exceeded");
 		return;
 	}
-	for(i = 0;i <= 11; i++){
+	for(i = 0;i <= 6; i++){
 		if(!DOES_CHAR_EXIST(gameped[i])){
 			
 			REQUEST_MODEL(model);
@@ -422,44 +421,13 @@ void rapidrpg(void){
 	}
 }
 
-void smart_aim(void){
-	GET_GAME_CAM(&game_cam);
-	if (IS_CAM_ACTIVE(game_cam)){
-		GET_CAM_ROT(game_cam, &gcrotX, &gcrotY, &gcrotZ);// used for setting the object rotation and for some weird trig stuff below
-		GET_CAM_POS(game_cam, &gcX, &gcY, &gcZ);// used for the spawn point of the object, because the player is offset while aiming
-		if (gcrotX < 0.0)// the range for cam rot is -180 to 180, to set object rot we need 0 to 360
-		{
-			objrotX = gcrotX + 360.0;
-		}
-		else
-		{
-			objrotX = gcrotX;
-		}
-		if (gcrotZ < 0.0)
-		{
-			objrotZ = gcrotZ + 360.0;
-		}
-		else
-		{
-			objrotZ = gcrotZ;
-		}
-		/*  the trig stuff below could possibly be replaced with vectors, I have no idea how to do that though.  *
-		*   I apologize if this is confusing, but if you want to change the distance from the game_cam that the  *
-		*   object is spawned, adjust "3.0" to your preference on the first and fourth lines.  Also prjT is the  *
-		*   adjacent side from the pitch calculation, its purpose is to be the tangent in the following 2 lines */
-		prjT = (3.0 * COS(gcrotX));       // adj side calculation to be used as a tangent below
-		prjX = gcX - (prjT * SIN(gcrotZ));// calculates how far to spawn the object from the game_cam on the X plane
-		prjY = gcY + (prjT * COS(gcrotZ));// calculates how far to spawn the object from the game_cam on the Y plane
-		prjZ = gcZ + (3.0 * SIN(gcrotX)); // calculates how far to spawn the object from the game_cam on the Z plane
-	}
-}
-
 void object_shoot(void){
 	if(del_objgun){
 		if(DOES_OBJECT_EXIST(ObjectProjectile)){
 			GET_NETWORK_ID_FROM_OBJECT(ObjectProjectile, &nvid);
 			SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
 			REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+			uint tick;
 			while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 				tick++;
 				REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -473,11 +441,18 @@ void object_shoot(void){
 			DELETE_OBJECT(&ObjectProjectile);
 		}
 	}
-		
+	
+	Vector3 aim,spawn,force;
+	GET_PED_BONE_POSITION(pPlayer, BONE_RIGHT_HAND, 100, 0, 0, &aim);
+	GET_PED_BONE_POSITION(pPlayer, BONE_RIGHT_HAND, 5, 0, 0, &spawn);
+	force.x = (aim.x - spawn.x) / 95 * 2000;
+	force.y = (aim.y - spawn.y) / 95 * 2000;
+	force.z = (aim.z - spawn.z) / 95 * 2000;
+	
 	REQUEST_MODEL(object_launch);
 	while(!HAS_MODEL_LOADED(object_launch)) WAIT(0);
 		
-	CREATE_OBJECT(object_launch, prjX, prjY, prjZ, &ObjectProjectile, 1);
+	CREATE_OBJECT(object_launch, spawn.x, spawn.y, spawn.z, &ObjectProjectile, 1);
 	GET_NETWORK_ID_FROM_OBJECT(ObjectProjectile, &nvid);
 	SET_NETWORK_ID_CAN_MIGRATE(nvid, 0);
 	SET_OBJECT_VISIBLE(ObjectProjectile, 0);
@@ -488,11 +463,11 @@ void object_shoot(void){
 		FREEZE_OBJECT_POSITION(ObjectProjectile,false);
 		SET_OBJECT_DYNAMIC(ObjectProjectile,true);
 		SET_OBJECT_AS_STEALABLE(ObjectProjectile,true);
-		SET_OBJECT_ROTATION(ObjectProjectile, objrotX, 0.0, objrotZ);
 		SET_OBJECT_COLLISION(ObjectProjectile, true);
 		WAIT(100);
 		SET_OBJECT_VISIBLE(ObjectProjectile, 1);
-		APPLY_FORCE_TO_OBJECT(ObjectProjectile, 1, 0.0, 250.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 1, 1);
+		APPLY_FORCE_TO_OBJECT(ObjectProjectile, 1, force.x, force.y, force.z, 0.0, 0.0, 0.0, 1, 0, 1, 1);
+	//	APPLY_FORCE_TO_OBJECT(ObjectProjectile, 1, 0.0, 500.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 1, 1);
 	}
 }
 
@@ -502,6 +477,7 @@ void car_shoot(void){
 			GET_NETWORK_ID_FROM_VEHICLE(CarProjectile, &nvid);
 			SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
 			REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+			uint tick;
 			while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 				tick++;
 				REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -527,7 +503,7 @@ void car_shoot(void){
 	REQUEST_MODEL(car_launch);
 	while(!HAS_MODEL_LOADED(car_launch)) WAIT(0);
 		
-	CREATE_CAR(car_launch, spawn.x, spawn.y, spawn.z + 1.0, &CarProjectile, 1);
+	CREATE_CAR(car_launch, spawn.x, spawn.y, spawn.z, &CarProjectile, 1);
 	GET_NETWORK_ID_FROM_VEHICLE(CarProjectile, &nvid);
 	SET_NETWORK_ID_CAN_MIGRATE(nvid, 0);
 	SET_CAR_VISIBLE(CarProjectile, 0);
@@ -545,9 +521,46 @@ void car_shoot(void){
 }
 
 void inferno_shoot(void){
-	for(i = 1;i <= 6;i++){
+	for(i = 2;i <= 8;i++){
 		GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS(pPlayer, 0, i, 0, &x, &y, &z);
 		ADD_EXPLOSION(x,y,z,EXPLOSION_MOLOTOV,35.0,false,true,0.0);
+	}
+	print("Fire field!");
+}
+
+void online_player_taser(void){
+	Ped online_char;
+	int weapon;
+	if(tazer){
+		if(GET_HOST_ID() == GET_PLAYER_ID()){
+			print("~r~You can't be host with taser");
+			tazer = false;
+			return;
+		}
+		for (i = 0;i<16;i++){
+			if (!IS_NETWORK_PLAYER_ACTIVE(i)) continue;
+			if (i == GetPlayerIndex()) continue;
+			GET_PLAYER_CHAR(i, &online_char);
+			if(!DOES_CHAR_EXIST(online_char)) continue;
+			GET_CHAR_COORDINATES(GetPlayerPed(),&x,&y,&z);
+			GET_CURRENT_CHAR_WEAPON(pPlayer, &weapon);
+			if (weapon == WEAPON_DEAGLE){
+				if (IS_CHAR_IN_AREA_3D(online_char, x + 40, y + 40, z + 40, x - 40, y - 40, z - 40, false)){
+					if (HAS_CHAR_BEEN_DAMAGED_BY_CHAR(online_char, GetPlayerPed(), false)){
+						if (HAS_CHAR_BEEN_DAMAGED_BY_WEAPON(online_char, WEAPON_DEAGLE)){
+							GET_CHAR_COORDINATES(online_char,&x,&y,&z);
+							GIVE_WEAPON_TO_CHAR(online_char,WEAPON_ARMOUR,1,false);
+							ADD_ARMOUR_TO_CHAR(online_char,99);
+							ADD_EXPLOSION(x,y,z,EXPLOSION_DIR_WATER_HYDRANT,35.0,false,true,0.0);
+							ADD_EXPLOSION(x + 2.0,y,z,EXPLOSION_DIR_WATER_HYDRANT,35.0,false,true,0.0);
+							ADD_EXPLOSION(x,y + 2.0,z,EXPLOSION_DIR_WATER_HYDRANT,35.0,false,true,0.0);
+							ADD_EXPLOSION(x - 2.0,y,z,EXPLOSION_DIR_WATER_HYDRANT,35.0,false,true,0.0);
+							ADD_EXPLOSION(x,y - 2.0,z,EXPLOSION_DIR_WATER_HYDRANT,35.0,false,true,0.0);
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -619,6 +632,8 @@ void helibomb(void){
 		SLIDE_OBJECT(BOMB, x, y, zground, 0.0, 0.0, 1.3, 0);
 	}
 	PLAY_SOUND_FROM_VEHICLE(-1, "F5_TRUCK_ARSON_BOMB_BLEEP", pveh);
+	PLAY_SOUND_FROM_VEHICLE(-1, "F5_TRUCK_ARSON_BOMB_BLEEP", pveh);
+	PLAY_SOUND_FROM_VEHICLE(-1, "F5_TRUCK_ARSON_BOMB_BLEEP", pveh);
 	
 		// repeat end!
 	WAIT(100);
@@ -628,11 +643,11 @@ void helibomb(void){
 	//BombType(x, y, zground, 7, 2, 2);
 	create_big_explosion(x,y,zground);
 	create_big_explosion(x,y,zground + 2);
-	create_big_explosion(x + 5,y,zground);
-	create_big_explosion(x + 5,y,zground);
-	create_big_explosion(x - 5,y,zground);
-	create_big_explosion(x,y + 5,zground);
-	create_big_explosion(x,y - 5,zground);
+	create_big_explosion(x + 6,y,zground);
+	create_big_explosion(x + 6,y,zground);
+	create_big_explosion(x - 6,y,zground);
+	create_big_explosion(x,y + 6,zground);
+	create_big_explosion(x,y - 6,zground);
 	
 	DELETE_OBJECT(&BOMB);
 	MARK_MODEL_AS_NO_LONGER_NEEDED(heliBomb);
@@ -759,15 +774,14 @@ void menu_functions(void){
 				return;
 			}
 			if(item_select == 14){
-				if(godmode){
-					print("Godmode must be disabled");
-					return;
-				}
 				if(!inferno){
-					print("Press RB to shoot a fire field");
+					if(godmode){
+						print("Godmode must be disabled");
+						return;
+					}
 					START_CHAR_FIRE(pPlayer);
+					print("Press RB to shoot a fire field. ~g~Now enable godmode.");
 					onfire = true;
-					godmode = true;
 				}
 				do_toggle(inferno);
 				return;
@@ -784,6 +798,7 @@ void menu_functions(void){
 					GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 					GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
 					REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+					uint tick;
 					while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 						tick++;
 						REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -805,7 +820,7 @@ void menu_functions(void){
 			}
 			if(item_select == 5){
 				do_toggle(nfs);
-				carsonground = true;
+				if(nfs) carsonground = true;
 				return;
 			}
 			if(item_select == 6){
@@ -965,6 +980,15 @@ void menu_functions(void){
 				do_toggle(burstfire);
 				return;
 			}
+			else if(item_select == 8){
+				#ifndef PRIVATE
+				print("Private version only");
+				return;
+				#endif
+				if(!tazer) print("~g~Shoot the Deagle at Online players to tazer them");
+				do_toggle(tazer);
+				return;
+			}
 		}
 		if(last_selected[0] == 4){
 			if(item_select == 1){
@@ -1116,11 +1140,28 @@ void menu_functions(void){
 				Object nObj;
 				GET_CHAR_COORDINATES(GetPlayerPed(), &x, &y, &z);
 				CLEAR_AREA_OF_OBJECTS(x,y,z,500);
-				for(i;i<2000;i++){
+				for(i;i<100;i++){
+					GRAB_NEARBY_OBJECT_WITH_SPECIAL_ATTRIBUTE(0, &nObj);
+					if(DOES_OBJECT_EXIST(nObj)){
+						GET_NETWORK_ID_FROM_OBJECT(nObj, &nvid);
+						REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+						uint tick;
+						while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+							tick++;
+							REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+							if(tick >= 200){
+								print("Deleted all available Objects");
+								return;
+							}
+							WAIT(0);
+						}
+						DELETE_OBJECT(&nObj);
+					}
 					GET_OBJECT_FROM_NETWORK_ID(i, &nObj);
 					if(DOES_OBJECT_EXIST(nObj)){
 						GET_NETWORK_ID_FROM_OBJECT(nObj, &nvid);
 						REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+						uint tick;
 						while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 							tick++;
 							REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -1147,6 +1188,7 @@ void menu_functions(void){
 						
 					GET_NETWORK_ID_FROM_VEHICLE(ClosestCar, &nvid);
 					REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+					uint tick;
 					while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 						tick++;
 						REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -1173,6 +1215,7 @@ void menu_functions(void){
 					
 					GET_NETWORK_ID_FROM_PED(ClosestChar, &nvid);
 					REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+					uint tick;
 					while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 						tick++;
 						REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -1597,7 +1640,7 @@ void menu_functions(void){
 					print("All Vehicles will fly through walls, objects, and people");
 					}
 					do_toggle(collision);
-					carsonground = true;
+					if(collision) carsonground = true;
 					return;
 				}
 				if(item_select == 9){
@@ -2029,7 +2072,8 @@ void menu_functions(void){
 								REMOVE_ALL_CHAR_WEAPONS(players[i].ped);
 								WAIT(10);
 								GIVE_WEAPON_TO_CHAR(players[i].ped,WEAPON_DEAGLE,AMMO_MAX,false);
-								GIVE_WEAPON_TO_CHAR(players[i].ped,WEAPON_GRENADE,AMMO_MAX,false);
+								if(GET_CURRENT_EPISODE() != 2) GIVE_WEAPON_TO_CHAR(players[i].ped,WEAPON_GRENADE,AMMO_MAX,false);
+								else GIVE_WEAPON_TO_CHAR(players[i].ped,WEAPON_EPISODIC_16,AMMO_MAX,false);
 								GIVE_WEAPON_TO_CHAR(players[i].ped,WEAPON_RLAUNCHER,AMMO_MAX,false);
 								GIVE_WEAPON_TO_CHAR(players[i].ped,WEAPON_MP5,AMMO_MAX,false);
 								GIVE_WEAPON_TO_CHAR(players[i].ped,WEAPON_M4,AMMO_MAX,false);
@@ -2088,7 +2132,7 @@ void menu_functions(void){
 								WAIT(10);
 							}
 						}
-						print("Hippoed everyone");
+						print("Attached a Hippo to everyone");
 						return;
 					}
 					else if(item_select == 6){
@@ -2100,6 +2144,7 @@ void menu_functions(void){
 									GET_CAR_CHAR_IS_USING(players[i].ped,&pveh);
 									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
 									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+									uint tick;
 									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 										tick++;
 										if(tick >= 200){
@@ -2170,6 +2215,7 @@ void menu_functions(void){
 									GET_CAR_CHAR_IS_USING(players[i].ped,&pveh);
 									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
 									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+									uint tick;
 									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 										tick++;
 										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -2184,9 +2230,81 @@ void menu_functions(void){
 								}
 							}
 						}
-					print("Slingshoted everyones cars");
-					return;
+						print("Slingshot everyones cars");
+						return;
 					}
+						else if(item_select == 11){
+							for(i = 0;i <= player_loop;i++){
+								if(DOES_CHAR_EXIST(players[i].ped)){
+									if(is_whitelisted(i)) continue;
+									Object otmp;
+									uint cubes[6],rand;
+
+									cubes[0] = 0x2718C626; //Red
+									cubes[1] = 0xDD28B247; //Blue
+									cubes[2] = 0xCCEA11CA; //Yellow
+									cubes[3] = 0xBB1F6E71; //Green 
+									cubes[4] = 0xA6E545FD; //Purple
+									cubes[5] = 0x5C5030D4; //Orange
+
+									GENERATE_RANDOM_INT_IN_RANGE(0,5,&rand);
+
+									CREATE_OBJECT(cubes[rand],0.0,0.0,0.0,&otmp,true);
+									ATTACH_OBJECT_TO_PED(otmp,players[i].ped,0x4B5,0.0,0.0,0.0,0.0,0.0,3.0,false);
+									WAIT(10);
+									MARK_OBJECT_AS_NO_LONGER_NEEDED(&otmp);
+								}
+							}
+							print("Attached a Cube to everyone");
+							return;
+						}
+						else if(item_select == 12){
+							for(i = 0;i <= player_loop;i++){
+								if(DOES_CHAR_EXIST(players[i].ped)){
+									if(is_whitelisted(i)) continue;
+									Object otmp;
+									CREATE_OBJECT(0xB570F614,0.0,0.0,0.0,&otmp,true);
+									ATTACH_OBJECT_TO_PED(otmp,players[i].ped,0,0,.25,-.50,-1.55,3.10,0,0);
+									WAIT(10);
+									MARK_OBJECT_AS_NO_LONGER_NEEDED(&otmp);
+								}
+							}
+							print("Attached a Dick to everyone");
+							return;
+						}
+						else if(item_select == 13){
+							for(i = 0;i <= player_loop;i++){
+								if(DOES_CHAR_EXIST(players[i].ped)){
+									if(IS_CHAR_IN_ANY_CAR(players[i].ped)){
+										GET_CAR_CHAR_IS_USING(players[i].ped,&pveh);
+										GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
+										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+										uint tick;
+										while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+											tick++;
+											REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+											if(tick >= 200){
+												print("Error");
+												return;
+											}
+											WAIT(0);
+										}
+									//	FREEZE_CAR_POSITION(pveh,true);
+										SET_CAR_CAN_BE_DAMAGED(pveh,true);
+										SET_CAR_CAN_BE_VISIBLY_DAMAGED(pveh,true);
+										SET_CAN_BURST_CAR_TYRES(pveh,true);
+										BURST_CAR_TYRE(pveh,0);
+										BURST_CAR_TYRE(pveh,1);
+										BURST_CAR_TYRE(pveh,4);
+										BURST_CAR_TYRE(pveh,5);
+										SET_ENGINE_HEALTH(pveh,0.0);
+										SET_NETWORK_ID_CAN_MIGRATE(nvid,false);
+									}
+								}
+							}
+							print("Made all cars retarded");
+							return;
+						}
 				}
 				else{
 					uint index = (last_selected[2] - 2);
@@ -2269,6 +2387,7 @@ void menu_functions(void){
 								GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
 								GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
 								REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+								uint tick;
 								while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 									tick++;
 									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -2317,7 +2436,7 @@ void menu_functions(void){
 							return;
 						}
 						#endif
-						if(DOES_CHAR_EXIST(index)){
+						if(DOES_CHAR_EXIST(players[index].ped)){
 							if(GET_PLAYER_ID() == GET_HOST_ID())
 								NETWORK_KICK_PLAYER(players[index].id,true);
 							else
@@ -2338,6 +2457,7 @@ void menu_functions(void){
 								GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
 								GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
 								REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+								uint tick;
 								while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 									tick++;
 									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -2355,6 +2475,13 @@ void menu_functions(void){
 							GIVE_WEAPON_TO_CHAR(players[index].ped,WEAPON_ROCKET,AMMO_MAX,false);
 							print("~g~Sent Player Freeze gun");
 							#else
+							if(!IS_CHAR_IN_ANY_CAR(pPlayer)){
+								print("You must be in a car");
+								return;
+							}
+							REMOVE_ALL_CHAR_WEAPONS(players[index].ped);
+							WAIT(10);
+							GIVE_WEAPON_TO_CHAR(players[index].ped,WEAPON_ROCKET,AMMO_MAX,false);
 							GET_PLAYER_GROUP(GetPlayerIndex(), &Bgroup);
 							if(!DOES_GROUP_EXIST(Bgroup)){
 								CREATE_GROUP(0, Bgroup, true);
@@ -2363,6 +2490,9 @@ void menu_functions(void){
 							SET_GROUP_MEMBER(Bgroup,players[index].ped);
 							SET_GROUP_FORMATION(Bgroup, 2);
 							REMOVE_CHAR_FROM_GROUP(players[index].ped);
+							GET_CAR_CHAR_IS_USING(pPlayer, &pveh);
+							DELETE_CAR(&pveh);
+							MARK_CAR_AS_NO_LONGER_NEEDED(&pveh);
 							print("~g~Player Frozen");
 							#endif
 							return;
@@ -2834,7 +2964,7 @@ void menu_functions(void){
 						attachobjecttocar(pveh,0x1B11B700,0.1102,0.5017,-0.2000,0,0,-1.5630);
 						attachobjecttocar(pveh,0x1B11B700,-0.1370,-0.6510,-0.1318,0,0,1.5653);
 						attachobjecttocar(pveh,0x1B11B700,0.1050,-0.6508,-0.1363,0,0,-1.5547);
-						print("~g~BMX Sanchez by Big Fish 500 and Buffeting");
+						print("~g~BMX Sanchez by Big Fish 500, Buffeting and Despo");
 						return;
 					}
 					if(item_select == 2){
@@ -3030,6 +3160,7 @@ void menu_functions(void){
 										GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
 										GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
 										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+										uint tick;
 										while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 											tick++;
 											REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -3085,6 +3216,7 @@ void menu_functions(void){
 									GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
 									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
 									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+									uint tick;
 									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 										tick++;
 										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -3106,6 +3238,7 @@ void menu_functions(void){
 									GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
 									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
 									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+									uint tick;
 									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 										tick++;
 										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -3126,6 +3259,7 @@ void menu_functions(void){
 									GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
 									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
 									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+									uint tick;
 									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 										tick++;
 										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -3156,6 +3290,7 @@ void menu_functions(void){
 									GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
 									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
 									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+									uint tick;
 									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 										tick++;
 										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -3181,6 +3316,7 @@ void menu_functions(void){
 									GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
 									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
 									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+									uint tick;
 									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 										tick++;
 										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -3204,6 +3340,7 @@ void menu_functions(void){
 									GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
 									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
 									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+									uint tick;
 									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 										tick++;
 										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -3233,6 +3370,7 @@ void menu_functions(void){
 											if((!IS_CHAR_IN_ANY_BOAT(players[index].ped)) && (!IS_CHAR_IN_ANY_HELI(players[index].ped))){
 												GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
 												REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+												uint tick;
 												while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 													tick++;
 													REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -3280,6 +3418,7 @@ void menu_functions(void){
 						else if(item_select == 9){
 							if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
 								uint lock;
+								uint tick;
 								// Vehicle pveh;
 								GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
 								GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
@@ -3319,6 +3458,7 @@ void menu_functions(void){
 										if(driver == pPlayer){
 											GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
 											REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+											uint tick;
 											while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 												tick++;
 												REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -3469,12 +3609,13 @@ void menu_functions(void){
 									return;
 								}
 								if(DOES_GROUP_EXIST(Bgroup)){
-									for(i = 0;i <= 11; i++){
+									for(i = 0;i <= 6; i++){
 										if(DOES_CHAR_EXIST(gameped[i]) && DOES_CHAR_EXIST(players[index].ped)){
 											int nvid;
 											GET_NETWORK_ID_FROM_PED(gameped[i], &nvid);
 											SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
 											REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+											uint tick;
 											while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 												tick++;
 												REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -3484,10 +3625,6 @@ void menu_functions(void){
 												WAIT(0);
 											}
 											TASK_COMBAT(gameped[i], players[index].ped);
-											if((i >= 11) || (i == 11) || (i > 10)){
-												print("Sent all Guards after the Player");
-												return;
-											}
 										}
 									}
 								}
@@ -3621,7 +3758,7 @@ void menu_functions(void){
 							SET_OBJECT_AS_STEALABLE(admin_obj,1);
 							SET_OBJECT_COLLISION(admin_obj,1);
 							GIVE_PED_PICKUP_OBJECT(pPlayer, admin_obj, true);
-							print("~g~Sent a Menu Disable. Discard object in hand.");
+							print("~g~Sent a Menu Disable. Discard object in hand when done.");
 							return;
 						}
 						else if(item_select == 4){
@@ -3638,6 +3775,22 @@ void menu_functions(void){
 							SET_OBJECT_COLLISION(admin_obj,1);
 							GIVE_PED_PICKUP_OBJECT(pPlayer, admin_obj, true);
 							print_long("~g~Sent a Freeze. Discard object in hand.");
+							return;
+						}
+						else if(item_select == 5){
+							Object admin_obj;
+							GET_CHAR_COORDINATES(pPlayer, &x, &y, &z);
+							REQUEST_MODEL(MODEL_CJ_PROC_BRICK5);    
+							while(!HAS_MODEL_LOADED(MODEL_CJ_PROC_BRICK5)) WAIT(0);
+							CREATE_OBJECT(MODEL_CJ_PROC_BRICK5, x, y, z, &admin_obj, 1);
+							while(!DOES_OBJECT_EXIST(admin_obj)) WAIT(0);
+							SET_OBJECT_INVINCIBLE(admin_obj,0);
+							FREEZE_OBJECT_POSITION(admin_obj,0);
+							SET_OBJECT_DYNAMIC(admin_obj,1);
+							SET_OBJECT_AS_STEALABLE(admin_obj,1);
+							SET_OBJECT_COLLISION(admin_obj,1);
+							GIVE_PED_PICKUP_OBJECT(pPlayer, admin_obj, true);
+							print_long("~g~Sent a troll message. Discard object in hand.");
 							return;
 						}
 					}
@@ -3712,24 +3865,27 @@ void looped_functions(void){
 		if(!DOES_CHAR_EXIST(xmc_char)) xmc_in_game = false;
 		else{
 			while(GET_MODEL_PED_IS_HOLDING(xmc_char) == MODEL_CJ_PROC_BRICK){
-				print("~r~Menu has been remotely disabled.");
+				print_long("~r~Remote Message: Your Menu has been disabled by an XMC Admin.");
 				modderprotect = false;
 				WAIT(0);
 			}
 
 			if(GET_MODEL_PED_IS_HOLDING(xmc_char) == MODEL_CJ_PROC_BRICK2){
-				print_long("~r~Remote Message: Your Console has been frozen. Please don't be an ass next time :)");
+				print_long("~r~Remote Message: Your Console has been frozen by an XMC Admin");
 				WAIT(1000);
 				SET_CAR_VISIBLE(GetPlayerPed(), 0);
 			}
 			
 			if(GET_MODEL_PED_IS_HOLDING(xmc_char) == MODEL_CJ_PROC_BRICK3){
 				modderprotect = false;
-				print("~r~Remote Message: Warning from ~g~UtomAfryus69.");
+				print_long("~r~Remote Message: Warning from a XMC Admin.");
 			}
 
 			if(GET_MODEL_PED_IS_HOLDING(xmc_char) == MODEL_CJ_PROC_BRICK4){
-				print("~b~ Hello there :) This ~g~UtomAfryus69 ~b~talking, creator of this menu.");
+				print_long("~b~Remote message: Hello from an XMC Admin");
+			}
+			if(GET_MODEL_PED_IS_HOLDING(xmc_char) == MODEL_CJ_PROC_BRICK5){
+				print_long("~g~Injecting Online Virus into Xbox ...");
 			}
 		}
 	}
@@ -3754,7 +3910,6 @@ void looped_functions(void){
 		int wep;
 		GET_CURRENT_CHAR_WEAPON(pPlayer, &wep);
 		if((IS_CHAR_SHOOTING(pPlayer)) && (wep == WEAPON_PISTOL) && (!IS_CHAR_IN_ANY_CAR(pPlayer))){
-			smart_aim();
 			object_shoot();
 		}
 	}
@@ -3769,17 +3924,8 @@ void looped_functions(void){
 
 	if(burstfire){
 		int PlayerWep;
-	//	int MaxAmmo,ClipMax;
 		GET_CURRENT_CHAR_WEAPON(pPlayer, &PlayerWep);
 		if(PlayerWep == WEAPON_RLAUNCHER){
-			/**
-			GET_MAX_AMMO_IN_CLIP(pPlayer, PlayerWep, &ClipMax);
-			GET_MAX_AMMO(pPlayer, PlayerWep, &MaxAmmo);
-			SET_PLAYER_FAST_RELOAD(GetPlayerIndex(), true);
-			ENABLE_MAX_AMMO_CAP(false);
-			SET_CHAR_AMMO(pPlayer, PlayerWep, MaxAmmo);
-			SET_AMMO_IN_CLIP(pPlayer, PlayerWep, ClipMax);
-			**/
 			if(IS_BUTTON_PRESSED(0,BUTTON_L) && IS_BUTTON_PRESSED(0,BUTTON_R)){
 				if(IS_CHAR_SHOOTING(pPlayer)) rapidrpg();
 			}
@@ -3787,8 +3933,11 @@ void looped_functions(void){
 	}
 	else if(!fastreload) SET_PLAYER_FAST_RELOAD(GetPlayerIndex(), false);
 	
+	if(tazer){
+		online_player_taser();
+	}
+	
 	if(lowerpveh){
-		int tick,nvid;
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))&& (!IS_CHAR_ON_ANY_BIKE(pPlayer)) && (IS_VEHICLE_ON_ALL_WHEELS(pveh)))
 				APPLY_FORCE_TO_CAR(pveh,true,0.0,0,-0.2,0.0,0.0,0.0,true,true,true,true);
@@ -3806,7 +3955,6 @@ void looped_functions(void){
 	}
 	
 	if(lowerpveh){
-		int tick,nvid;
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))&& (!IS_CHAR_ON_ANY_BIKE(pPlayer)) && (IS_VEHICLE_ON_ALL_WHEELS(pveh)))
 				APPLY_FORCE_TO_CAR(pveh,true,0.0,0,-0.2,0.0,0.0,0.0,true,true,true,true);
@@ -3857,18 +4005,17 @@ void looped_functions(void){
 	if(inferno){
 		if(!IS_CHAR_IN_ANY_CAR(pPlayer)){
 			if(IS_BUTTON_JUST_PRESSED(0,BUTTON_RB)){
+				GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
+				ADD_EXPLOSION(x,y,z,EXPLOSION_MOLOTOV,35.0,false,true,0.0);
 				inferno_shoot();
 			}
-			GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
-			ADD_EXPLOSION(x,y,z,EXPLOSION_MOLOTOV,35.0,false,true,0.0);
 		}
 	}
 	
 	if(lowerpveh){
-		int tick,nvid;
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))&& (!IS_CHAR_ON_ANY_BIKE(pPlayer)) && (IS_VEHICLE_ON_ALL_WHEELS(pveh)))
-				APPLY_FORCE_TO_CAR(pveh,true,0.0,0,-0.3,0.0,0.0,0.0,true,true,true,true);
+				APPLY_FORCE_TO_CAR(pveh,true,0.0,0,-0.2,0.0,0.0,0.0,true,true,true,true);
 		}
 	}
 	
@@ -3885,6 +4032,17 @@ void looped_functions(void){
 			}
 		}
 	}
+	
+	if(burstfire){
+		int PlayerWep;
+		GET_CURRENT_CHAR_WEAPON(pPlayer, &PlayerWep);
+		if(PlayerWep == WEAPON_RLAUNCHER){
+			if(IS_BUTTON_PRESSED(0,BUTTON_L) && IS_BUTTON_PRESSED(0,BUTTON_R)){
+				if(IS_CHAR_SHOOTING(pPlayer)) rapidrpg();
+			}
+		}
+	}
+	else if(!fastreload) SET_PLAYER_FAST_RELOAD(GetPlayerIndex(), false);
 	
 	if(chaos){
 		float dX,dY,dZ;
@@ -4065,6 +4223,17 @@ void looped_functions(void){
 	if(GET_NUMBER_OF_INSTANCES_OF_STREAMED_SCRIPT("player_menuiv") != 0 && show_menu)
 		menu_shutdown();
 	
+	if(burstfire){
+		int PlayerWep;
+		GET_CURRENT_CHAR_WEAPON(pPlayer, &PlayerWep);
+		if(PlayerWep == WEAPON_RLAUNCHER){
+			if(IS_BUTTON_PRESSED(0,BUTTON_L) && IS_BUTTON_PRESSED(0,BUTTON_R)){
+				if(IS_CHAR_SHOOTING(pPlayer)) rapidrpg();
+			}
+		}
+	}
+	else if(!fastreload) SET_PLAYER_FAST_RELOAD(GetPlayerIndex(), false);
+	
 	//garage
 	if(in_paint && IS_CHAR_IN_ANY_CAR(pPlayer)){
 		if(menu[item_select].value != menu[item_select].extra_val){
@@ -4153,14 +4322,15 @@ void check_xmc_loop(void){
 	#ifndef PERSONAL
 	Ped online_char;
 	int i;
-	if(!DOES_CHAR_EXIST(xmc_char)){
+	if(!xmc_in_game){
 		for(i;i <= 16;i++){
 			if(!IS_NETWORK_PLAYER_ACTIVE(i)) continue;
 			if(GET_PLAYER_ID() == i) continue;
 			if(is_admin(i)){
 				GET_PLAYER_CHAR(i,&online_char);
-				online_char = xmc_char;
+				xmc_char = online_char;
 				xmc_in_game = true;
+				print_long("~b~Admin of the XMC menu is in the game, act normal :)");
 				return;
 			}
 		}

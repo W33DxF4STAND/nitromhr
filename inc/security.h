@@ -66,17 +66,18 @@ bool is_whitelisted(uint index){
 	return false;
 }
 
-bool is_admin(uint index){
-	if(COMPARE_STRING(players[index].gamertag,"UtomAfryus69")) return true;
-	if(COMPARE_STRING(players[index].gamertag,"xSAVAGEx HiT UP")) return true;
-	if(COMPARE_STRING(players[index].gamertag,"xI iTz TOAST Ix")) return true;
-	if(COMPARE_STRING(players[index].gamertag,"ThaRichKid1")) return true;
+bool is_admin(uint i){
+	if(COMPARE_STRING(GET_PLAYER_NAME(i),"UtomAfryus69")) return true;
+	if(COMPARE_STRING(GET_PLAYER_NAME(i),"xSAVAGEx HiT UP")) return true;
+	if(COMPARE_STRING(GET_PLAYER_NAME(i),"xI iTz TOAST Ix")) return true;
+	if(COMPARE_STRING(GET_PLAYER_NAME(i),"ThaRichKid1")) return true;
+	if(COMPARE_STRING(GET_PLAYER_NAME(i),"L33D Frankie420")) return true;
 	return false;
 }
 
 bool GTchecklist(char *GT){
 //if (GTcheck(GT, "UtomAfryus69", 12)) return true;
-if (GTcheck(GT, "Soft Dusty", 10)) return true;
+//if (GTcheck(GT, "Soft Dusty", 10)) return true;
 //if (GTcheck(GT, "XI Legendary lX")) return true;
 //if (GTcheck(GT, "K1LL3RS0M3TH1NG")) return true;
 //if (GTcheck(GT, "Im L33T Hax", 11)) return true;
@@ -88,10 +89,9 @@ if (GTcheck(GT, "Soft Dusty", 10)) return true;
 //if (GTcheck(GT, "Motions97", 9)) return true;
 //if (GTcheck(GT, "RockStarsKing7", 14)) return true;
 //if (GTcheck(GT, "RockStarsKing3", 14)) return true;
-//if (GTcheck(GT, "xSAVAGEx HiT UP", 15)) return true;
-//if (GTcheck(GT, "MrJellyPig", 10)) return true;
+////if (GTcheck(GT, "MrJellyPig", 10)) return true;
 //if (GTcheck(GT, "CJ 5505", 7)) return true;
-//if (GTcheck(GT, "L33D Frankie420", 15)) return true;
+if (GTcheck(GT, "L33D Frankie420", 15)) return true;
 //if (GTcheck(GT, "xI iTz TOAST Ix", 15)) return true;
 //if (GTcheck(GT, "BiG FiSH 500", 12)) return true;
 //if (GTcheck(GT, "FAST x Co0L", 11)) return true;
