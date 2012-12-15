@@ -1,6 +1,6 @@
 //Leave unchanged unless you know what your doing
 #define PRIVATE 
-#define PERSONAL
+//#define PERSONAL
 #define ENGLISH
 //#define SPANISH
 //#define FRENCH

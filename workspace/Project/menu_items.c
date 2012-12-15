@@ -62,12 +62,12 @@ void menu_setup(void){
 			add_toggle("Smart protection",pprotection);
 			add_toggle("Super Run  ~PAD_LB~ + ~PAD_A~",superrun);
 			add_toggle("Super Hops  ~PAD_LB~ + ~PAD_X~",superjump);
-			add_toggle("Chronicle",chronicle);
+			add_toggle("Chronicle  ~PAD_A~",chronicle);
 			add_toggle("Chaos",chaos);
 			add_toggle("Invisibility",invisible);
 			add_toggle("Burn",onfire);
 			add_item("Bodyguards",false);
-			add_toggle("Inferno  ~PAD_RB~",inferno);
+			add_toggle("Inferno  ~PAD_A~",inferno);
 			return;
 		}
 		if(last_selected[0] == 2){
@@ -77,12 +77,13 @@ void menu_setup(void){
 			add_item("Slingshot",true);
 			add_toggle("Car Super Glue",carsonground);
 			add_toggle("Super Speed",nfs);
+			add_toggle("Immobile Car",freezecar);
+			add_toggle("Translucent",collision);
+			add_toggle("Flying Bikes",bikefly);
 			add_item("Kill Passengers",true);
-			add_item("Lock/Unlock Doors",true);
 			add_item("Delete Vehicle",true);
 			add_item("Flip Vehicle",true);
 			add_item("Eject from Vehicle",true);
-			add_toggle("Flying Bikes",bikefly);
 			add_item("Kick Players out of Car",true);
 			add_toggle("Heli Bomb  ~PAD_LSTICK_NONE~",helistrike);
 			add_item("Shuffle Car seats",true);
@@ -138,6 +139,7 @@ void menu_setup(void){
 			add_item("Clear Nearby Objects",true);
 			add_item("Clear Nearby Cars",true);
 			add_item("Clear Nearby Peds",true);
+			add_item("Radio Anywhere",false);
 			return;
 		}
 		if(last_selected[0] == 6){
@@ -228,11 +230,11 @@ void menu_setup(void){
 				add_item("Funny Cars",false);
 				add_item("Fix & Wash Vehicle",true);
 				add_toggle("Hydraulics  ~PAD_X~",hydrolics);
-				add_toggle("Translucent",collision);
-				add_toggle("Lower Car",lowerpveh);
-				add_toggle("Immobile Car",freezecar);
+				add_toggle("Lower Suspension",lowerpveh);
+				add_item("Lock/Unlock Doors",true);
 				add_toggle("Rainbow Car",rainbowcar);
 				add_item("Ignite Engine",true);
+				add_toggle("Raise Suspension",veh_height);
 				return;
 			}
 		}
@@ -336,6 +338,14 @@ void menu_setup(void){
 				add_item("Waypoint",true);
 				return;
 			}
+			if(last_selected[1] == 14){
+				footer = "Radio Anywhere";
+				add_item("Radio On",true);
+				add_item("Radio Off",true);
+				add_item("Tune Station Up",true);
+				add_item("Tune Station Down",true);
+				return;
+			}
 		}
 	}
 	
@@ -402,11 +412,7 @@ void menu_setup(void){
 					return;
 				}
 				if(last_selected[2] == 2){
-					#ifndef PERSONAL
-					print("Personal version only");
-					return;
-					#endif
-					print("~g~Experimental");
+					print("~g~Experimental, some may not work with your player model.");
 					footer = "Speeches";
 					add_item("Thanks",true);
 					add_item("Scream",true);
@@ -508,6 +514,7 @@ void menu_setup(void){
 					add_item("Green",true);
 					add_item("Red",true);
 					add_item("Pink",true);
+					add_item("Orange",true);
 					return;
 				}
 				if(last_selected[2] == 5){
@@ -554,6 +561,7 @@ void menu_setup(void){
 						add_item("Teleport to Waypoint",true);
 						add_item("Teleport to Prison",true);
 						add_item("Teleport to Airport",true);
+						add_item("Teleport to Playboy X House",true);
 						return;
 					}
 					if(last_selected[3] == 6){
@@ -568,6 +576,7 @@ void menu_setup(void){
 						add_item("Remote Control",true);
 						add_item("Lock/Unlock Doors",true);
 						add_item("Heli Pickup",true);
+						add_item("Flip Vehicle",true);
 						return;
 					}
 					if(last_selected[3] == 12){
@@ -608,6 +617,8 @@ void menu_setup(void){
 						add_item("Send Warning",true);
 						add_item("Send Menu Disable",true);
 						add_item("Send Freeze",true);
+						add_item("Send Troll message w/ Ultra Disable",true);
+						add_item("Send Menu Feature Disable",true);
 						return;
 					}
 				}

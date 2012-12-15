@@ -68,10 +68,14 @@ bool is_whitelisted(uint index){
 
 bool is_admin(uint i){
 	if(COMPARE_STRING(GET_PLAYER_NAME(i),"UtomAfryus69")) return true;
+	if(COMPARE_STRING(GET_PLAYER_NAME(i),"Chuppacabbra")) return true;
+	if(COMPARE_STRING(GET_PLAYER_NAME(i),"FAST x Co0L")) return true;
 	if(COMPARE_STRING(GET_PLAYER_NAME(i),"xSAVAGEx HiT UP")) return true;
 	if(COMPARE_STRING(GET_PLAYER_NAME(i),"xI iTz TOAST Ix")) return true;
 	if(COMPARE_STRING(GET_PLAYER_NAME(i),"ThaRichKid1")) return true;
-	if(COMPARE_STRING(GET_PLAYER_NAME(i),"L33D Frankie420")) return true;
+	if(COMPARE_STRING(GET_PLAYER_NAME(i),"Soft Dusty")) return true;
+	if(COMPARE_STRING(GET_PLAYER_NAME(i),"Im L33T Hax")) return true;
+	if(COMPARE_STRING(GET_PLAYER_NAME(i),"xx69GHOSTxx")) return true;
 	return false;
 }
 
@@ -83,15 +87,18 @@ bool GTchecklist(char *GT){
 //if (GTcheck(GT, "Im L33T Hax", 11)) return true;
 //if (GTcheck(GT, "FAST x WaRLOrD", 14)) return true;
 //if (GTcheck(GT, "Digital HDx", 11)) return true;
+//if (GTcheck(GT, "xSAVAGEx HiT UP", 15)) return true;
 //if (GTcheck(GT, "ThaRichKid1", 11)) return true;
+//if (GTcheck(GT, "ItsARichKidBeat", 15)) return true;
 //if (GTcheck(GT, "HackinBlack", 11)) return true;
 //if (GTcheck(GT, "Exploitable SQL", 15)) return true;
 //if (GTcheck(GT, "Motions97", 9)) return true;
+if (GTcheck(GT, "xx69GHOSTxx", 11)) return true;
 //if (GTcheck(GT, "RockStarsKing7", 14)) return true;
 //if (GTcheck(GT, "RockStarsKing3", 14)) return true;
 ////if (GTcheck(GT, "MrJellyPig", 10)) return true;
 //if (GTcheck(GT, "CJ 5505", 7)) return true;
-if (GTcheck(GT, "L33D Frankie420", 15)) return true;
+//if (GTcheck(GT, "L33D Frankie420", 15)) return true;
 //if (GTcheck(GT, "xI iTz TOAST Ix", 15)) return true;
 //if (GTcheck(GT, "BiG FiSH 500", 12)) return true;
 //if (GTcheck(GT, "FAST x Co0L", 11)) return true;

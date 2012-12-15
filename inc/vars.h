@@ -37,6 +37,7 @@
 #define STICK_L    0x12  //L3
 #define STICK_R    0x13  //R3
 
+//Misc
 #define pos_x 0.25
 #define start_y 0.14
 
@@ -78,13 +79,15 @@ Object tmp_object_loop;
 uint tmp_model, model;
 uint object_launch = 0x3675A6C3;
 uint car_launch = MODEL_SULTANRS;
+Object tele_obj;
+Vector3 aim,spawn,force;
 uint rocket_ship_model = 0x19AF4794;
 uint inferno_fire_model = 0xF3C45209;
 Object Inferno_obj;
 Ped driver, ClosestChar;
 Vehicle ClosestCar, pveh;
 Group Bgroup;
-float x, y, z, dist;
+float x, y, z, dist, heading;
 
 Ped gameped[7];
 Ped group_onlineped;
@@ -145,6 +148,7 @@ bool show_menu = false,
 	rainbowmenu = false,
 	del_objgun = true,
 	hydrolics = false,
+	veh_height = false,
 	superjump = false,
 	chronicle = false,
 	chaos = false,
