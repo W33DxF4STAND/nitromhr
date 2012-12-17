@@ -1,6 +1,7 @@
 //Leave unchanged unless you know what your doing
 #define PRIVATE 
 //#define PERSONAL
+//#define EMMAN
 #define ENGLISH
 //#define SPANISH
 //#define FRENCH
@@ -96,6 +97,8 @@ void main(void){
 
 	if(ZeroKey == hiddenGlobalInt) Security[1].ChecksPassed = true;
 	else Security[1].ChecksPassed = false;
+	
+	if(!(Security[1].ChecksPassed && ZeroKey == hiddenGlobalInt && localvars && check_keys)) return;
 	
 	WAIT(100);
 	do{

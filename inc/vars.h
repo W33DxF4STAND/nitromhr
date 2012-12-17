@@ -92,10 +92,8 @@ float x, y, z, dist, heading;
 Ped gameped[7];
 Ped group_onlineped;
 char* footer;
-
-Object ObjectProjectile, InfernoRocket;
 Vehicle CarProjectile;
-Camera game_cam;
+Object ObjectProjectile;
 bool grenade_active;
 	
 bool in_paint = false;	
@@ -135,7 +133,9 @@ bool show_menu = false,
 	del_cargun = true,
 	cargun = false,
 	invisible = false,
-	burstfire = false,
+	rapidfire = false,
+	strat_cargun = true,
+	grond_cargun = false,
 	freezecar = false,
 	rainbowcar = false,
 	fastreload = true,

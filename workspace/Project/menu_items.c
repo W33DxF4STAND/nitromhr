@@ -37,6 +37,15 @@ void add_gxt_hash(int model_hash){
 	menu[item_count].value = model_hash;
 }
 
+void add_model_hash(char* item, uint char_model_hash)
+{
+	item_count++;
+	menu[item_count].item_name = item;
+	menu[item_count].action = true;
+	menu[item_count].type = 4;
+	menu[item_count].extra_val = char_model_hash;
+}
+
 void menu_setup(void){
 	item_count = 0;
 	footer = " ";
@@ -62,12 +71,13 @@ void menu_setup(void){
 			add_toggle("Smart protection",pprotection);
 			add_toggle("Super Run  ~PAD_LB~ + ~PAD_A~",superrun);
 			add_toggle("Super Hops  ~PAD_LB~ + ~PAD_X~",superjump);
-			add_toggle("Chronicle  ~PAD_A~",chronicle);
+			add_toggle("Chronicle  ~PAD_B~",chronicle);
 			add_toggle("Chaos",chaos);
 			add_toggle("Invisibility",invisible);
 			add_toggle("Burn",onfire);
 			add_item("Bodyguards",false);
-			add_toggle("Inferno  ~PAD_A~",inferno);
+			add_toggle("Inferno  ~PAD_B~",inferno);
+			add_item("Characters",false);
 			return;
 		}
 		if(last_selected[0] == 2){
@@ -96,7 +106,7 @@ void menu_setup(void){
 			add_toggle("Fast Reload",fastreload);
 			add_toggle("Auto Aim",autoaim);
 			add_item("Object Launcher",false);
-			add_toggle("RPG Burst Fire",burstfire);
+			add_toggle("Rapid Fire",rapidfire);
 			add_item("Car Launcher",false);
 			add_toggle("Deagle Taser",tazer);
 			return;
@@ -140,6 +150,7 @@ void menu_setup(void){
 			add_item("Clear Nearby Cars",true);
 			add_item("Clear Nearby Peds",true);
 			add_item("Radio Anywhere",false);
+			add_number("Game Speed",6);
 			return;
 		}
 		if(last_selected[0] == 6){
@@ -218,6 +229,17 @@ void menu_setup(void){
 				add_item("Noose Sniper",true);
 				return;
 			}
+			if(last_selected[1] == 15){
+				print("~g~Experimental");
+				footer = "Characters";
+				add_model_hash("Anna",MODEL_IG_ANNA);
+				add_model_hash("Jew",MODEL_M_O_HASID_01);
+				add_model_hash("Lil Jacob",MODEL_IG_LILJACOB);
+				add_model_hash("Brucie",MODEL_IG_BRUCIE);
+				add_model_hash("Nigga",MODEL_M_Y_GAFR_LO_01);
+				add_model_hash("Stripper",MODEL_F_Y_STRIPPERC01);
+				return;
+			}
 		}
 		if(last_selected[0] == 2){
 			if(last_selected[1] == 1){
@@ -289,7 +311,9 @@ void menu_setup(void){
 				add_toggle("Launcher - Deagle",cargun);
 				add_toggle("Clear last car",del_cargun);
 				add_toggle("Explode Car on Impact",exp_cargun);
-				add_item("Shoot Sultan RSs",true);
+				add_toggle("Shoot Straight Cars",strat_cargun);
+				add_toggle("Ground Cars",grond_cargun);
+				add_item("Shoot Sultan RS's",true);
 				add_item("Shoot Bus's",true);
 				add_item("Shoot Ambulance's",true);
 				add_item("Shoot Phantom's",true);
@@ -297,6 +321,7 @@ void menu_setup(void){
 				add_item("Shoot Tugboat's",true);
 				add_item("Shoot Trashmaster's",true);
 				add_item("Shoot Trains's",true);
+				add_item("Shoot Ripley's",true);
 				return;
 			}
 		}
@@ -365,11 +390,11 @@ void menu_setup(void){
 					add_item("Explode",true);
 					add_item("Burn",true);
 					add_item("Attach a Hippo",true);
-					add_item("Delete Vehicles",true);
+					add_item("Delete Cars",true);
 					add_item("Teleport to You",true);
 					add_item("Teleport to Prison",true);
-					add_item("Freeze All Players",true);
-					add_item("Slingshot All Cars",true);
+					add_item("Teleport to Airport",true);
+					add_item("Slingshot Cars",true);
 					add_item("Attach a Cube",true);
 					add_item("Attach a Dick",true);
 					add_item("Retard-ify all cars",true);
@@ -409,6 +434,7 @@ void menu_setup(void){
 					add_item("Zohan",true);
 					add_item("Busted",true);
 					add_item("Smoking",true);	
+					add_number("Drunk",2);
 					return;
 				}
 				if(last_selected[2] == 2){
@@ -418,7 +444,12 @@ void menu_setup(void){
 					add_item("Scream",true);
 					add_item("Get Out",true);
 					add_item("Hello",true);
-					add_item("Sex Noises",true);
+					add_item("Hooker Sex",true);
+					add_item("Fuck off!",true);
+					add_item("Phone Conversation",true);
+					add_item("Bye",true);
+					add_item("I was shot!",true);
+					add_item("Lets Fight!",true);
 					return;
 				}
 			}
@@ -577,13 +608,16 @@ void menu_setup(void){
 						add_item("Lock/Unlock Doors",true);
 						add_item("Heli Pickup",true);
 						add_item("Flip Vehicle",true);
+						add_item("Shut Down Vehicle",true);
 						return;
 					}
 					if(last_selected[3] == 12){
 						footer = players[(last_selected[2] - 2)].gamertag;
-						add_item("Hippo",true);
-						add_item("Cube",true);
-						add_item("Dick",true);
+						add_item("Attach a Hippo",true);
+						add_item("Attach a Cube",true);
+						add_item("Attach a Dick",true);
+						add_item("Attach a Dumpster",true);
+						add_item("Attach a TV",true);
 						return;
 					}
 					if(last_selected[3] == 13){

@@ -65,6 +65,10 @@ void do_menu(void){
 				set_up_draw(3,0.35,0.35,r,g,b,a);
 				draw_text("STRING",pos_x,pos_y,GET_STRING_FROM_TEXT_FILE(GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(menu[i].value)));
 			}
+			if(menu[i].type == 4){
+				set_up_draw(3,0.35,0.35,r,g,b,a);
+				draw_text("STRING", pos_x, pos_y, menu[i].item_name);
+			}
 			else{
 				set_up_draw(3,0.35,0.35,r,g,b,a);
 				draw_text("STRING",pos_x,pos_y,menu[i].item_name);

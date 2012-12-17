@@ -422,12 +422,44 @@ void rapidrpg(void){
 }
 
 void object_shoot(void){
+	float prjX, prjY, prjZ, prjT, gcX, gcY, gcZ, gcrotX, gcrotY, gcrotZ, objrotX, objrotZ;
+	Camera game_cam;
+	
+	GET_GAME_CAM(&game_cam);
+	if (IS_CAM_ACTIVE(game_cam)){
+		GET_CAM_ROT(game_cam, &gcrotX, &gcrotY, &gcrotZ);// used for setting the object rotation and for some weird trig stuff below
+		GET_CAM_POS(game_cam, &gcX, &gcY, &gcZ);// used for the spawn point of the object, because the player is offset while aiming
+		if (gcrotX < 0.0)// the range for cam rot is -180 to 180, to set object rot we need 0 to 360
+		{
+			objrotX = gcrotX + 360.0;
+		}
+		else
+		{
+			objrotX = gcrotX;
+		}
+		if (gcrotZ < 0.0)
+		{
+			objrotZ = gcrotZ + 360.0;
+		}
+		else
+		{
+			objrotZ = gcrotZ;
+		}
+		/*  the trig stuff below could possibly be replaced with vectors, I have no idea how to do that though.  *
+		*   I apologize if this is confusing, but if you want to change the distance from the game_cam that the  *
+		*   object is spawned, adjust "3.0" to your preference on the first and fourth lines.  Also prjT is the  *
+		*   adjacent side from the pitch calculation, its purpose is to be the tangent in the following 2 lines */
+		prjT = (3.0 * COS(gcrotX));       // adj side calculation to be used as a tangent below
+		prjX = gcX - (prjT * SIN(gcrotZ));// calculates how far to spawn the object from the game_cam on the X plane
+		prjY = gcY + (prjT * COS(gcrotZ));// calculates how far to spawn the object from the game_cam on the Y plane
+		prjZ = gcZ + (3.0 * SIN(gcrotX)); // calculates how far to spawn the object from the game_cam on the Z plane
+	}
 	if(del_objgun){
 		if(DOES_OBJECT_EXIST(ObjectProjectile)){
+			uint tick;
 			GET_NETWORK_ID_FROM_OBJECT(ObjectProjectile, &nvid);
 			SET_NETWORK_ID_CAN_MIGRATE(nvid, true);
 			REQUEST_CONTROL_OF_NETWORK_ID(nvid);
-			uint tick;
 			while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
 				tick++;
 				REQUEST_CONTROL_OF_NETWORK_ID(nvid);
@@ -441,17 +473,11 @@ void object_shoot(void){
 			DELETE_OBJECT(&ObjectProjectile);
 		}
 	}
-	
-	GET_PED_BONE_POSITION(pPlayer, BONE_RIGHT_HAND, 100, 0, 0, &aim);
-	GET_PED_BONE_POSITION(pPlayer, BONE_RIGHT_HAND, 5, 0, 0, &spawn);
-	force.x = (aim.x - spawn.x) / 95 * 2000;
-	force.y = (aim.y - spawn.y) / 95 * 2000;
-	force.z = (aim.z - spawn.z) / 95 * 2000;
-	
+
 	REQUEST_MODEL(object_launch);
 	while(!HAS_MODEL_LOADED(object_launch)) WAIT(0);
-		
-	CREATE_OBJECT(object_launch, spawn.x, spawn.y, spawn.z, &ObjectProjectile, 1);
+
+	CREATE_OBJECT(object_launch, prjX, prjY, prjZ, &ObjectProjectile, 1);
 	GET_NETWORK_ID_FROM_OBJECT(ObjectProjectile, &nvid);
 	SET_NETWORK_ID_CAN_MIGRATE(nvid, 0);
 	SET_OBJECT_VISIBLE(ObjectProjectile, 0);
@@ -462,11 +488,11 @@ void object_shoot(void){
 		FREEZE_OBJECT_POSITION(ObjectProjectile,false);
 		SET_OBJECT_DYNAMIC(ObjectProjectile,true);
 		SET_OBJECT_AS_STEALABLE(ObjectProjectile,true);
+		SET_OBJECT_ROTATION(ObjectProjectile, objrotX, 0.0, objrotZ);
 		SET_OBJECT_COLLISION(ObjectProjectile, true);
 		WAIT(100);
 		SET_OBJECT_VISIBLE(ObjectProjectile, 1);
-		APPLY_FORCE_TO_OBJECT(ObjectProjectile, 1, force.x, force.y, force.z, 0.0, 0.0, 0.0, 1, 0, 1, 1);
-	//	APPLY_FORCE_TO_OBJECT(ObjectProjectile, 1, 0.0, 500.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 1, 1);
+		APPLY_FORCE_TO_OBJECT(ObjectProjectile, 1, 0.0, 250.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 1, 1);
 	}
 }
 
@@ -500,20 +526,27 @@ void car_shoot(void){
 		
 	REQUEST_MODEL(car_launch);
 	while(!HAS_MODEL_LOADED(car_launch)) WAIT(0);
-		
-	CREATE_CAR(car_launch, spawn.x, spawn.y, spawn.z, &CarProjectile, 1);
+	
+	if(grond_cargun) CREATE_CAR(car_launch, spawn.x, spawn.y, spawn.z - 1, &CarProjectile, 1);
+	else CREATE_CAR(car_launch, spawn.x, spawn.y, spawn.z, &CarProjectile, 1);
 	GET_NETWORK_ID_FROM_VEHICLE(CarProjectile, &nvid);
 	SET_NETWORK_ID_CAN_MIGRATE(nvid, 0);
 	SET_CAR_VISIBLE(CarProjectile, 0);
 	MARK_MODEL_AS_NO_LONGER_NEEDED(car_launch);
 	if(DOES_VEHICLE_EXIST(CarProjectile)){
+		if(strat_cargun){
+			GET_CHAR_HEADING(pPlayer, &heading);
+			SET_CAR_HEADING(CarProjectile, heading);
+		}
 		SET_CAR_PROOFS(CarProjectile, true, true, true, true, true);
 		FREEZE_CAR_POSITION(CarProjectile,false);
 		SET_CAR_COLLISION(CarProjectile, true);
 		if(exp_cargun) SET_PETROL_TANK_HEALTH(CarProjectile, -1);
 		WAIT(100);
 		SET_CAR_VISIBLE(CarProjectile, 1);
-		APPLY_FORCE_TO_CAR(CarProjectile, 1, force.x, force.y, force.z, 0.0, 0.0, 0.0, 1, 0, 1, 1);
+		if(grond_cargun) SET_CAR_ON_GROUND_PROPERLY(CarProjectile);
+		if(grond_cargun) APPLY_FORCE_TO_CAR(CarProjectile, 1, force.x, force.y, force.z - 1000, 0.0, 0.0, 0.0, 1, 0, 1, 1);
+		else APPLY_FORCE_TO_CAR(CarProjectile, 1, force.x, force.y, force.z, 0.0, 0.0, 0.0, 1, 0, 1, 1);
 	//	APPLY_FORCE_TO_CAR(CarProjectile, 1, 0.0, 500.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 1, 1);
 	}
 }
@@ -536,7 +569,7 @@ void chronicle_shoot(void){
 		GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS(pPlayer, 0, count, 0, &x, &y, &z);
 		ADD_EXPLOSION(x,y,z,EXPLOSION_SHIP_DESTROY,35.0,false,true,0.0);
 	}
-	print("Super blast!");
+	print("Super Forward blast!");
 }
 
 void online_player_taser(void){
@@ -594,7 +627,6 @@ void create_throwable_object(uint model){
 void spawn_car(uint model){
 	int pveh,driver;
 	float h, s;
-	bool speed = false;
 	REQUEST_MODEL(model);
 	while(!HAS_MODEL_LOADED(model)) WAIT(0);
 	GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
@@ -602,7 +634,6 @@ void spawn_car(uint model){
 	if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 		GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 		GET_CAR_SPEED(pveh,&s);
-		speed = true;
 		GET_DRIVER_OF_CAR(pveh,&driver);
 		WARP_CHAR_FROM_CAR_TO_COORD(pPlayer,x,y,z);
 		if(!DOES_CHAR_EXIST(driver) || pPlayer == driver || !IS_NETWORK_SESSION()){
@@ -610,9 +641,10 @@ void spawn_car(uint model){
 			MARK_CAR_AS_NO_LONGER_NEEDED(&pveh);
 		}
 	}
+	else GET_CHAR_SPEED(pPlayer, &s);
 	CREATE_CAR(model,x,y,z,&pveh,true);
 	MARK_MODEL_AS_NO_LONGER_NEEDED(model);
-    CHANGE_CAR_COLOUR(pveh, 133, 133);
+    CHANGE_CAR_COLOUR(pveh, 134, 134);
 	SET_EXTRA_CAR_COLOURS(pveh, 0, 0);
     SET_VEHICLE_DIRT_LEVEL(pveh, 0);
     WASH_VEHICLE_TEXTURES(pveh, 255);
@@ -620,8 +652,40 @@ void spawn_car(uint model){
 	WARP_CHAR_INTO_CAR(pPlayer,pveh);
 	SET_CAR_PROOFS(pveh, true, true, true, true, true);
 	SET_CAR_HEADING(pveh,h);
-	if(speed)
-		SET_CAR_FORWARD_SPEED(pveh,s);
+	SET_CAR_FORWARD_SPEED(pveh,s);
+	return;
+}
+
+void change_player(uint model){
+	if(IS_MODEL_IN_CDIMAGE(model)){
+		REQUEST_MODEL(model);
+		while (!HAS_MODEL_LOADED(model)) WAIT(0);
+		
+		float heading;
+		GET_CHAR_HEADING(GetPlayerPed(), &heading);
+
+		uint room_key;
+		if (IS_INTERIOR_SCENE())
+			GET_KEY_FOR_CHAR_IN_ROOM(GetPlayerPed(), &room_key);
+
+		Vehicle player_vehicle;
+		if (IS_CHAR_IN_ANY_CAR(GetPlayerPed()))
+			GET_CAR_CHAR_IS_USING(GetPlayerPed(), &player_vehicle);
+
+		CHANGE_PLAYER_MODEL(GetPlayerIndex(), model);
+		MARK_MODEL_AS_NO_LONGER_NEEDED(model);
+	
+		SET_CHAR_DEFAULT_COMPONENT_VARIATION(GetPlayerPed());
+	
+		if (DOES_VEHICLE_EXIST(player_vehicle))
+			WARP_CHAR_INTO_CAR(GetPlayerPed(), player_vehicle);
+
+		SET_CHAR_HEADING(GetPlayerPed(), heading);
+
+		if (IS_INTERIOR_SCENE())
+			SET_ROOM_FOR_CHAR_BY_KEY(GetPlayerPed(), room_key);
+	}
+	else print("~r~Error");
 	return;
 }
 
@@ -760,7 +824,8 @@ void menu_functions(void){
 				return;
 			}
 			if(item_select == 9){
-				if(!chronicle) print("Press ~PAD_A~ to Blast in front of you");
+				if(!chronicle) print("Press ~PAD_B~ to Blast in front of you");
+				WAIT(800);
 				do_toggle(chronicle);
 				return;
 			}
@@ -795,8 +860,10 @@ void menu_functions(void){
 						return;
 					}
 					START_CHAR_FIRE(pPlayer);
-					print("Press ~PAD_A~ to shoot a fire field. ~g~Now enable godmode.");
+					print("Press ~PAD_B~ to shoot a fire field.");
 					onfire = true;
+					WAIT(800);
+					godmode = true;
 				}
 				do_toggle(inferno);
 				return;
@@ -1001,11 +1068,7 @@ void menu_functions(void){
 				return;
 			}
 			else if(item_select == 6){
-				#ifndef PRIVATE
-				print("Private version only");
-				return;
-				#endif
-				do_toggle(burstfire);
+				do_toggle(rapidfire);
 				return;
 			}
 			else if(item_select == 8){
@@ -1255,6 +1318,33 @@ void menu_functions(void){
 						WAIT(0);
 					}
 					DELETE_CHAR(&ClosestChar);
+				}
+				return;
+			}
+			if(item_select == 15){
+				if(menu[item_select].value == 1){
+					SET_TIME_SCALE(1.0f);
+					print("Regular Motion");
+				}
+				if(menu[item_select].value == 2){
+					SET_TIME_SCALE(0.5f);
+					print("Slow Motion");
+				}
+				if(menu[item_select].value == 3){
+					SET_TIME_SCALE(0.1f);
+					print("Super Slow Motion");
+				}
+				if(menu[item_select].value == 4){
+					SET_TIME_SCALE(1.5f);
+					print("Fast Motion");
+				}
+				if(menu[item_select].value == 5){
+					SET_TIME_SCALE(2.0f);
+					print("Super Fast Motion");
+				}
+				if(menu[item_select].value == 6){
+					SET_TIME_SCALE(4.0f);
+					print("Super Duper Fast Motion");
 				}
 				return;
 			}
@@ -1645,6 +1735,10 @@ void menu_functions(void){
 					return;
 				}
 			}
+			if(last_selected[1] == 15){
+				change_player(menu[item_select].value);
+				return;
+			}
 		}
 		if(last_selected[0] == 2){
 			if(last_selected[1] == 1){
@@ -1900,43 +1994,58 @@ void menu_functions(void){
 					return;
 				}
 				else if(item_select == 4){
+					if(!strat_cargun) print_long("~b~Every shot car will now shoot facing forward");
+					do_toggle(strat_cargun);
+					return;
+				}
+				else if(item_select == 5){
+					if(!grond_cargun) print_long("~b~Every shot car will now on be on the ground");
+					do_toggle(grond_cargun);
+					return;
+				}
+				else if(item_select == 6){
 					car_launch = MODEL_SULTANRS;
 					print("Car launcher will now shoot Sultan RS's");
 					return;
 				}
-				else if(item_select == 5){
+				else if(item_select == 7){
 					car_launch = MODEL_BUS;
 					print("Car launcher will now shoot Bus's");
 					return;
 				}
-				else if(item_select == 6){
+				else if(item_select == 8){
 					car_launch = MODEL_AMBULANCE;
 					print("Car launcher will now shoot Ambulances's");
 					return;
 				}
-				else if(item_select == 7){
+				else if(item_select == 9){
 					car_launch = MODEL_PHANTOM;
 					print("Car launcher will now shoot Phantom's");
 					return;
 				}
-				else if(item_select == 8){
+				else if(item_select == 10){
 					car_launch = MODEL_AIRTUG;
 					print("Car launcher will now shoot Airtug's");
 					return;
 				}
-				else if(item_select == 9){
+				else if(item_select == 11){
 					car_launch = MODEL_TUGA;
 					print("Car launcher will now shoot Tug's");
 					return;
 				}
-				else if(item_select == 10){
+				else if(item_select == 12){
 					car_launch = MODEL_TRASH;
 					print("Car launcher will now shoot Trashmaster's");
 					return;
 				}
-				else if(item_select == 11){
+				else if(item_select == 13){
 					car_launch = MODEL_SUBWAY_LO;
 					print("Car launcher will now shoot Trains's (Original only)");
+					return;
+				}
+				else if(item_select == 14){
+					car_launch = MODEL_RIPLEY;
+					print("Car launcher will now shoot Ripley's");
 					return;
 				}
 			}
@@ -2158,7 +2267,7 @@ void menu_functions(void){
 								WAIT(10);
 							}
 						}
-						print("Removed everyones weapons");
+						print("Removed everyone's weapons");
 						return;
 					}
 					else if(item_select == 3){
@@ -2170,7 +2279,7 @@ void menu_functions(void){
 								WAIT(10);
 							}
 						}
-						print("Everyone was exploded");
+						print("Everyone was Blown up");
 						return;
 					}
 					else if(item_select == 4){
@@ -2224,7 +2333,7 @@ void menu_functions(void){
 							}
 							WAIT(50);
 						}
-						print("Deleted everyones cars");
+						print("Deleted Everyone's cars");
 						return;
 					}
 					else if(item_select == 7){
@@ -2240,7 +2349,7 @@ void menu_functions(void){
 								}
 							}
 						}
-						print("Party time!");
+						print("Teleported Everyone to you");
 						WAIT(500);
 						FREEZE_CHAR_POSITION(pPlayer,false);
 						return;
@@ -2255,20 +2364,32 @@ void menu_functions(void){
 								}
 							}
 						}
-						print("Put in derby");
+						print("Teleported Everyone to Jail");
 						return;
 					}
 					else if(item_select == 9){
 						for(i = 0;i <= player_loop;i++){
 							if(is_whitelisted(i)) continue;
 							if(DOES_CHAR_EXIST(players[i].ped)){
-								REMOVE_ALL_CHAR_WEAPONS(players[i].ped);
-								WAIT(10);
-								GIVE_WEAPON_TO_CHAR(players[i].ped,WEAPON_ROCKET,AMMO_MAX,false);
-								print("Everyone should freeze when aiming weapon");
-								return;
+								if(!IS_CHAR_IN_ANY_CAR(players[i].ped)) continue;
+								GET_CAR_CHAR_IS_USING(players[i].ped,&pveh);
+								GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
+								REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+								uint tick;
+								while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+									tick++;
+									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+									if(tick >= 200){
+										//print("~r~Error");
+										//return;
+										continue;
+									}
+									WAIT(0);
+								}
+								teleport_char(players[i].ped,2175.3516,761.2235,30.0);
 							}
-						}	   
+						}
+						print("Teleported Everyone to the Airport");
 					}
 					else if(item_select == 10){
 						for(i = 0;i <= player_loop;i++){
@@ -2293,7 +2414,7 @@ void menu_functions(void){
 								}
 							}
 						}
-						print("Slingshot everyones cars");
+						print("Slingshot Everyone's cars");
 						return;
 					}
 						else if(item_select == 11){
@@ -2494,7 +2615,7 @@ void menu_functions(void){
 						}
 					}
 					else if(item_select == 9){
-						#ifndef PERSONAL
+						#ifndef EMMAN
 						if(is_whitelisted(index)){
 							print("Player is whitelisted");
 							return;
@@ -2509,14 +2630,14 @@ void menu_functions(void){
 						}
 					}
 					else if(item_select == 10){
-						#ifndef PERSONAL
+						#ifndef EMMAN
 						if(is_whitelisted(index)){
 							print("Player is whitelisted");
 							return;
 						}
 						#endif
 						if(DOES_CHAR_EXIST(players[index].ped)){
-							#ifndef PERSONAL
+							#ifndef EMMAN
 							if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
 								GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
 								GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
@@ -2539,10 +2660,6 @@ void menu_functions(void){
 							GIVE_WEAPON_TO_CHAR(players[index].ped,WEAPON_ROCKET,AMMO_MAX,false);
 							print("~g~Sent Player Freeze gun");
 							#else
-							if(!IS_CHAR_IN_ANY_CAR(pPlayer)){
-								print("You must be in a car");
-								return;
-							}
 							REMOVE_ALL_CHAR_WEAPONS(players[index].ped);
 							WAIT(10);
 							GIVE_WEAPON_TO_CHAR(players[index].ped,WEAPON_ROCKET,AMMO_MAX,false);
@@ -2555,9 +2672,6 @@ void menu_functions(void){
 							SET_GROUP_FORMATION(Bgroup, 2);
 							WAIT(500);
 							REMOVE_CHAR_FROM_GROUP(players[index].ped);
-							GET_CAR_CHAR_IS_USING(pPlayer, &pveh);
-							DELETE_CAR(&pveh);
-							MARK_CAR_AS_NO_LONGER_NEEDED(&pveh);
 							print("~g~Player Frozen");
 							#endif
 							return;
@@ -2583,7 +2697,7 @@ void menu_functions(void){
 						return;
 					}
 					else if(item_select == 14){
-						#ifndef PERSONAL
+						#ifndef EMMAN
 						if(is_whitelisted(index)){
 							print("Player is whitelisted");
 							return;
@@ -2739,6 +2853,20 @@ void menu_functions(void){
 						TASK_PLAY_ANIM_WITH_FLAGS(pPlayer,"stand_smoke","amb@smoking",8.0,0,0x20);
 						return;
 					}
+					if(item_select == 10){
+						if(menu[item_select].value == 1){
+							REQUEST_ANIMS("amb@drunk");
+							while(!HAVE_ANIMS_LOADED("amb@drunk")) WAIT(0);
+							TASK_PLAY_ANIM_WITH_FLAGS(pPlayer,"wasteda","amb@drunk",8.0,0,0);
+							return;
+						}
+						if(menu[item_select].value == 2){
+							REQUEST_ANIMS("amb@drunk");
+							while(!HAVE_ANIMS_LOADED("amb@drunk")) WAIT(0);
+							TASK_PLAY_ANIM_WITH_FLAGS(pPlayer,"wasted_seated","amb@drunk",8.0,0,0);
+							return;
+						}
+					}
 				}
 				else if(last_selected[2] == 2){
 					if(item_select == 1){
@@ -2764,6 +2892,31 @@ void menu_functions(void){
 					else if(item_select == 5){
 						SAY_AMBIENT_SPEECH(pPlayer, "HOOKER_SEX", 1, 1, 0);
 						print("~g~Sexy time!");
+						return;
+					}
+					else if(item_select == 6){
+						SAY_AMBIENT_SPEECH(pPlayer, "GENERIC_FUCK_OFF", 1, 1, 0);
+						print("~g~Fuck Off!");
+						return;
+					}
+					else if(item_select == 7){
+						SAY_AMBIENT_SPEECH(pPlayer, "MOBILE_CHAT", 1, 1, 0);
+						print("~g~Phone Chat!");
+						return;
+					}
+					else if(item_select == 8){
+						SAY_AMBIENT_SPEECH(pPlayer, "GENERIC_BYE", 1, 1, 0);
+						print("~g~Bye!");
+						return;
+					}
+					else if(item_select == 9){
+						SAY_AMBIENT_SPEECH(pPlayer, "SHOT_IN_LEG", 1, 1, 0);
+						print("~g~I've been Shot!");
+						return;
+					}
+					else if(item_select == 10){
+						SAY_AMBIENT_SPEECH(pPlayer, "FIGHT", 1, 1, 0);
+						print("~g~Lets Fight!");
 						return;
 					}
 					return;
@@ -3729,12 +3882,35 @@ void menu_functions(void){
 							}
 							return;
 						}
+						if(item_select == 12){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								if(IS_CHAR_IN_ANY_CAR(players[index].ped)){
+									uint tick;
+									GET_CAR_CHAR_IS_USING(players[index].ped,&pveh);
+									GET_NETWORK_ID_FROM_VEHICLE(pveh,&nvid);
+									REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+									while(!HAS_CONTROL_OF_NETWORK_ID(nvid)){
+										tick++;
+										REQUEST_CONTROL_OF_NETWORK_ID(nvid);
+										if(tick >= 200){
+											print("~r~Error");
+											return;
+										}
+										WAIT(0);
+									}
+									SET_ENGINE_HEALTH(pveh,0.0);
+									SET_CAR_ENGINE_ON(pveh,false,true);
+									print("Shut down player's car");
+								}
+							}
+							return;
+						}
 					}
 					if(last_selected[3] == 12){
 						uint index = (last_selected[2] - 2);
 						if(item_select == 1){
 							if(DOES_CHAR_EXIST(players[index].ped)){
-								#ifndef PERSONAL
+								#ifndef EMMAN
 								if(is_whitelisted(index)){
 									print("Player is whitelisted");
 									return;
@@ -3745,13 +3921,13 @@ void menu_functions(void){
 								ATTACH_OBJECT_TO_PED(otmp,players[index].ped,0,0.0,0.0,-0.11,0.0,0.0,3.0,false);
 								WAIT(10);
 								MARK_OBJECT_AS_NO_LONGER_NEEDED(&otmp);
-								print("Attached Hippo to Player");
+								print("Attached a Hippo to Player");
 							}
 							return;
 						}
 						else if(item_select == 2){
 							if(DOES_CHAR_EXIST(players[index].ped)){
-								#ifndef PERSONAL
+								#ifndef EMMAN
 								if(is_whitelisted(index)){
 									print("Player is whitelisted");
 									return;
@@ -3773,13 +3949,13 @@ void menu_functions(void){
 								ATTACH_OBJECT_TO_PED(otmp,players[index].ped,0x4B5,0.0,0.0,0.0,0.0,0.0,3.0,false);
 								WAIT(10);
 								MARK_OBJECT_AS_NO_LONGER_NEEDED(&otmp);
-								print("Attached Cube to Player");
+								print("Attached a Cube to Player");
 							}
 							return;
 						}
 						else if(item_select == 3){
 							if(DOES_CHAR_EXIST(players[index].ped)){
-								#ifndef PERSONAL
+								#ifndef EMMAN
 								if(is_whitelisted(index)){
 									print("Player is whitelisted");
 									return;
@@ -3790,7 +3966,41 @@ void menu_functions(void){
 								ATTACH_OBJECT_TO_PED(otmp,players[index].ped,0,0,.25,-.50,-1.55,3.10,0,0);
 								WAIT(10);
 								MARK_OBJECT_AS_NO_LONGER_NEEDED(&otmp);
-								print("Attached Dick to Player");
+								print("Attached a Dick to Player");
+							}
+							return;
+						}
+						else if(item_select == 4){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								#ifndef EMMAN
+								if(is_whitelisted(index)){
+									print("Player is whitelisted");
+									return;
+								}
+								#endif
+								Object otmp;
+								CREATE_OBJECT(0xEB12D336,0.0,0.0,0.0,&otmp,true);
+								ATTACH_OBJECT_TO_PED(otmp,players[index].ped,0,0,0,0.0,0.0,0.0,3.0,false);
+								WAIT(10);
+								MARK_OBJECT_AS_NO_LONGER_NEEDED(&otmp);
+								print("Attached a Dumpster to Player");
+							}
+							return;
+						}
+						else if(item_select == 5){
+							if(DOES_CHAR_EXIST(players[index].ped)){
+								#ifndef EMMAN
+								if(is_whitelisted(index)){
+									print("Player is whitelisted");
+									return;
+								}
+								#endif
+								Object otmp;
+								CREATE_OBJECT(0xD318157E,0.0,0.0,0.0,&otmp,true);
+								ATTACH_OBJECT_TO_PED(otmp,players[index].ped,0x4B5,0.0,0.0,-0.3,0.0,0.0,3.0,false);
+								WAIT(10);
+								MARK_OBJECT_AS_NO_LONGER_NEEDED(&otmp);
+								print("Attached a TV to Player");
 							}
 							return;
 						}
@@ -3799,7 +4009,7 @@ void menu_functions(void){
 						uint index = (last_selected[2] - 2);
 						if(item_select == 1){
 							if(DOES_CHAR_EXIST(players[index].ped)){
-								#ifndef PERSONAL
+								#ifndef EMMAN
 								if(is_whitelisted(index)){
 									print("Player is whitelisted");
 									return;
@@ -4080,7 +4290,7 @@ void looped_functions(void){
 	SET_CHAR_INVINCIBLE(pPlayer,godmode);
 	GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 	
-	#ifndef PERSONAL
+	#ifndef EMMAN
 	if(xmc_in_game){
 		if(!DOES_CHAR_EXIST(xmc_char)) xmc_in_game = false;
 		else{
@@ -4159,14 +4369,12 @@ void looped_functions(void){
 		}
 	}
 
-	if(burstfire){
-		int PlayerWep;
-		GET_CURRENT_CHAR_WEAPON(pPlayer, &PlayerWep);
-		if(PlayerWep == WEAPON_RLAUNCHER){
-			if(IS_BUTTON_PRESSED(0,BUTTON_L) && IS_BUTTON_PRESSED(0,BUTTON_R)){
-				if(IS_CHAR_SHOOTING(pPlayer)) rapidrpg();
-			}
+	if(rapidfire){
+		if(IS_CHAR_SHOOTING(pPlayer) && !IS_CHAR_IN_ANY_CAR(pPlayer)){
+			SET_PLAYER_FAST_RELOAD(GetPlayerIndex(), true);
+			SET_TIME_SCALE(100.0f);
 		}
+		else SET_TIME_SCALE(1.0f);
 	}
 	else if(!fastreload) SET_PLAYER_FAST_RELOAD(GetPlayerIndex(), false);
 	
@@ -4233,7 +4441,7 @@ void looped_functions(void){
 
 	if(chronicle){
 		// float x,y,z;
-		if(IS_BUTTON_JUST_PRESSED(0,BUTTON_A)){
+		if(IS_BUTTON_JUST_PRESSED(0,BUTTON_B)){
 			chronicle_shoot();
 		}
 		GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
@@ -4244,9 +4452,10 @@ void looped_functions(void){
 		ADD_EXPLOSION(x,y + 5,z,EXPLOSION_SHIP_DESTROY,35.0,false,true,0.0);
 		ADD_EXPLOSION(x,y - 5,z,EXPLOSION_SHIP_DESTROY,35.0,false,true,0.0);
 	}
+	
 	if(inferno){
 		if(!IS_CHAR_IN_ANY_CAR(pPlayer)){
-			if(IS_BUTTON_JUST_PRESSED(0,BUTTON_A)){
+			if(IS_BUTTON_JUST_PRESSED(0,BUTTON_B)){
 				inferno_shoot();
 			}
 			GET_CHAR_COORDINATES(pPlayer,&x,&y,&z);
@@ -4274,17 +4483,6 @@ void looped_functions(void){
 			}
 		}
 	}
-	
-	if(burstfire){
-		int PlayerWep;
-		GET_CURRENT_CHAR_WEAPON(pPlayer, &PlayerWep);
-		if(PlayerWep == WEAPON_RLAUNCHER){
-			if(IS_BUTTON_PRESSED(0,BUTTON_L) && IS_BUTTON_PRESSED(0,BUTTON_R)){
-				if(IS_CHAR_SHOOTING(pPlayer)) rapidrpg();
-			}
-		}
-	}
-	else if(!fastreload) SET_PLAYER_FAST_RELOAD(GetPlayerIndex(), false);
 	
 	if(chaos){
 		float dX,dY,dZ;
@@ -4369,7 +4567,7 @@ void looped_functions(void){
 		if(IS_CHAR_IN_ANY_CAR(pPlayer)){
 			GET_CAR_CHAR_IS_USING(pPlayer,&pveh);
 			if((!IS_CHAR_IN_ANY_BOAT(pPlayer)) && (!IS_CHAR_IN_ANY_HELI(pPlayer))&& (!IS_CHAR_ON_ANY_BIKE(pPlayer)) && (IS_VEHICLE_ON_ALL_WHEELS(pveh))){
-				APPLY_FORCE_TO_CAR(pveh,true,0.0,0,2.2f,0.0,0.0,0.0,true,true,true,true);
+				APPLY_FORCE_TO_CAR(pveh,true,0.0,0,0.15f,0.0,0.0,0.0,true,true,true,true);
 			}
 		}
 	}
@@ -4477,17 +4675,6 @@ void looped_functions(void){
 	if(GET_NUMBER_OF_INSTANCES_OF_STREAMED_SCRIPT("player_menuiv") != 0 && show_menu)
 		menu_shutdown();
 	
-	if(burstfire){
-		int PlayerWep;
-		GET_CURRENT_CHAR_WEAPON(pPlayer, &PlayerWep);
-		if(PlayerWep == WEAPON_RLAUNCHER){
-			if(IS_BUTTON_PRESSED(0,BUTTON_L) && IS_BUTTON_PRESSED(0,BUTTON_R)){
-				if(IS_CHAR_SHOOTING(pPlayer)) rapidrpg();
-			}
-		}
-	}
-	else if(!fastreload) SET_PLAYER_FAST_RELOAD(GetPlayerIndex(), false);
-	
 	//garage
 	if(in_paint && IS_CHAR_IN_ANY_CAR(pPlayer)){
 		if(menu[item_select].value != menu[item_select].extra_val){
@@ -4573,7 +4760,7 @@ void do_online_player_loop(void){
 }
 
 void check_xmc_loop(void){
-	#ifndef PERSONAL
+	#ifndef EMMAN
 	Ped online_char;
 	int i;
 	if(!xmc_in_game){
