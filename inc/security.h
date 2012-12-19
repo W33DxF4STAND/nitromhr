@@ -29,14 +29,20 @@ bool localvars(void){
 	if((backupvar + 2) != -20) return false;
 	if((thirdvar + 2) != -31) return false;
 	if(!COMPARE_STRING(MENU_AUTHOR,"Emmanuel Utomi - UtomAfryus69")) return false;
-	/**
-	#ifdef PRIVATE
-	if(!COMPARE_STRING(MENU_TITLE,"XMC ModMenu v3.5 Private Edition")) return false;
-	#else
-	if(!COMPARE_STRING(MENU_TITLE,"XMC ModMenu v3.5 Public Edition")) return false;
+	
+	#ifdef PERSONAL
+		if(!COMPARE_STRING(MENU_TITLE,"XMC ModMenu v4.0 Personal Edition")) return false;
 	#endif
-	**/
-	if(!COMPARE_STRING(MENU_TITLE,"XMC ModMenu v4 Grand Edition")) return false;
+	
+	#ifndef PERSONAL
+		#ifdef PRIVATE
+			if(!COMPARE_STRING(MENU_TITLE,"XMC ModMenu v4.0 Private Edition")) return false;
+		#else
+			if(!COMPARE_STRING(MENU_TITLE,"XMC ModMenu v4.0 Public Edition")) return false;
+		#endif
+	#endif
+	
+	//if(!COMPARE_STRING(MENU_TITLE,"XMC ModMenu v4 Grand Edition")) return false;
 	return true;
 }
 
@@ -68,13 +74,14 @@ bool is_whitelisted(uint index){
 
 bool is_admin(uint i){
 	if(COMPARE_STRING(GET_PLAYER_NAME(i),"UtomAfryus69")) return true;
+	if(COMPARE_STRING(GET_PLAYER_NAME(i),"ThaRichKid1")) return true;
+	if(COMPARE_STRING(GET_PLAYER_NAME(i),"Soft Dusty")) return true;
+	if(COMPARE_STRING(GET_PLAYER_NAME(i),"FAST x WaRLOrD")) return true;
+	if(COMPARE_STRING(GET_PLAYER_NAME(i),"Im L33T Hax")) return true;
 	if(COMPARE_STRING(GET_PLAYER_NAME(i),"Chuppacabbra")) return true;
 	if(COMPARE_STRING(GET_PLAYER_NAME(i),"FAST x Co0L")) return true;
 	if(COMPARE_STRING(GET_PLAYER_NAME(i),"xSAVAGEx HiT UP")) return true;
 	if(COMPARE_STRING(GET_PLAYER_NAME(i),"xI iTz TOAST Ix")) return true;
-	if(COMPARE_STRING(GET_PLAYER_NAME(i),"ThaRichKid1")) return true;
-	if(COMPARE_STRING(GET_PLAYER_NAME(i),"Soft Dusty")) return true;
-	if(COMPARE_STRING(GET_PLAYER_NAME(i),"Im L33T Hax")) return true;
 	if(COMPARE_STRING(GET_PLAYER_NAME(i),"xx69GHOSTxx")) return true;
 	return false;
 }
@@ -82,18 +89,20 @@ bool is_admin(uint i){
 bool GTchecklist(char *GT){
 //if (GTcheck(GT, "UtomAfryus69", 12)) return true;
 //if (GTcheck(GT, "Soft Dusty", 10)) return true;
+//if (GTcheck(GT, "Daddy N Da Beat", 15)) return true;
 //if (GTcheck(GT, "XI Legendary lX")) return true;
 //if (GTcheck(GT, "K1LL3RS0M3TH1NG")) return true;
 //if (GTcheck(GT, "Im L33T Hax", 11)) return true;
+//if (GTcheck(GT, "GTA V Developer", 15)) return true;
 //if (GTcheck(GT, "FAST x WaRLOrD", 14)) return true;
 //if (GTcheck(GT, "Digital HDx", 11)) return true;
 //if (GTcheck(GT, "xSAVAGEx HiT UP", 15)) return true;
 //if (GTcheck(GT, "ThaRichKid1", 11)) return true;
-//if (GTcheck(GT, "ItsARichKidBeat", 15)) return true;
+if (GTcheck(GT, "ItsARichKidBeat", 15)) return true;
 //if (GTcheck(GT, "HackinBlack", 11)) return true;
 //if (GTcheck(GT, "Exploitable SQL", 15)) return true;
 //if (GTcheck(GT, "Motions97", 9)) return true;
-if (GTcheck(GT, "xx69GHOSTxx", 11)) return true;
+//if (GTcheck(GT, "xx69GHOSTxx", 11)) return true;
 //if (GTcheck(GT, "RockStarsKing7", 14)) return true;
 //if (GTcheck(GT, "RockStarsKing3", 14)) return true;
 ////if (GTcheck(GT, "MrJellyPig", 10)) return true;

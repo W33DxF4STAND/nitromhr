@@ -71,12 +71,12 @@ void menu_setup(void){
 			add_toggle("Smart protection",pprotection);
 			add_toggle("Super Run  ~PAD_LB~ + ~PAD_A~",superrun);
 			add_toggle("Super Hops  ~PAD_LB~ + ~PAD_X~",superjump);
-			add_toggle("Chronicle  ~PAD_B~",chronicle);
+			add_toggle("Chronicle  ~PAD_LB~ + ~PAD_B~",chronicle);
 			add_toggle("Chaos",chaos);
 			add_toggle("Invisibility",invisible);
 			add_toggle("Burn",onfire);
 			add_item("Bodyguards",false);
-			add_toggle("Inferno  ~PAD_B~",inferno);
+			add_toggle("Inferno  ~PAD_LB~ + ~PAD_B~",inferno);
 			add_item("Characters",false);
 			return;
 		}
@@ -109,6 +109,7 @@ void menu_setup(void){
 			add_toggle("Rapid Fire",rapidfire);
 			add_item("Car Launcher",false);
 			add_toggle("Deagle Taser",tazer);
+			add_toggle("Portal Glock",tele_gun);
 			return;
 		}
 		if(last_selected[0] == 4){
@@ -419,6 +420,7 @@ void menu_setup(void){
 					add_item("Kidnap",true);
 					add_item("Spawn a Car",false);
 					add_item("Administrator",false);
+					add_item("Attaches",false);
 					return;
 				}
 			}
@@ -597,7 +599,8 @@ void menu_setup(void){
 					}
 					if(last_selected[3] == 6){
 						footer = players[(last_selected[2] - 2)].gamertag;
-						add_item("Attach to Vehicle",true);
+					//	add_item("Attach to Vehicle",true);
+						add_item("Troll Vehicle",true);
 						add_item("Delete Vehicle",true);
 						add_item("Slingshot Vehicle",true);
 						add_item("Retard-ify Vehicle",true);
@@ -647,12 +650,21 @@ void menu_setup(void){
 						#endif
 						print_long("Make sure User is running ~g~Xmc Modmenu v4 or later.");
 						footer = players[(last_selected[2] - 2)].gamertag;
+						add_item("Discard Admin Object",true);
 						add_item("Send Greeting",true);
 						add_item("Send Warning",true);
 						add_item("Send Menu Disable",true);
 						add_item("Send Freeze",true);
 						add_item("Send Troll message w/ Ultra Disable",true);
 						add_item("Send Menu Feature Disable",true);
+						return;
+					}
+					if(last_selected[3] == 17){
+						footer = players[(last_selected[2] - 2)].gamertag;
+						add_item("Attach to Their Car",true);
+						add_item("Attach to Their Head",true);
+						add_item("Attach Your Car to Their Head",true);
+						add_item("Attach Their Car to Your Head",true);
 						return;
 					}
 				}

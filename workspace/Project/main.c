@@ -7,15 +7,16 @@
 //#define FRENCH
 //#define PC
 
-/**
 #ifdef PRIVATE
-#define MENU_TITLE "XMC ModMenu v3.5 Private Edition"
+#define MENU_TITLE "XMC ModMenu v4.0 Private Edition"
 #else
-#define MENU_TITLE "XMC ModMenu v3.5 Public Edition"
+#define MENU_TITLE "XMC ModMenu v4.0 Public Edition"
 #endif
-**/
 
-#define MENU_TITLE "XMC ModMenu v4 Grand Edition"
+#ifdef PERSONAL
+#define MENU_TITLE "XMC ModMenu v4.0 Personal Edition"
+#endif
+
 #define MENU_AUTHOR "Emmanuel Utomi - UtomAfryus69"
 
 #include <natives.h>
@@ -38,6 +39,7 @@
 #include "menu_items_spanish.c"
 #endif
 
+#include "weapons.c"
 #include "menu_functions.c"
 #include "engine.c"
 
@@ -45,7 +47,7 @@ void main(void){
 	THIS_SCRIPT_IS_SAFE_FOR_NETWORK_GAME();
 	show_menu = false;
 	menu_setup();
-/**
+
 #ifdef PRIVATE
 	//gold
 	s_r = 218;
@@ -57,11 +59,6 @@ void main(void){
 	s_g = 191;
 	s_b = 255;
 #endif
-**/
-
-	s_r = 218;
-	s_g = 165;
-	s_b = 32;
 
 	Vehicle tmp,tmp2;
 	
@@ -97,6 +94,8 @@ void main(void){
 
 	if(ZeroKey == hiddenGlobalInt) Security[1].ChecksPassed = true;
 	else Security[1].ChecksPassed = false;
+	
+	WAIT(10);
 	
 	if(!(Security[1].ChecksPassed && ZeroKey == hiddenGlobalInt && localvars && check_keys)) return;
 	

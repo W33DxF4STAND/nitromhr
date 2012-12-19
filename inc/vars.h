@@ -79,7 +79,6 @@ Object tmp_object_loop;
 uint tmp_model, model;
 uint object_launch = 0x3675A6C3;
 uint car_launch = MODEL_SULTANRS;
-Object tele_obj;
 Vector3 aim,spawn,force;
 uint rocket_ship_model = 0x19AF4794;
 uint inferno_fire_model = 0xF3C45209;
@@ -134,6 +133,8 @@ bool show_menu = false,
 	cargun = false,
 	invisible = false,
 	rapidfire = false,
+	run_tele = false,
+	tele_gun = false,
 	strat_cargun = true,
 	grond_cargun = false,
 	freezecar = false,
