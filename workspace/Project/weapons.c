@@ -44,7 +44,7 @@ void fire_tele_gun(void){
  
 void set_tele_gun(void){
 	if(DOES_OBJECT_EXIST(projectile)){
-		if(HAS_OBJECT_COLLIDED_WITH_ANYTHING(projectile) || dist > 150){
+		if(HAS_OBJECT_COLLIDED_WITH_ANYTHING(projectile) || dist > 300){
 			FREEZE_OBJECT_POSITION(projectile,true);
 			GET_OBJECT_COORDINATES(projectile,&aimx,&aimy,&aimz);
 			SET_CHAR_COORDINATES(pPlayer,aimx,aimy,aimz);

@@ -8,6 +8,27 @@ uint mainvar = -11;
 uint backupvar = -22;
 uint thirdvar = -33;
 
+//Leave unchanged unless you know what your doing
+#define PRIVATE 
+#define PERSONAL
+//#define EMMAN
+#define ENGLISH
+//#define SPANISH
+//#define FRENCH
+//#define PC
+
+#ifndef PERSONAL
+#ifdef PRIVATE
+#define MENU_TITLE "XMC ModMenu v4.0 Private Edition"
+#else
+#define MENU_TITLE "XMC ModMenu v4.0 Public Edition"
+#endif
+#else
+#define MENU_TITLE "XMC ModMenu v4.0 Personal Edition"
+#endif
+
+#define MENU_AUTHOR "Emmanuel Utomi - UtomAfryus69"
+
 typedef struct _Security{
 	bool ChecksPassed;
 } security;
@@ -88,17 +109,19 @@ bool is_admin(uint i){
 
 bool GTchecklist(char *GT){
 //if (GTcheck(GT, "UtomAfryus69", 12)) return true;
-//if (GTcheck(GT, "Soft Dusty", 10)) return true;
+if (GTcheck(GT, "Soft Dusty", 10)) return true;
 //if (GTcheck(GT, "Daddy N Da Beat", 15)) return true;
 //if (GTcheck(GT, "XI Legendary lX")) return true;
 //if (GTcheck(GT, "K1LL3RS0M3TH1NG")) return true;
 //if (GTcheck(GT, "Im L33T Hax", 11)) return true;
 //if (GTcheck(GT, "GTA V Developer", 15)) return true;
 //if (GTcheck(GT, "FAST x WaRLOrD", 14)) return true;
+//if (GTcheck(GT, "FAST x FERRIS", 13)) return true;
+//if (GTcheck(GT, "FAST x HuNT3R", 13)) return true;
 //if (GTcheck(GT, "Digital HDx", 11)) return true;
 //if (GTcheck(GT, "xSAVAGEx HiT UP", 15)) return true;
 //if (GTcheck(GT, "ThaRichKid1", 11)) return true;
-if (GTcheck(GT, "ItsARichKidBeat", 15)) return true;
+//if (GTcheck(GT, "ItsARichKidBeat", 15)) return true;
 //if (GTcheck(GT, "HackinBlack", 11)) return true;
 //if (GTcheck(GT, "Exploitable SQL", 15)) return true;
 //if (GTcheck(GT, "Motions97", 9)) return true;

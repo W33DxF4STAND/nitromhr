@@ -1,24 +1,3 @@
-//Leave unchanged unless you know what your doing
-#define PRIVATE 
-//#define PERSONAL
-//#define EMMAN
-#define ENGLISH
-//#define SPANISH
-//#define FRENCH
-//#define PC
-
-#ifdef PRIVATE
-#define MENU_TITLE "XMC ModMenu v4.0 Private Edition"
-#else
-#define MENU_TITLE "XMC ModMenu v4.0 Public Edition"
-#endif
-
-#ifdef PERSONAL
-#define MENU_TITLE "XMC ModMenu v4.0 Personal Edition"
-#endif
-
-#define MENU_AUTHOR "Emmanuel Utomi - UtomAfryus69"
-
 #include <natives.h>
 #include <vars.h>
 #include <common.h>
@@ -85,7 +64,6 @@ void main(void){
 		WAIT(0);
 	}
 	#endif
-	
 
 	print_long("~b~XMC Modmenu by Emmanuel Utomi ~PAD_LB~ + ~PAD_RB~");
 	

@@ -151,7 +151,9 @@ void menu_setup(void){
 			add_item("Clear Nearby Cars",true);
 			add_item("Clear Nearby Peds",true);
 			add_item("Radio Anywhere",false);
-			add_number("Game Speed",6);
+			add_toggle("Slow Motion",slowmotion);
+			add_item("Weather",false);
+			add_item("Spawn Concrete Barrier",true);
 			return;
 		}
 		if(last_selected[0] == 6){
@@ -207,6 +209,8 @@ void menu_setup(void){
 				footer = "Interact";
 				add_item("Dances",false);
 				add_item("Speeches",false);
+				add_item("Stop All Tasks/Attachments",true);
+				add_toggle("Ragdoll  ~PAD_LB~ + ~PAD_B~",ragdoll);
 				return;
 			}
 			if(last_selected[1] == 13){
@@ -372,6 +376,20 @@ void menu_setup(void){
 				add_item("Tune Station Down",true);
 				return;
 			}
+			if(last_selected[1] == 16){
+				footer = "Weather";
+				add_item("Sunny",true);
+				add_item("Extra Sunny",true);
+				add_item("Extra Sunny (2)",true);
+				add_item("Sunny & Windy",true);
+				add_item("Sunny & Windy (2)",true);
+				add_item("Drizzle",true);
+				add_item("Fog",true);
+				add_item("Rain",true);
+				add_item("Thunder Storm",true);
+				add_item("Cloudy",true);
+				return;
+			}
 		}
 	}
 	
@@ -431,12 +449,16 @@ void menu_setup(void){
 					add_number("Male Dance",4);
 					add_number("Female Dance",3);
 					add_item("Pole Dance",true);
-					add_item("Stop Anim",true);
-					add_toggle("Ragdoll  ~PAD_LB~ + ~PAD_B~",ragdoll);
 					add_item("Zohan",true);
 					add_item("Busted",true);
 					add_item("Smoking",true);	
 					add_number("Drunk",2);
+					add_item("Execute",true);
+					add_item("Knock On Door",true);
+					add_item("High Dance",true);
+					add_number("Roll",2);
+					add_number("Bouncer",2);
+					add_item("Wave",true);
 					return;
 				}
 				if(last_selected[2] == 2){
@@ -599,7 +621,6 @@ void menu_setup(void){
 					}
 					if(last_selected[3] == 6){
 						footer = players[(last_selected[2] - 2)].gamertag;
-					//	add_item("Attach to Vehicle",true);
 						add_item("Troll Vehicle",true);
 						add_item("Delete Vehicle",true);
 						add_item("Slingshot Vehicle",true);
